@@ -30,12 +30,16 @@ public final class StreamTtsVoiceSettings {
 
   private final Optional<Boolean> maintainSourceAccent;
 
+  private final Optional<Boolean> applyRefLoudnessNorm;
+
   private final Map<String, Object> additionalProperties;
 
   private StreamTtsVoiceSettings(Optional<Boolean> enhanceReferenceAudioQuality,
-      Optional<Boolean> maintainSourceAccent, Map<String, Object> additionalProperties) {
+      Optional<Boolean> maintainSourceAccent, Optional<Boolean> applyRefLoudnessNorm,
+      Map<String, Object> additionalProperties) {
     this.enhanceReferenceAudioQuality = enhanceReferenceAudioQuality;
     this.maintainSourceAccent = maintainSourceAccent;
+    this.applyRefLoudnessNorm = applyRefLoudnessNorm;
     this.additionalProperties = additionalProperties;
   }
 
@@ -47,6 +51,11 @@ public final class StreamTtsVoiceSettings {
   @JsonProperty("maintain_source_accent")
   public Optional<Boolean> getMaintainSourceAccent() {
     return maintainSourceAccent;
+  }
+
+  @JsonProperty("apply_ref_loudness_norm")
+  public Optional<Boolean> getApplyRefLoudnessNorm() {
+    return applyRefLoudnessNorm;
   }
 
   @java.lang.Override
@@ -61,12 +70,12 @@ public final class StreamTtsVoiceSettings {
   }
 
   private boolean equalTo(StreamTtsVoiceSettings other) {
-    return enhanceReferenceAudioQuality.equals(other.enhanceReferenceAudioQuality) && maintainSourceAccent.equals(other.maintainSourceAccent);
+    return enhanceReferenceAudioQuality.equals(other.enhanceReferenceAudioQuality) && maintainSourceAccent.equals(other.maintainSourceAccent) && applyRefLoudnessNorm.equals(other.applyRefLoudnessNorm);
   }
 
   @java.lang.Override
   public int hashCode() {
-    return Objects.hash(this.enhanceReferenceAudioQuality, this.maintainSourceAccent);
+    return Objects.hash(this.enhanceReferenceAudioQuality, this.maintainSourceAccent, this.applyRefLoudnessNorm);
   }
 
   @java.lang.Override
@@ -86,6 +95,8 @@ public final class StreamTtsVoiceSettings {
 
     private Optional<Boolean> maintainSourceAccent = Optional.empty();
 
+    private Optional<Boolean> applyRefLoudnessNorm = Optional.empty();
+
     @JsonAnySetter
     private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -95,6 +106,7 @@ public final class StreamTtsVoiceSettings {
     public Builder from(StreamTtsVoiceSettings other) {
       enhanceReferenceAudioQuality(other.getEnhanceReferenceAudioQuality());
       maintainSourceAccent(other.getMaintainSourceAccent());
+      applyRefLoudnessNorm(other.getApplyRefLoudnessNorm());
       return this;
     }
 
@@ -126,8 +138,22 @@ public final class StreamTtsVoiceSettings {
       return this;
     }
 
+    @JsonSetter(
+        value = "apply_ref_loudness_norm",
+        nulls = Nulls.SKIP
+    )
+    public Builder applyRefLoudnessNorm(Optional<Boolean> applyRefLoudnessNorm) {
+      this.applyRefLoudnessNorm = applyRefLoudnessNorm;
+      return this;
+    }
+
+    public Builder applyRefLoudnessNorm(Boolean applyRefLoudnessNorm) {
+      this.applyRefLoudnessNorm = Optional.ofNullable(applyRefLoudnessNorm);
+      return this;
+    }
+
     public StreamTtsVoiceSettings build() {
-      return new StreamTtsVoiceSettings(enhanceReferenceAudioQuality, maintainSourceAccent, additionalProperties);
+      return new StreamTtsVoiceSettings(enhanceReferenceAudioQuality, maintainSourceAccent, applyRefLoudnessNorm, additionalProperties);
     }
   }
 }
