@@ -24,7 +24,7 @@ public class StreamingTtsExample {
                 .text("Hello from Camb AI! This is a Java SDK streaming test.")
                 .language(CreateStreamTtsRequestPayloadLanguage.EN_US) 
                 .voiceId(20303)
-                .speechModel(CreateStreamTtsRequestPayloadSpeechModel.MARS_8)
+                .speechModel(CreateStreamTtsRequestPayloadSpeechModel.MARS8)
                 .build());
 
             File outputFile = new File("streaming_output.mp3");
