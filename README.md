@@ -168,13 +168,34 @@ String taskId = response.getTaskId().get();
 // Poll status using client.dub().getEndToEndDubbingStatus(taskId)
 ```
 
+## ⚙️ Advanced Usage & Other Features
+
+The Camb AI SDK offers a wide range of capabilities beyond these examples, including:
+
+- Voice Cloning
+- Translated TTS
+- Audio Dubbing
+- Transcription
+- And more!
+
+Please refer to the [Official Camb AI API Documentation](https://docs.camb.ai) for a comprehensive list of features and advanced usage patterns.
+
+## 📖 Examples
+
+Check out the `examples/` directory for complete, runnable examples:
+
+- `src/main/java/BasicTts.java` - Basic text-to-speech example
+- `src/main/java/TextToAudioExample.java` - Sound generation example
+- `src/main/java/TextToVoiceExample.java` - Generative voice example
+- `src/main/java/DubbingExample.java` - Video dubbing workflow
+- `src/main/java/BasetenProvider.java` - Using custom providers
+
 ## 🔗 Links
 
 - [Official Documentation](https://docs.camb.ai)
-- [API Reference](https://docs.camb.ai/api-reference)
-- [TypeScript SDK](https://github.com/Camb-ai/cambai-node-sdk)
+- [GitHub Repository](https://github.com/Camb-ai/cambai-java-sdk)
 - [Python SDK](https://github.com/Camb-ai/cambai-python-sdk)
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the LICENSE file for details

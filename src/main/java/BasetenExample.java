@@ -28,8 +28,8 @@ public class BasetenExample {
             // Build the payload
             CreateStreamTtsRequestPayload request = CreateStreamTtsRequestPayload.builder()
                 .text("Hello. This is speech generated using a custom Baseten provider.")
+                .language(CreateStreamTtsRequestPayloadLanguage.EN_US)
                 .voiceId(1) // Ignored by custom provider but required by payload
-                .language(CreateStreamTtsRequestPayloadLanguage.EN_US) 
                 .speechModel(CreateStreamTtsRequestPayloadSpeechModel.MARSPRO)
                 .outputConfiguration(StreamTtsOutputConfiguration.builder().format(OutputFormat.WAV).build())
                 .build();

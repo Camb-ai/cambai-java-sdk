@@ -2,6 +2,7 @@ import resources.texttoaudio.requests.CreateTextToAudioRequestPayload;
 import types.OrchestratorPipelineCallResult;
 import types.OrchestratorPipelineResult;
 import types.TaskStatus;
+import types.TextToAudioType;
 import java.io.InputStream;
 import java.io.FileOutputStream;
 import java.io.File;
@@ -26,7 +27,7 @@ public class TextToAudioExample {
             OrchestratorPipelineCallResult response = client.textToAudio().createTextToAudio(CreateTextToAudioRequestPayload.builder()
                 .prompt("A futuristic sci-fi laser sound effect")
                 .duration(3.0)
-                .audioType("sound")
+                .audioType(TextToAudioType.SOUND)
                 .build());
 
             String taskId = response.getTaskId().orElseThrow(() -> new RuntimeException("Failed to get task ID"));
