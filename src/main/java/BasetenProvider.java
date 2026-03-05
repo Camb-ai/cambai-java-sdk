@@ -40,8 +40,21 @@ public class BasetenProvider implements ITtsProvider {
         Map<String, Object> payload = new HashMap<>();
         payload.put("text", request.getText());
         payload.put("stream", true);
-        payload.put("output_format", "mp3");
-        payload.put("language", request.getLanguage().toString()); // Use .toString() or map Enum
+        
+        // Use format from request if provided, otherwise default to wav
+        String format = request.getOutputConfiguration()
+            .flatMap(config -> config.getFormat())
+            .map(f -> f.toString())
+            .orElse("wav");
+        payload.put("output_format", format);
+
+        payload.put("language", request.getLanguage().toString()); 
+
+        // Use speech model from request if provided
+        request.getSpeechModel().ifPresent(model -> {
+            payload.put("speech_model", model.toString());
+        });
+
         payload.put("reference_audio", referenceAudio);
         payload.put("audio_ref", referenceAudio);
         payload.put("reference_language", referenceLanguage);

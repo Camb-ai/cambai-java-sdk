@@ -1,43 +1,52 @@
-
 import resources.texttospeech.requests.CreateStreamTtsRequestPayload;
 import resources.texttospeech.types.CreateStreamTtsRequestPayloadLanguage;
+import resources.texttospeech.types.CreateStreamTtsRequestPayloadSpeechModel;
+import types.OutputFormat;
+import types.StreamTtsOutputConfiguration;
 import java.io.InputStream;
 import java.io.FileOutputStream;
 import java.io.File;
 
 public class BasetenExample {
     public static void main(String[] args) {
-        String apiKey = System.getenv("BASETEN_API_KEY");
-        String url = System.getenv("BASETEN_URL");
-        
-        if (apiKey == null) {
-            System.out.println("Please set BASETEN_API_KEY environment variable.");
+        // Environment variables for Baseten and Camb AI
+        String cambApiKey = System.getenv("CAMB_API_KEY");
+        String basetenApiKey = System.getenv("BASETEN_API_KEY");
+        String basetenUrl = System.getenv("BASETEN_URL");
+
+        if (cambApiKey == null || basetenApiKey == null || basetenUrl == null) {
+            System.out.println("Please set CAMB_API_KEY, BASETEN_API_KEY, and BASETEN_URL environment variables.");
             return;
         }
 
-        ITtsProvider provider = new BasetenProvider(apiKey, url);
+        // Initialize the custom Baseten provider
+        ITtsProvider basetenProvider = new BasetenProvider(basetenApiKey, basetenUrl);
 
-        System.out.println("Sending TTS request to Baseten...");
+        System.out.println("Generating speech via Baseten provider...");
 
         try {
-            // Note: BasetenProvider in this example uses hardcoded ref audio/lang. 
-            // In production, extend payload or use context.
-            InputStream audioStream = provider.tts(CreateStreamTtsRequestPayload.builder()
-                .text("Hello from Java Custom Provider via Baseten!")
+            // Build the payload
+            CreateStreamTtsRequestPayload request = CreateStreamTtsRequestPayload.builder()
+                .text("Hello. This is speech generated using a custom Baseten provider.")
+                .voiceId(1) // Ignored by custom provider but required by payload
                 .language(CreateStreamTtsRequestPayloadLanguage.EN_US) 
-                .voiceId(0) // Ignored
-                .build(), null);
+                .speechModel(CreateStreamTtsRequestPayloadSpeechModel.MARSPRO)
+                .outputConfiguration(StreamTtsOutputConfiguration.builder().format(OutputFormat.WAV).build())
+                .build();
 
-            File outputFile = new File("baseten_output.mp3");
+            // Use the provider
+            InputStream audioStream = basetenProvider.tts(request, null);
+
+            File outputFile = new File("baseten_output.wav");
             try (FileOutputStream outputStream = new FileOutputStream(outputFile)) {
-                byte[] buffer = new byte[1024];
+                byte[] buffer = new byte[4096];
                 int bytesRead;
                 while ((bytesRead = audioStream.read(buffer)) != -1) {
                     outputStream.write(buffer, 0, bytesRead);
                 }
             }
 
-            System.out.println("Success! Audio saved to " + outputFile.getAbsolutePath());
+            System.out.println("✓ Success! Baseten generated audio saved to " + outputFile.getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
         }
