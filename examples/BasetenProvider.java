@@ -1,5 +1,4 @@
 
-
 import resources.texttospeech.requests.CreateStreamTtsRequestPayload;
 import core.RequestOptions;
 import java.io.InputStream;
@@ -13,57 +12,59 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Baseten TTS Provider using the Mars8-Flash model.
+ *
+ * API reference: https://www.baseten.co/library/mars8-flash/
+ *
+ * Constructor parameters:
+ *   apiKey            - Baseten API key
+ *   url               - Baseten model prediction endpoint
+ *   referenceAudio    - Reference voice: public URL or base64-encoded audio file
+ *   referenceLanguage - ISO locale of the reference audio (e.g. "en-us")
+ */
 public class BasetenProvider implements ITtsProvider {
     private final String apiKey;
     private final String url;
+    private final String referenceAudio;
+    private final String referenceLanguage;
     private final OkHttpClient httpClient;
     private final ObjectMapper objectMapper;
 
-    public BasetenProvider(String apiKey, String url) {
+    public BasetenProvider(String apiKey, String url, String referenceAudio, String referenceLanguage) {
         this.apiKey = apiKey;
-        this.url = url != null ? url : "https://model-5qeryx53.api.baseten.co/environments/production/predict";
+        this.url = url;
+        this.referenceAudio = referenceAudio;
+        this.referenceLanguage = referenceLanguage;
         this.httpClient = new OkHttpClient();
         this.objectMapper = new ObjectMapper();
     }
 
     @Override
     public InputStream tts(CreateStreamTtsRequestPayload request, RequestOptions requestOptions) {
-        // NOTE: In a real scenario, you'd extend CreateStreamTtsRequestPayload or use a custom DTO 
-        // to pass reference_audio/language. For this example, we assume they are passed via a side channel 
-        // or we'd cast a custom subclass. 
-        // Java's strong typing makes this trickier than JS/Python without altering the generated class.
-        // Assuming we have reference audio/language from somewhere:
-        
-        String referenceAudio = "DUMMY_BASE64..."; // Placeholder
-        String referenceLanguage = "en-us";
+        // Normalise language: SDK enum is a string type, ensure lowercase ISO format.
+        String language = request.getLanguage().toString().toLowerCase().replace("_", "-");
 
+        // Build the Mars8-Flash payload.
+        // Docs: https://www.baseten.co/library/mars8-flash/
         Map<String, Object> payload = new HashMap<>();
         payload.put("text", request.getText());
-        payload.put("stream", true);
-        
-        // Use format from request if provided, otherwise default to wav
-        String format = request.getOutputConfiguration()
-            .flatMap(config -> config.getFormat())
-            .map(f -> f.toString())
-            .orElse("wav");
-        payload.put("output_format", format);
-
-        payload.put("language", request.getLanguage().toString()); 
-
-        // Use speech model from request if provided
-        request.getSpeechModel().ifPresent(model -> {
-            payload.put("speech_model", model.toString());
-        });
-
+        payload.put("language", language);
+        payload.put("output_duration", null);          // null = model infers optimal duration
         payload.put("reference_audio", referenceAudio);
-        payload.put("audio_ref", referenceAudio);
         payload.put("reference_language", referenceLanguage);
-        payload.put("apply_ner_nlp", false);
+        payload.put("output_format", "flac");          // flac is the default; wav also supported
+        payload.put("apply_ner_nlp", false);           // disable NER (faster; pass pronunciation_dictionary instead)
+
+        // Optional: override output format from request output configuration
+        request.getOutputConfiguration().ifPresent(config ->
+            config.getFormat().ifPresent(f -> payload.put("output_format", f.toString().toLowerCase()))
+        );
 
         try {
             String json = objectMapper.writeValueAsString(payload);
             RequestBody body = RequestBody.create(json, MediaType.parse("application/json"));
-            
+
             Request req = new Request.Builder()
                 .url(this.url)
                 .addHeader("Authorization", "Api-Key " + this.apiKey)
@@ -72,12 +73,13 @@ public class BasetenProvider implements ITtsProvider {
 
             Response response = httpClient.newCall(req).execute();
             if (!response.isSuccessful()) {
-                throw new RuntimeException("Baseten Error: " + response.code());
+                String errorBody = response.body() != null ? response.body().string() : "<no body>";
+                throw new RuntimeException("Baseten API error " + response.code() + ": " + errorBody);
             }
             return response.body().byteStream();
 
         } catch (IOException e) {
-            throw new RuntimeException("Network error", e);
+            throw new RuntimeException("Network error calling Baseten: " + e.getMessage(), e);
         }
     }
 }

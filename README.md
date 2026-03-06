@@ -46,31 +46,29 @@ CambApiClient client = CambApiClient.builder()
     .build();
 ```
 
-### Client with Specific MARS Pro Provider (e.g. Baseten)
+### Custom Hosting Provider (e.g. Baseten Mars8-Flash)
 
-You can use a custom hosting provider like Baseten for specialized deployments.
+You can route TTS through a custom hosting provider like Baseten while keeping the same SDK interface.
+`reference_audio` can be a public URL or base64-encoded audio file — Baseten caches it for faster inference.
 
 ```java
 import resources.texttospeech.requests.CreateStreamTtsRequestPayload;
 import resources.texttospeech.types.CreateStreamTtsRequestPayloadLanguage;
-import resources.texttospeech.types.CreateStreamTtsRequestPayloadSpeechModel;
-import types.OutputFormat;
-import types.StreamTtsOutputConfiguration;
 import java.io.InputStream;
 
-// Initialize custom hosting provider
+// Initialize the Baseten Mars8-Flash custom hosting provider.
+// BASETEN_REFERENCE_AUDIO can be a public URL or base64-encoded audio file.
 ITtsProvider ttsProvider = new BasetenProvider(
-    "YOUR_BASETEN_API_KEY",
-    "YOUR_BASETEN_URL"
+    System.getenv("BASETEN_API_KEY"),
+    System.getenv("BASETEN_URL"),
+    System.getenv("BASETEN_REFERENCE_AUDIO"), // reference voice
+    "en-us"                                   // reference audio language
 );
 
 // Use the provider to generate speech
 InputStream audioStream = ttsProvider.tts(CreateStreamTtsRequestPayload.builder()
-    .text("Hello from Java via Baseten!")
+    .text("Hello from Java via Baseten Mars8-Flash!")
     .language(CreateStreamTtsRequestPayloadLanguage.EN_US)
-    .voiceId(1) // Required but ignored by custom hosting provider
-    .speechModel(CreateStreamTtsRequestPayloadSpeechModel.MARSPRO)
-    .outputConfiguration(StreamTtsOutputConfiguration.builder().format(OutputFormat.WAV).build())
     .build(), null);
 ```
 
