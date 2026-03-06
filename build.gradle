@@ -21,7 +21,7 @@ dependencies {
 sourceSets {
     main {
         java {
-            srcDirs = ['src/main/java', '.'] // Including root for generated files if they are there
+            srcDirs = ['src/main/java', 'examples']
         }
     }
 }

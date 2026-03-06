@@ -15,8 +15,11 @@ public class BasetenExample {
         String basetenUrl = System.getenv("BASETEN_URL");
 
         if (cambApiKey == null || basetenApiKey == null || basetenUrl == null) {
-            System.out.println("Please set CAMB_API_KEY, BASETEN_API_KEY, and BASETEN_URL environment variables.");
-            return;
+            System.err.println("Error: Missing required environment variables:");
+            if (cambApiKey == null) System.err.println(" - CAMB_API_KEY");
+            if (basetenApiKey == null) System.err.println(" - BASETEN_API_KEY");
+            if (basetenUrl == null) System.err.println(" - BASETEN_URL (e.g. your Baseten model endpoint URL)");
+            System.exit(1);
         }
 
         // Initialize the custom Baseten provider
@@ -29,7 +32,7 @@ public class BasetenExample {
             CreateStreamTtsRequestPayload request = CreateStreamTtsRequestPayload.builder()
                 .text("Hello. This is speech generated using a custom Baseten provider.")
                 .language(CreateStreamTtsRequestPayloadLanguage.EN_US)
-                .voiceId(1) // Ignored by custom provider but required by payload
+                .voiceId(1) // Ignored by custom hosting provider but required by payload
                 .speechModel(CreateStreamTtsRequestPayloadSpeechModel.MARSPRO)
                 .outputConfiguration(StreamTtsOutputConfiguration.builder().format(OutputFormat.WAV).build())
                 .build();

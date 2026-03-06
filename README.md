@@ -48,7 +48,7 @@ CambApiClient client = CambApiClient.builder()
 
 ### Client with Specific MARS Pro Provider (e.g. Baseten)
 
-You can use a custom provider like Baseten for specialized deployments.
+You can use a custom hosting provider like Baseten for specialized deployments.
 
 ```java
 import resources.texttospeech.requests.CreateStreamTtsRequestPayload;
@@ -58,7 +58,7 @@ import types.OutputFormat;
 import types.StreamTtsOutputConfiguration;
 import java.io.InputStream;
 
-// Initialize custom provider
+// Initialize custom hosting provider
 ITtsProvider ttsProvider = new BasetenProvider(
     "YOUR_BASETEN_API_KEY",
     "YOUR_BASETEN_URL"
@@ -68,7 +68,7 @@ ITtsProvider ttsProvider = new BasetenProvider(
 InputStream audioStream = ttsProvider.tts(CreateStreamTtsRequestPayload.builder()
     .text("Hello from Java via Baseten!")
     .language(CreateStreamTtsRequestPayloadLanguage.EN_US)
-    .voiceId(1) // Required but ignored by custom provider
+    .voiceId(1) // Required but ignored by custom hosting provider
     .speechModel(CreateStreamTtsRequestPayloadSpeechModel.MARSPRO)
     .outputConfiguration(StreamTtsOutputConfiguration.builder().format(OutputFormat.WAV).build())
     .build(), null);
@@ -76,7 +76,7 @@ InputStream audioStream = ttsProvider.tts(CreateStreamTtsRequestPayload.builder(
 
 ## 🚀 Getting Started: Examples
 
-NOTE: For more examples and full runnable files refer to the `src/main/java` directory.
+NOTE: For more examples and full runnable files refer to the `examples/` directory.
 
 ### Supported Models & Sample Rates
 
@@ -184,11 +184,11 @@ Please refer to the [Official Camb AI API Documentation](https://docs.camb.ai) f
 
 Check out the `examples/` directory for complete, runnable examples:
 
-- `src/main/java/BasicTts.java` - Basic text-to-speech example
-- `src/main/java/TextToAudioExample.java` - Sound generation example
-- `src/main/java/TextToVoiceExample.java` - Generative voice example
-- `src/main/java/DubbingExample.java` - Video dubbing workflow
-- `src/main/java/BasetenProvider.java` - Using custom providers
+- `examples/BasicTts.java` - Basic text-to-speech example
+- `examples/TextToAudioExample.java` - Sound generation example
+- `examples/TextToVoiceExample.java` - Generative voice example
+- `examples/DubbingExample.java` - Video dubbing workflow
+- `examples/BasetenProvider.java` - Using custom hosting providers
 
 ## 🔗 Links
 

@@ -9,8 +9,8 @@ public class TextToVoiceExample {
     public static void main(String[] args) {
         String apiKey = System.getenv("CAMB_API_KEY");
         if (apiKey == null) {
-            System.out.println("Please set CAMB_API_KEY environment variable.");
-            return;
+            System.err.println("Error: Missing required environment variable: CAMB_API_KEY");
+            System.exit(1);
         }
 
         CambApiClient client = CambApiClient.builder()
