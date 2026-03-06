@@ -162,7 +162,8 @@ public class TranslatedStoryClient {
             httpUrl.addPathSegment(runId.get().toString());
           }
 
-          .addPathSegment(Integer.toString(targetLanguage))if (request.getIncludeTranscript().isPresent()) {
+          httpUrl.addPathSegment(Integer.toString(targetLanguage));
+          if (request.getIncludeTranscript().isPresent()) {
             httpUrl.addQueryParameter("include_transcript", request.getIncludeTranscript().get().toString());
           }
           Request.Builder _requestBuilder = new Request.Builder()

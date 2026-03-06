@@ -1,9 +1,6 @@
-package providers;
-
 import resources.texttospeech.requests.CreateStreamTtsRequestPayload;
 import core.RequestOptions;
 import java.io.InputStream;
-import CambApiClient;
 
 public class DefaultProvider implements ITtsProvider {
     private final CambApiClient client;

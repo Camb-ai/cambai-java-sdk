@@ -311,7 +311,8 @@ public class DubClient {
                 httpUrl.addPathSegment(runId.get().toString());
               }
 
-              .addPathSegment(Integer.toString(language))if (request.getFormatType().isPresent()) {
+              httpUrl.addPathSegment(Integer.toString(language));
+              if (request.getFormatType().isPresent()) {
                 httpUrl.addQueryParameter("format_type", request.getFormatType().get().toString());
               }
               if (request.getDataType().isPresent()) {
@@ -364,7 +365,8 @@ public class DubClient {
                   httpUrl.addPathSegment(runId.get().toString());
                 }
 
-                .addPathSegment(Integer.toString(language))RequestBody body;
+                httpUrl.addPathSegment(Integer.toString(language));
+                RequestBody body;
                 try {
                   body = RequestBody.create(ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
                 }

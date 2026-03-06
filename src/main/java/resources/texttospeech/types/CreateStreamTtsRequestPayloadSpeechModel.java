@@ -18,7 +18,13 @@ public enum CreateStreamTtsRequestPayloadSpeechModel {
 
   MARS7("mars-7"),
 
-  MARS6("mars-6");
+  MARS6("mars-6"),
+
+  MARSPRO("mars-pro"),
+
+  MARSFLASH("mars-flash"),
+
+  MARSINSTRUCT("mars-instruct");
 
   private final String value;
 

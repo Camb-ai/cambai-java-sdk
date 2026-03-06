@@ -85,6 +85,7 @@ public final class ClientOptions {
     public ClientOptions build() {
       OkHttpClient okhttpClient = new OkHttpClient.Builder()
               .addInterceptor(new RetryInterceptor(3))
+              .callTimeout(300, TimeUnit.SECONDS)
               .build();
       return new ClientOptions(environment, headers, headerSuppliers, okhttpClient);
     }
