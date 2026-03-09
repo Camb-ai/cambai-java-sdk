@@ -89,7 +89,7 @@ public final class GetDubbedRunInfoDubResultRunIdGetResponse {
 
     @java.lang.Override
     public GetDubbedRunInfoDubResultRunIdGetResponse deserialize(JsonParser p,
-        DeserializationContext ctxt) throws IOException {
+        DeserializationContext context) throws IOException {
       Object value = p.readValueAs(Object.class);
       try {
         return of(ObjectMappers.JSON_MAPPER.convertValue(value, DubbingResult.class));

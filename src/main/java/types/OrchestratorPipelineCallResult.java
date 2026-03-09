@@ -6,12 +6,15 @@ package types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Object;
 import java.lang.String;
@@ -35,8 +38,20 @@ public final class OrchestratorPipelineCallResult {
     this.additionalProperties = additionalProperties;
   }
 
-  @JsonProperty("task_id")
+  @JsonIgnore
   public Optional<String> getTaskId() {
+    if (taskId == null) {
+      return Optional.empty();
+    }
+    return taskId;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("task_id")
+  private Optional<String> _getTaskId() {
     return taskId;
   }
 
@@ -97,6 +112,19 @@ public final class OrchestratorPipelineCallResult {
 
     public Builder taskId(String taskId) {
       this.taskId = Optional.ofNullable(taskId);
+      return this;
+    }
+
+    public Builder taskId(Nullable<String> taskId) {
+      if (taskId.isNull()) {
+        this.taskId = null;
+      }
+      else if (taskId.isEmpty()) {
+        this.taskId = Optional.empty();
+      }
+      else {
+        this.taskId = Optional.of(taskId.get());
+      }
       return this;
     }
 

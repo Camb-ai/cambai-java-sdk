@@ -6,12 +6,15 @@ package types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Double;
 import java.lang.Integer;
@@ -35,53 +38,84 @@ public final class StreamTtsInferenceOptions {
 
   private final Optional<Double> speakerSimilarity;
 
-  private final Optional<Double> localizeSpeakerWeight;
-
-  private final Optional<Boolean> acousticQualityBoost;
-
   private final Map<String, Object> additionalProperties;
 
   private StreamTtsInferenceOptions(Optional<Double> stability, Optional<Double> temperature,
       Optional<Integer> inferenceSteps, Optional<Double> speakerSimilarity,
-      Optional<Double> localizeSpeakerWeight, Optional<Boolean> acousticQualityBoost,
       Map<String, Object> additionalProperties) {
     this.stability = stability;
     this.temperature = temperature;
     this.inferenceSteps = inferenceSteps;
     this.speakerSimilarity = speakerSimilarity;
-    this.localizeSpeakerWeight = localizeSpeakerWeight;
-    this.acousticQualityBoost = acousticQualityBoost;
     this.additionalProperties = additionalProperties;
   }
 
-  @JsonProperty("stability")
+  @JsonIgnore
   public Optional<Double> getStability() {
+    if (stability == null) {
+      return Optional.empty();
+    }
     return stability;
   }
 
-  @JsonProperty("temperature")
+  @JsonIgnore
   public Optional<Double> getTemperature() {
+    if (temperature == null) {
+      return Optional.empty();
+    }
     return temperature;
   }
 
-  @JsonProperty("inference_steps")
+  @JsonIgnore
   public Optional<Integer> getInferenceSteps() {
+    if (inferenceSteps == null) {
+      return Optional.empty();
+    }
     return inferenceSteps;
   }
 
-  @JsonProperty("speaker_similarity")
+  @JsonIgnore
   public Optional<Double> getSpeakerSimilarity() {
+    if (speakerSimilarity == null) {
+      return Optional.empty();
+    }
     return speakerSimilarity;
   }
 
-  @JsonProperty("localize_speaker_weight")
-  public Optional<Double> getLocalizeSpeakerWeight() {
-    return localizeSpeakerWeight;
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("stability")
+  private Optional<Double> _getStability() {
+    return stability;
   }
 
-  @JsonProperty("acoustic_quality_boost")
-  public Optional<Boolean> getAcousticQualityBoost() {
-    return acousticQualityBoost;
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("temperature")
+  private Optional<Double> _getTemperature() {
+    return temperature;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("inference_steps")
+  private Optional<Integer> _getInferenceSteps() {
+    return inferenceSteps;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("speaker_similarity")
+  private Optional<Double> _getSpeakerSimilarity() {
+    return speakerSimilarity;
   }
 
   @java.lang.Override
@@ -96,12 +130,12 @@ public final class StreamTtsInferenceOptions {
   }
 
   private boolean equalTo(StreamTtsInferenceOptions other) {
-    return stability.equals(other.stability) && temperature.equals(other.temperature) && inferenceSteps.equals(other.inferenceSteps) && speakerSimilarity.equals(other.speakerSimilarity) && localizeSpeakerWeight.equals(other.localizeSpeakerWeight) && acousticQualityBoost.equals(other.acousticQualityBoost);
+    return stability.equals(other.stability) && temperature.equals(other.temperature) && inferenceSteps.equals(other.inferenceSteps) && speakerSimilarity.equals(other.speakerSimilarity);
   }
 
   @java.lang.Override
   public int hashCode() {
-    return Objects.hash(this.stability, this.temperature, this.inferenceSteps, this.speakerSimilarity, this.localizeSpeakerWeight, this.acousticQualityBoost);
+    return Objects.hash(this.stability, this.temperature, this.inferenceSteps, this.speakerSimilarity);
   }
 
   @java.lang.Override
@@ -125,10 +159,6 @@ public final class StreamTtsInferenceOptions {
 
     private Optional<Double> speakerSimilarity = Optional.empty();
 
-    private Optional<Double> localizeSpeakerWeight = Optional.empty();
-
-    private Optional<Boolean> acousticQualityBoost = Optional.empty();
-
     @JsonAnySetter
     private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -140,8 +170,6 @@ public final class StreamTtsInferenceOptions {
       temperature(other.getTemperature());
       inferenceSteps(other.getInferenceSteps());
       speakerSimilarity(other.getSpeakerSimilarity());
-      localizeSpeakerWeight(other.getLocalizeSpeakerWeight());
-      acousticQualityBoost(other.getAcousticQualityBoost());
       return this;
     }
 
@@ -159,6 +187,19 @@ public final class StreamTtsInferenceOptions {
       return this;
     }
 
+    public Builder stability(Nullable<Double> stability) {
+      if (stability.isNull()) {
+        this.stability = null;
+      }
+      else if (stability.isEmpty()) {
+        this.stability = Optional.empty();
+      }
+      else {
+        this.stability = Optional.of(stability.get());
+      }
+      return this;
+    }
+
     @JsonSetter(
         value = "temperature",
         nulls = Nulls.SKIP
@@ -170,6 +211,19 @@ public final class StreamTtsInferenceOptions {
 
     public Builder temperature(Double temperature) {
       this.temperature = Optional.ofNullable(temperature);
+      return this;
+    }
+
+    public Builder temperature(Nullable<Double> temperature) {
+      if (temperature.isNull()) {
+        this.temperature = null;
+      }
+      else if (temperature.isEmpty()) {
+        this.temperature = Optional.empty();
+      }
+      else {
+        this.temperature = Optional.of(temperature.get());
+      }
       return this;
     }
 
@@ -187,6 +241,19 @@ public final class StreamTtsInferenceOptions {
       return this;
     }
 
+    public Builder inferenceSteps(Nullable<Integer> inferenceSteps) {
+      if (inferenceSteps.isNull()) {
+        this.inferenceSteps = null;
+      }
+      else if (inferenceSteps.isEmpty()) {
+        this.inferenceSteps = Optional.empty();
+      }
+      else {
+        this.inferenceSteps = Optional.of(inferenceSteps.get());
+      }
+      return this;
+    }
+
     @JsonSetter(
         value = "speaker_similarity",
         nulls = Nulls.SKIP
@@ -201,36 +268,21 @@ public final class StreamTtsInferenceOptions {
       return this;
     }
 
-    @JsonSetter(
-        value = "localize_speaker_weight",
-        nulls = Nulls.SKIP
-    )
-    public Builder localizeSpeakerWeight(Optional<Double> localizeSpeakerWeight) {
-      this.localizeSpeakerWeight = localizeSpeakerWeight;
-      return this;
-    }
-
-    public Builder localizeSpeakerWeight(Double localizeSpeakerWeight) {
-      this.localizeSpeakerWeight = Optional.ofNullable(localizeSpeakerWeight);
-      return this;
-    }
-
-    @JsonSetter(
-        value = "acoustic_quality_boost",
-        nulls = Nulls.SKIP
-    )
-    public Builder acousticQualityBoost(Optional<Boolean> acousticQualityBoost) {
-      this.acousticQualityBoost = acousticQualityBoost;
-      return this;
-    }
-
-    public Builder acousticQualityBoost(Boolean acousticQualityBoost) {
-      this.acousticQualityBoost = Optional.ofNullable(acousticQualityBoost);
+    public Builder speakerSimilarity(Nullable<Double> speakerSimilarity) {
+      if (speakerSimilarity.isNull()) {
+        this.speakerSimilarity = null;
+      }
+      else if (speakerSimilarity.isEmpty()) {
+        this.speakerSimilarity = Optional.empty();
+      }
+      else {
+        this.speakerSimilarity = Optional.of(speakerSimilarity.get());
+      }
       return this;
     }
 
     public StreamTtsInferenceOptions build() {
-      return new StreamTtsInferenceOptions(stability, temperature, inferenceSteps, speakerSimilarity, localizeSpeakerWeight, acousticQualityBoost, additionalProperties);
+      return new StreamTtsInferenceOptions(stability, temperature, inferenceSteps, speakerSimilarity, additionalProperties);
     }
   }
 }

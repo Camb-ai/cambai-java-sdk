@@ -11,6 +11,7 @@ import core.CambApiException;
 import core.ClientOptions;
 import core.MediaTypes;
 import core.ObjectMappers;
+import core.QueryStringMapper;
 import core.RequestOptions;
 import errors.UnprocessableEntityError;
 import java.io.IOException;
@@ -47,25 +48,78 @@ public class TranslatedStoryClient {
 
   public AddTargetLanguageOut createTranslationForExistingStory(Optional<Integer> runId,
       CreateTranslationForExistingStoryRequestPayload request, RequestOptions requestOptions) {
-    HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
+    HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
       .addPathSegments("translated-story");
       if (runId.isPresent()) {
         httpUrl.addPathSegment(runId.get().toString());
       }
-      RequestBody body;
+
+      .build();
+    RequestBody body;
+    try {
+      body = RequestBody.create(ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+    }
+    catch(JsonProcessingException e) {
+      throw new CambApiException("Failed to serialize request", e);
+    }
+    Request okhttpRequest = new Request.Builder()
+      .url(httpUrl)
+      .method("POST", body)
+      .headers(Headers.of(clientOptions.headers(requestOptions)))
+      .addHeader("Content-Type", "application/json")
+      .addHeader("Accept", "application/json")
+      .build();
+    OkHttpClient client = clientOptions.httpClient();
+    if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+      client = clientOptions.httpClientWithTimeout(requestOptions);
+    }
+    try (Response response = client.newCall(okhttpRequest).execute()) {
+      ResponseBody responseBody = response.body();
+      if (response.isSuccessful()) {
+        return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), AddTargetLanguageOut.class);
+      }
+      String responseBodyString = responseBody != null ? responseBody.string() : "{}";
       try {
-        body = RequestBody.create(ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        if (response.code() == 422) {
+          throw new UnprocessableEntityError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, HttpValidationError.class));
+        }
       }
-      catch(JsonProcessingException e) {
-        throw new CambApiException("Failed to serialize request", e);
+      catch (JsonProcessingException ignored) {
+        // unable to map error response, throwing generic error
       }
-      Request okhttpRequest = new Request.Builder()
+      throw new CambApiApiException("Error with status code " + response.code(), response.code(), ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+    }
+    catch (IOException e) {
+      throw new CambApiException("Network error executing HTTP request", e);
+    }
+  }
+
+  public OrchestratorPipelineResult getTranslatedStoryStatus(String taskId) {
+    return getTranslatedStoryStatus(taskId,GetTranslatedStoryStatusTranslatedStoryTaskIdGetRequest.builder().build());
+  }
+
+  public OrchestratorPipelineResult getTranslatedStoryStatus(String taskId,
+      GetTranslatedStoryStatusTranslatedStoryTaskIdGetRequest request) {
+    return getTranslatedStoryStatus(taskId,request,null);
+  }
+
+  public OrchestratorPipelineResult getTranslatedStoryStatus(String taskId,
+      GetTranslatedStoryStatusTranslatedStoryTaskIdGetRequest request,
+      RequestOptions requestOptions) {
+    HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
+
+      .addPathSegments("translated-story")
+      .addPathSegment(taskId);if (request.getRunId().isPresent()) {
+        QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
+      }
+      Request.Builder _requestBuilder = new Request.Builder()
         .url(httpUrl.build())
-        .method("POST", body)
+        .method("GET", null)
         .headers(Headers.of(clientOptions.headers(requestOptions)))
         .addHeader("Content-Type", "application/json")
-        .build();
+        .addHeader("Accept", "application/json");
+      Request okhttpRequest = _requestBuilder.build();
       OkHttpClient client = clientOptions.httpClient();
       if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
         client = clientOptions.httpClientWithTimeout(requestOptions);
@@ -73,7 +127,7 @@ public class TranslatedStoryClient {
       try (Response response = client.newCall(okhttpRequest).execute()) {
         ResponseBody responseBody = response.body();
         if (response.isSuccessful()) {
-          return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), AddTargetLanguageOut.class);
+          return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), OrchestratorPipelineResult.class);
         }
         String responseBodyString = responseBody != null ? responseBody.string() : "{}";
         try {
@@ -91,29 +145,37 @@ public class TranslatedStoryClient {
       }
     }
 
-    public OrchestratorPipelineResult getTranslatedStoryStatus(String taskId) {
-      return getTranslatedStoryStatus(taskId,GetTranslatedStoryStatusTranslatedStoryTaskIdGetRequest.builder().build());
+    public Map<String, Object> getTranslatedStoryRunInfo(Optional<Integer> runId,
+        int targetLanguage) {
+      return getTranslatedStoryRunInfo(runId,targetLanguage,GetTranslatedStoryRunInfoTranslatedStoryResultRunIdTargetLanguageGetRequest.builder().build());
     }
 
-    public OrchestratorPipelineResult getTranslatedStoryStatus(String taskId,
-        GetTranslatedStoryStatusTranslatedStoryTaskIdGetRequest request) {
-      return getTranslatedStoryStatus(taskId,request,null);
+    public Map<String, Object> getTranslatedStoryRunInfo(Optional<Integer> runId,
+        int targetLanguage,
+        GetTranslatedStoryRunInfoTranslatedStoryResultRunIdTargetLanguageGetRequest request) {
+      return getTranslatedStoryRunInfo(runId,targetLanguage,request,null);
     }
 
-    public OrchestratorPipelineResult getTranslatedStoryStatus(String taskId,
-        GetTranslatedStoryStatusTranslatedStoryTaskIdGetRequest request,
+    public Map<String, Object> getTranslatedStoryRunInfo(Optional<Integer> runId,
+        int targetLanguage,
+        GetTranslatedStoryRunInfoTranslatedStoryResultRunIdTargetLanguageGetRequest request,
         RequestOptions requestOptions) {
       HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
-        .addPathSegments("translated-story")
-        .addPathSegment(taskId);if (request.getRunId().isPresent()) {
-          httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+        .addPathSegments("translated-story-result");
+        if (runId.isPresent()) {
+          httpUrl.addPathSegment(runId.get().toString());
+        }
+
+        .addPathSegment(Integer.toString(targetLanguage))if (request.getIncludeTranscript().isPresent()) {
+          QueryStringMapper.addQueryParameter(httpUrl, "include_transcript", request.getIncludeTranscript().get().toString(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
           .url(httpUrl.build())
           .method("GET", null)
           .headers(Headers.of(clientOptions.headers(requestOptions)))
-          .addHeader("Content-Type", "application/json");
+          .addHeader("Content-Type", "application/json")
+          .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -122,7 +184,7 @@ public class TranslatedStoryClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
           ResponseBody responseBody = response.body();
           if (response.isSuccessful()) {
-            return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), OrchestratorPipelineResult.class);
+            return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), new TypeReference<Map<String, Object>>() {});
           }
           String responseBodyString = responseBody != null ? responseBody.string() : "{}";
           try {
@@ -139,61 +201,4 @@ public class TranslatedStoryClient {
           throw new CambApiException("Network error executing HTTP request", e);
         }
       }
-
-      public Map<String, Object> getTranslatedStoryRunInfo(Optional<Integer> runId,
-          int targetLanguage) {
-        return getTranslatedStoryRunInfo(runId,targetLanguage,GetTranslatedStoryRunInfoTranslatedStoryResultRunIdTargetLanguageGetRequest.builder().build());
-      }
-
-      public Map<String, Object> getTranslatedStoryRunInfo(Optional<Integer> runId,
-          int targetLanguage,
-          GetTranslatedStoryRunInfoTranslatedStoryResultRunIdTargetLanguageGetRequest request) {
-        return getTranslatedStoryRunInfo(runId,targetLanguage,request,null);
-      }
-
-      public Map<String, Object> getTranslatedStoryRunInfo(Optional<Integer> runId,
-          int targetLanguage,
-          GetTranslatedStoryRunInfoTranslatedStoryResultRunIdTargetLanguageGetRequest request,
-          RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
-
-          .addPathSegments("translated-story-result");
-          if (runId.isPresent()) {
-            httpUrl.addPathSegment(runId.get().toString());
-          }
-
-          httpUrl.addPathSegment(Integer.toString(targetLanguage));
-          if (request.getIncludeTranscript().isPresent()) {
-            httpUrl.addQueryParameter("include_transcript", request.getIncludeTranscript().get().toString());
-          }
-          Request.Builder _requestBuilder = new Request.Builder()
-            .url(httpUrl.build())
-            .method("GET", null)
-            .headers(Headers.of(clientOptions.headers(requestOptions)))
-            .addHeader("Content-Type", "application/json");
-          Request okhttpRequest = _requestBuilder.build();
-          OkHttpClient client = clientOptions.httpClient();
-          if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-          }
-          try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-              return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), new TypeReference<Map<String, Object>>() {});
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            try {
-              if (response.code() == 422) {
-                throw new UnprocessableEntityError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, HttpValidationError.class));
-              }
-            }
-            catch (JsonProcessingException ignored) {
-              // unable to map error response, throwing generic error
-            }
-            throw new CambApiApiException("Error with status code " + response.code(), response.code(), ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-          }
-          catch (IOException e) {
-            throw new CambApiException("Network error executing HTTP request", e);
-          }
-        }
-      }
+    }

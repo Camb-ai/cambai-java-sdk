@@ -6,12 +6,15 @@ package types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Integer;
 import java.lang.Object;
@@ -91,18 +94,27 @@ public final class AudioStream {
     return codecLongName;
   }
 
-  @JsonProperty("codec_tag_string")
+  @JsonIgnore
   public Optional<String> getCodecTagString() {
+    if (codecTagString == null) {
+      return Optional.empty();
+    }
     return codecTagString;
   }
 
-  @JsonProperty("codec_tag")
+  @JsonIgnore
   public Optional<String> getCodecTag() {
+    if (codecTag == null) {
+      return Optional.empty();
+    }
     return codecTag;
   }
 
-  @JsonProperty("profile")
+  @JsonIgnore
   public Optional<String> getProfile() {
+    if (profile == null) {
+      return Optional.empty();
+    }
     return profile;
   }
 
@@ -121,13 +133,19 @@ public final class AudioStream {
     return channels;
   }
 
-  @JsonProperty("channel_layout")
+  @JsonIgnore
   public Optional<String> getChannelLayout() {
+    if (channelLayout == null) {
+      return Optional.empty();
+    }
     return channelLayout;
   }
 
-  @JsonProperty("id")
+  @JsonIgnore
   public Optional<String> getId() {
+    if (id == null) {
+      return Optional.empty();
+    }
     return id;
   }
 
@@ -136,8 +154,65 @@ public final class AudioStream {
     return bitRate;
   }
 
-  @JsonProperty("tags")
+  @JsonIgnore
   public Optional<Map<String, Object>> getTags() {
+    if (tags == null) {
+      return Optional.empty();
+    }
+    return tags;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("codec_tag_string")
+  private Optional<String> _getCodecTagString() {
+    return codecTagString;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("codec_tag")
+  private Optional<String> _getCodecTag() {
+    return codecTag;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("profile")
+  private Optional<String> _getProfile() {
+    return profile;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("channel_layout")
+  private Optional<String> _getChannelLayout() {
+    return channelLayout;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("id")
+  private Optional<String> _getId() {
+    return id;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("tags")
+  private Optional<Map<String, Object>> _getTags() {
     return tags;
   }
 
@@ -203,21 +278,31 @@ public final class AudioStream {
 
     _FinalStage codecTagString(String codecTagString);
 
+    _FinalStage codecTagString(Nullable<String> codecTagString);
+
     _FinalStage codecTag(Optional<String> codecTag);
 
     _FinalStage codecTag(String codecTag);
+
+    _FinalStage codecTag(Nullable<String> codecTag);
 
     _FinalStage profile(Optional<String> profile);
 
     _FinalStage profile(String profile);
 
+    _FinalStage profile(Nullable<String> profile);
+
     _FinalStage channelLayout(Optional<String> channelLayout);
 
     _FinalStage channelLayout(String channelLayout);
 
+    _FinalStage channelLayout(Nullable<String> channelLayout);
+
     _FinalStage id(Optional<String> id);
 
     _FinalStage id(String id);
+
+    _FinalStage id(Nullable<String> id);
 
     _FinalStage bitRate(Optional<Integer> bitRate);
 
@@ -226,6 +311,8 @@ public final class AudioStream {
     _FinalStage tags(Optional<Map<String, Object>> tags);
 
     _FinalStage tags(Map<String, Object> tags);
+
+    _FinalStage tags(Nullable<Map<String, Object>> tags);
   }
 
   @JsonIgnoreProperties(
@@ -325,6 +412,20 @@ public final class AudioStream {
     }
 
     @java.lang.Override
+    public _FinalStage tags(Nullable<Map<String, Object>> tags) {
+      if (tags.isNull()) {
+        this.tags = null;
+      }
+      else if (tags.isEmpty()) {
+        this.tags = Optional.empty();
+      }
+      else {
+        this.tags = Optional.of(tags.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage tags(Map<String, Object> tags) {
       this.tags = Optional.ofNullable(tags);
       return this;
@@ -357,6 +458,20 @@ public final class AudioStream {
     }
 
     @java.lang.Override
+    public _FinalStage id(Nullable<String> id) {
+      if (id.isNull()) {
+        this.id = null;
+      }
+      else if (id.isEmpty()) {
+        this.id = Optional.empty();
+      }
+      else {
+        this.id = Optional.of(id.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage id(String id) {
       this.id = Optional.ofNullable(id);
       return this;
@@ -369,6 +484,20 @@ public final class AudioStream {
     )
     public _FinalStage id(Optional<String> id) {
       this.id = id;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage channelLayout(Nullable<String> channelLayout) {
+      if (channelLayout.isNull()) {
+        this.channelLayout = null;
+      }
+      else if (channelLayout.isEmpty()) {
+        this.channelLayout = Optional.empty();
+      }
+      else {
+        this.channelLayout = Optional.of(channelLayout.get());
+      }
       return this;
     }
 
@@ -389,6 +518,20 @@ public final class AudioStream {
     }
 
     @java.lang.Override
+    public _FinalStage profile(Nullable<String> profile) {
+      if (profile.isNull()) {
+        this.profile = null;
+      }
+      else if (profile.isEmpty()) {
+        this.profile = Optional.empty();
+      }
+      else {
+        this.profile = Optional.of(profile.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage profile(String profile) {
       this.profile = Optional.ofNullable(profile);
       return this;
@@ -405,6 +548,20 @@ public final class AudioStream {
     }
 
     @java.lang.Override
+    public _FinalStage codecTag(Nullable<String> codecTag) {
+      if (codecTag.isNull()) {
+        this.codecTag = null;
+      }
+      else if (codecTag.isEmpty()) {
+        this.codecTag = Optional.empty();
+      }
+      else {
+        this.codecTag = Optional.of(codecTag.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage codecTag(String codecTag) {
       this.codecTag = Optional.ofNullable(codecTag);
       return this;
@@ -417,6 +574,20 @@ public final class AudioStream {
     )
     public _FinalStage codecTag(Optional<String> codecTag) {
       this.codecTag = codecTag;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage codecTagString(Nullable<String> codecTagString) {
+      if (codecTagString.isNull()) {
+        this.codecTagString = null;
+      }
+      else if (codecTagString.isEmpty()) {
+        this.codecTagString = Optional.empty();
+      }
+      else {
+        this.codecTagString = Optional.of(codecTagString.get());
+      }
       return this;
     }
 

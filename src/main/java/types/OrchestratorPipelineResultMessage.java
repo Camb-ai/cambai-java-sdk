@@ -87,8 +87,8 @@ public final class OrchestratorPipelineResultMessage {
     }
 
     @java.lang.Override
-    public OrchestratorPipelineResultMessage deserialize(JsonParser p, DeserializationContext ctxt)
-        throws IOException {
+    public OrchestratorPipelineResultMessage deserialize(JsonParser p,
+        DeserializationContext context) throws IOException {
       Object value = p.readValueAs(Object.class);
       try {
         return of(ObjectMappers.JSON_MAPPER.convertValue(value, new TypeReference<Map<String, Object>>() {}));

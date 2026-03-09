@@ -6,12 +6,15 @@ package types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Integer;
 import java.lang.Object;
@@ -53,18 +56,54 @@ public final class OrchestratorPipelineResult {
     return status;
   }
 
-  @JsonProperty("run_id")
+  @JsonIgnore
   public Optional<Integer> getRunId() {
+    if (runId == null) {
+      return Optional.empty();
+    }
     return runId;
   }
 
-  @JsonProperty("exception_reason")
+  @JsonIgnore
   public Optional<OrchestratorPipelineResultExceptionReason> getExceptionReason() {
+    if (exceptionReason == null) {
+      return Optional.empty();
+    }
     return exceptionReason;
   }
 
-  @JsonProperty("message")
+  @JsonIgnore
   public Optional<OrchestratorPipelineResultMessage> getMessage() {
+    if (message == null) {
+      return Optional.empty();
+    }
+    return message;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("run_id")
+  private Optional<Integer> _getRunId() {
+    return runId;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("exception_reason")
+  private Optional<OrchestratorPipelineResultExceptionReason> _getExceptionReason() {
+    return exceptionReason;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("message")
+  private Optional<OrchestratorPipelineResultMessage> _getMessage() {
     return message;
   }
 
@@ -110,14 +149,21 @@ public final class OrchestratorPipelineResult {
 
     _FinalStage runId(Integer runId);
 
+    _FinalStage runId(Nullable<Integer> runId);
+
     _FinalStage exceptionReason(
         Optional<OrchestratorPipelineResultExceptionReason> exceptionReason);
 
     _FinalStage exceptionReason(OrchestratorPipelineResultExceptionReason exceptionReason);
 
+    _FinalStage exceptionReason(
+        Nullable<OrchestratorPipelineResultExceptionReason> exceptionReason);
+
     _FinalStage message(Optional<OrchestratorPipelineResultMessage> message);
 
     _FinalStage message(OrchestratorPipelineResultMessage message);
+
+    _FinalStage message(Nullable<OrchestratorPipelineResultMessage> message);
   }
 
   @JsonIgnoreProperties(
@@ -155,6 +201,20 @@ public final class OrchestratorPipelineResult {
     }
 
     @java.lang.Override
+    public _FinalStage message(Nullable<OrchestratorPipelineResultMessage> message) {
+      if (message.isNull()) {
+        this.message = null;
+      }
+      else if (message.isEmpty()) {
+        this.message = Optional.empty();
+      }
+      else {
+        this.message = Optional.of(message.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage message(OrchestratorPipelineResultMessage message) {
       this.message = Optional.ofNullable(message);
       return this;
@@ -167,6 +227,21 @@ public final class OrchestratorPipelineResult {
     )
     public _FinalStage message(Optional<OrchestratorPipelineResultMessage> message) {
       this.message = message;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage exceptionReason(
+        Nullable<OrchestratorPipelineResultExceptionReason> exceptionReason) {
+      if (exceptionReason.isNull()) {
+        this.exceptionReason = null;
+      }
+      else if (exceptionReason.isEmpty()) {
+        this.exceptionReason = Optional.empty();
+      }
+      else {
+        this.exceptionReason = Optional.of(exceptionReason.get());
+      }
       return this;
     }
 
@@ -184,6 +259,20 @@ public final class OrchestratorPipelineResult {
     public _FinalStage exceptionReason(
         Optional<OrchestratorPipelineResultExceptionReason> exceptionReason) {
       this.exceptionReason = exceptionReason;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage runId(Nullable<Integer> runId) {
+      if (runId.isNull()) {
+        this.runId = null;
+      }
+      else if (runId.isEmpty()) {
+        this.runId = Optional.empty();
+      }
+      else {
+        this.runId = Optional.of(runId.get());
+      }
       return this;
     }
 

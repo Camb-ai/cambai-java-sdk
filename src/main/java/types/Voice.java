@@ -6,12 +6,15 @@ package types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Boolean;
 import java.lang.Integer;
@@ -74,38 +77,122 @@ public final class Voice {
     return voiceName;
   }
 
-  @JsonProperty("gender")
+  @JsonIgnore
   public Optional<Integer> getGender() {
+    if (gender == null) {
+      return Optional.empty();
+    }
     return gender;
   }
 
-  @JsonProperty("age")
+  @JsonIgnore
   public Optional<Integer> getAge() {
+    if (age == null) {
+      return Optional.empty();
+    }
     return age;
   }
 
-  @JsonProperty("language")
+  @JsonIgnore
   public Optional<Integer> getLanguage() {
+    if (language == null) {
+      return Optional.empty();
+    }
     return language;
   }
 
-  @JsonProperty("transcript")
+  @JsonIgnore
   public Optional<String> getTranscript() {
+    if (transcript == null) {
+      return Optional.empty();
+    }
     return transcript;
   }
 
-  @JsonProperty("description")
+  @JsonIgnore
   public Optional<String> getDescription() {
+    if (description == null) {
+      return Optional.empty();
+    }
     return description;
   }
 
-  @JsonProperty("is_published")
+  @JsonIgnore
   public Optional<Boolean> getIsPublished() {
+    if (isPublished == null) {
+      return Optional.empty();
+    }
     return isPublished;
   }
 
-  @JsonProperty("signed_url")
+  @JsonIgnore
   public Optional<String> getSignedUrl() {
+    if (signedUrl == null) {
+      return Optional.empty();
+    }
+    return signedUrl;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("gender")
+  private Optional<Integer> _getGender() {
+    return gender;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("age")
+  private Optional<Integer> _getAge() {
+    return age;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("language")
+  private Optional<Integer> _getLanguage() {
+    return language;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("transcript")
+  private Optional<String> _getTranscript() {
+    return transcript;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("description")
+  private Optional<String> _getDescription() {
+    return description;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("is_published")
+  private Optional<Boolean> _getIsPublished() {
+    return isPublished;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("signed_url")
+  private Optional<String> _getSignedUrl() {
     return signedUrl;
   }
 
@@ -155,29 +242,43 @@ public final class Voice {
 
     _FinalStage gender(Integer gender);
 
+    _FinalStage gender(Nullable<Integer> gender);
+
     _FinalStage age(Optional<Integer> age);
 
     _FinalStage age(Integer age);
+
+    _FinalStage age(Nullable<Integer> age);
 
     _FinalStage language(Optional<Integer> language);
 
     _FinalStage language(Integer language);
 
+    _FinalStage language(Nullable<Integer> language);
+
     _FinalStage transcript(Optional<String> transcript);
 
     _FinalStage transcript(String transcript);
+
+    _FinalStage transcript(Nullable<String> transcript);
 
     _FinalStage description(Optional<String> description);
 
     _FinalStage description(String description);
 
+    _FinalStage description(Nullable<String> description);
+
     _FinalStage isPublished(Optional<Boolean> isPublished);
 
     _FinalStage isPublished(Boolean isPublished);
 
+    _FinalStage isPublished(Nullable<Boolean> isPublished);
+
     _FinalStage signedUrl(Optional<String> signedUrl);
 
     _FinalStage signedUrl(String signedUrl);
+
+    _FinalStage signedUrl(Nullable<String> signedUrl);
   }
 
   @JsonIgnoreProperties(
@@ -237,6 +338,20 @@ public final class Voice {
     }
 
     @java.lang.Override
+    public _FinalStage signedUrl(Nullable<String> signedUrl) {
+      if (signedUrl.isNull()) {
+        this.signedUrl = null;
+      }
+      else if (signedUrl.isEmpty()) {
+        this.signedUrl = Optional.empty();
+      }
+      else {
+        this.signedUrl = Optional.of(signedUrl.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage signedUrl(String signedUrl) {
       this.signedUrl = Optional.ofNullable(signedUrl);
       return this;
@@ -249,6 +364,20 @@ public final class Voice {
     )
     public _FinalStage signedUrl(Optional<String> signedUrl) {
       this.signedUrl = signedUrl;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage isPublished(Nullable<Boolean> isPublished) {
+      if (isPublished.isNull()) {
+        this.isPublished = null;
+      }
+      else if (isPublished.isEmpty()) {
+        this.isPublished = Optional.empty();
+      }
+      else {
+        this.isPublished = Optional.of(isPublished.get());
+      }
       return this;
     }
 
@@ -269,6 +398,20 @@ public final class Voice {
     }
 
     @java.lang.Override
+    public _FinalStage description(Nullable<String> description) {
+      if (description.isNull()) {
+        this.description = null;
+      }
+      else if (description.isEmpty()) {
+        this.description = Optional.empty();
+      }
+      else {
+        this.description = Optional.of(description.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage description(String description) {
       this.description = Optional.ofNullable(description);
       return this;
@@ -281,6 +424,20 @@ public final class Voice {
     )
     public _FinalStage description(Optional<String> description) {
       this.description = description;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage transcript(Nullable<String> transcript) {
+      if (transcript.isNull()) {
+        this.transcript = null;
+      }
+      else if (transcript.isEmpty()) {
+        this.transcript = Optional.empty();
+      }
+      else {
+        this.transcript = Optional.of(transcript.get());
+      }
       return this;
     }
 
@@ -301,6 +458,20 @@ public final class Voice {
     }
 
     @java.lang.Override
+    public _FinalStage language(Nullable<Integer> language) {
+      if (language.isNull()) {
+        this.language = null;
+      }
+      else if (language.isEmpty()) {
+        this.language = Optional.empty();
+      }
+      else {
+        this.language = Optional.of(language.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage language(Integer language) {
       this.language = Optional.ofNullable(language);
       return this;
@@ -317,6 +488,20 @@ public final class Voice {
     }
 
     @java.lang.Override
+    public _FinalStage age(Nullable<Integer> age) {
+      if (age.isNull()) {
+        this.age = null;
+      }
+      else if (age.isEmpty()) {
+        this.age = Optional.empty();
+      }
+      else {
+        this.age = Optional.of(age.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage age(Integer age) {
       this.age = Optional.ofNullable(age);
       return this;
@@ -329,6 +514,20 @@ public final class Voice {
     )
     public _FinalStage age(Optional<Integer> age) {
       this.age = age;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage gender(Nullable<Integer> gender) {
+      if (gender.isNull()) {
+        this.gender = null;
+      }
+      else if (gender.isEmpty()) {
+        this.gender = Optional.empty();
+      }
+      else {
+        this.gender = Optional.of(gender.get());
+      }
       return this;
     }
 

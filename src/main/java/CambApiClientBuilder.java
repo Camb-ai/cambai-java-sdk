@@ -5,6 +5,7 @@
 import core.ClientOptions;
 import core.Environment;
 import java.lang.String;
+import okhttp3.OkHttpClient;
 
 public final class CambApiClientBuilder {
   private ClientOptions.Builder clientOptionsBuilder = ClientOptions.builder();
@@ -28,6 +29,22 @@ public final class CambApiClientBuilder {
 
   public CambApiClientBuilder url(String url) {
     this.environment = Environment.custom(url);
+    return this;
+  }
+
+  /**
+   * Sets the timeout (in seconds) for the client
+   */
+  public CambApiClientBuilder timeout(int timeout) {
+    this.clientOptionsBuilder.timeout(timeout);
+    return this;
+  }
+
+  /**
+   * Sets the underlying OkHttp client
+   */
+  public CambApiClientBuilder httpClient(OkHttpClient httpClient) {
+    this.clientOptionsBuilder.httpClient(httpClient);
     return this;
   }
 

@@ -11,6 +11,7 @@ import core.CambApiException;
 import core.ClientOptions;
 import core.MediaTypes;
 import core.ObjectMappers;
+import core.QueryStringMapper;
 import core.RequestOptions;
 import errors.UnprocessableEntityError;
 import java.io.File;
@@ -58,7 +59,7 @@ public class StoryClient {
     HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
       .addPathSegments("story");if (request.getRunId().isPresent()) {
-        httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+        QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
       }
       MultipartBody.Builder body = new MultipartBody.Builder().setType(MultipartBody.FORM);
       try {
@@ -67,19 +68,19 @@ public class StoryClient {
         body.addFormDataPart("file", file.getName(), RequestBody.create(fileMimeTypeMediaType, file));
         body.addFormDataPart("source_language", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getSourceLanguage()));
         if (request.getTitle().isPresent()) {
-          body.addFormDataPart("title", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getTitle()));
+          body.addFormDataPart("title", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getTitle().get()));
         }
         if (request.getDescription().isPresent()) {
-          body.addFormDataPart("description", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getDescription()));
+          body.addFormDataPart("description", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getDescription().get()));
         }
         if (request.getNarratorVoiceId().isPresent()) {
-          body.addFormDataPart("narrator_voice_id", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getNarratorVoiceId()));
+          body.addFormDataPart("narrator_voice_id", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getNarratorVoiceId().get()));
         }
         if (request.getFolderId().isPresent()) {
-          body.addFormDataPart("folder_id", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getFolderId()));
+          body.addFormDataPart("folder_id", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getFolderId().get()));
         }
         if (request.getChosenDictionaries().isPresent()) {
-          body.addFormDataPart("chosen_dictionaries", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getChosenDictionaries()));
+          body.addFormDataPart("chosen_dictionaries", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getChosenDictionaries().get()));
         }
       }
       catch(Exception e) {
@@ -88,7 +89,8 @@ public class StoryClient {
       Request.Builder _requestBuilder = new Request.Builder()
         .url(httpUrl.build())
         .method("POST", body.build())
-        .headers(Headers.of(clientOptions.headers(requestOptions)));
+        .headers(Headers.of(clientOptions.headers(requestOptions)))
+        .addHeader("Accept", "application/json");
       Request okhttpRequest = _requestBuilder.build();
       OkHttpClient client = clientOptions.httpClient();
       if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -125,7 +127,7 @@ public class StoryClient {
       HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
         .addPathSegments("story-setup");if (request.getRunId().isPresent()) {
-          httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+          QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
         }
         MultipartBody.Builder body = new MultipartBody.Builder().setType(MultipartBody.FORM);
         try {
@@ -134,19 +136,19 @@ public class StoryClient {
           body.addFormDataPart("file", file.getName(), RequestBody.create(fileMimeTypeMediaType, file));
           body.addFormDataPart("source_language", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getSourceLanguage()));
           if (request.getTitle().isPresent()) {
-            body.addFormDataPart("title", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getTitle()));
+            body.addFormDataPart("title", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getTitle().get()));
           }
           if (request.getDescription().isPresent()) {
-            body.addFormDataPart("description", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getDescription()));
+            body.addFormDataPart("description", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getDescription().get()));
           }
           if (request.getNarratorVoiceId().isPresent()) {
-            body.addFormDataPart("narrator_voice_id", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getNarratorVoiceId()));
+            body.addFormDataPart("narrator_voice_id", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getNarratorVoiceId().get()));
           }
           if (request.getFolderId().isPresent()) {
-            body.addFormDataPart("folder_id", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getFolderId()));
+            body.addFormDataPart("folder_id", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getFolderId().get()));
           }
           if (request.getChosenDictionaries().isPresent()) {
-            body.addFormDataPart("chosen_dictionaries", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getChosenDictionaries()));
+            body.addFormDataPart("chosen_dictionaries", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getChosenDictionaries().get()));
           }
         }
         catch(Exception e) {
@@ -155,7 +157,8 @@ public class StoryClient {
         Request.Builder _requestBuilder = new Request.Builder()
           .url(httpUrl.build())
           .method("POST", body.build())
-          .headers(Headers.of(clientOptions.headers(requestOptions)));
+          .headers(Headers.of(clientOptions.headers(requestOptions)))
+          .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -197,13 +200,14 @@ public class StoryClient {
 
           .addPathSegments("story")
           .addPathSegment(taskId);if (request.getRunId().isPresent()) {
-            httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+            QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
           }
           Request.Builder _requestBuilder = new Request.Builder()
             .url(httpUrl.build())
             .method("GET", null)
             .headers(Headers.of(clientOptions.headers(requestOptions)))
-            .addHeader("Content-Type", "application/json");
+            .addHeader("Content-Type", "application/json")
+            .addHeader("Accept", "application/json");
           Request okhttpRequest = _requestBuilder.build();
           OkHttpClient client = clientOptions.httpClient();
           if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -248,13 +252,14 @@ public class StoryClient {
               httpUrl.addPathSegment(runId.get().toString());
             }
             if (request.getIncludeTranscript().isPresent()) {
-              httpUrl.addQueryParameter("include_transcript", request.getIncludeTranscript().get().toString());
+              QueryStringMapper.addQueryParameter(httpUrl, "include_transcript", request.getIncludeTranscript().get().toString(), false);
             }
             Request.Builder _requestBuilder = new Request.Builder()
               .url(httpUrl.build())
               .method("GET", null)
               .headers(Headers.of(clientOptions.headers(requestOptions)))
-              .addHeader("Content-Type", "application/json");
+              .addHeader("Content-Type", "application/json")
+              .addHeader("Accept", "application/json");
             Request okhttpRequest = _requestBuilder.build();
             OkHttpClient client = clientOptions.httpClient();
             if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -292,7 +297,7 @@ public class StoryClient {
             HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
               .addPathSegments("stories-results");if (request.getRunId().isPresent()) {
-                httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+                QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
               }
               RequestBody body;
               try {
@@ -305,7 +310,8 @@ public class StoryClient {
                 .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
               if (request.getTraceparent().isPresent()) {
                 _requestBuilder.addHeader("traceparent", request.getTraceparent().get());
               }

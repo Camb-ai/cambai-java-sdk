@@ -6,12 +6,15 @@ package resources.translation.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Integer;
 import java.lang.Object;
@@ -71,23 +74,35 @@ public final class CreateTranslationRequestPayload {
     this.additionalProperties = additionalProperties;
   }
 
-  @JsonProperty("run_id")
+  @JsonIgnore
   public Optional<Integer> getRunId() {
+    if (runId == null) {
+      return Optional.empty();
+    }
     return runId;
   }
 
-  @JsonProperty("project_name")
+  @JsonIgnore
   public Optional<String> getProjectName() {
+    if (projectName == null) {
+      return Optional.empty();
+    }
     return projectName;
   }
 
-  @JsonProperty("project_description")
+  @JsonIgnore
   public Optional<String> getProjectDescription() {
+    if (projectDescription == null) {
+      return Optional.empty();
+    }
     return projectDescription;
   }
 
-  @JsonProperty("folder_id")
+  @JsonIgnore
   public Optional<Integer> getFolderId() {
+    if (folderId == null) {
+      return Optional.empty();
+    }
     return folderId;
   }
 
@@ -121,8 +136,56 @@ public final class CreateTranslationRequestPayload {
     return targetLanguage;
   }
 
-  @JsonProperty("chosen_dictionaries")
+  @JsonIgnore
   public Optional<List<Integer>> getChosenDictionaries() {
+    if (chosenDictionaries == null) {
+      return Optional.empty();
+    }
+    return chosenDictionaries;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("run_id")
+  private Optional<Integer> _getRunId() {
+    return runId;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("project_name")
+  private Optional<String> _getProjectName() {
+    return projectName;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("project_description")
+  private Optional<String> _getProjectDescription() {
+    return projectDescription;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("folder_id")
+  private Optional<Integer> _getFolderId() {
+    return folderId;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("chosen_dictionaries")
+  private Optional<List<Integer>> _getChosenDictionaries() {
     return chosenDictionaries;
   }
 
@@ -172,17 +235,25 @@ public final class CreateTranslationRequestPayload {
 
     _FinalStage runId(Integer runId);
 
+    _FinalStage runId(Nullable<Integer> runId);
+
     _FinalStage projectName(Optional<String> projectName);
 
     _FinalStage projectName(String projectName);
+
+    _FinalStage projectName(Nullable<String> projectName);
 
     _FinalStage projectDescription(Optional<String> projectDescription);
 
     _FinalStage projectDescription(String projectDescription);
 
+    _FinalStage projectDescription(Nullable<String> projectDescription);
+
     _FinalStage folderId(Optional<Integer> folderId);
 
     _FinalStage folderId(Integer folderId);
+
+    _FinalStage folderId(Nullable<Integer> folderId);
 
     _FinalStage texts(List<String> texts);
 
@@ -205,6 +276,8 @@ public final class CreateTranslationRequestPayload {
     _FinalStage chosenDictionaries(Optional<List<Integer>> chosenDictionaries);
 
     _FinalStage chosenDictionaries(List<Integer> chosenDictionaries);
+
+    _FinalStage chosenDictionaries(Nullable<List<Integer>> chosenDictionaries);
   }
 
   @JsonIgnoreProperties(
@@ -266,6 +339,20 @@ public final class CreateTranslationRequestPayload {
     @JsonSetter("target_language")
     public _FinalStage targetLanguage(int targetLanguage) {
       this.targetLanguage = targetLanguage;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage chosenDictionaries(Nullable<List<Integer>> chosenDictionaries) {
+      if (chosenDictionaries.isNull()) {
+        this.chosenDictionaries = null;
+      }
+      else if (chosenDictionaries.isEmpty()) {
+        this.chosenDictionaries = Optional.empty();
+      }
+      else {
+        this.chosenDictionaries = Optional.of(chosenDictionaries.get());
+      }
       return this;
     }
 
@@ -357,6 +444,20 @@ public final class CreateTranslationRequestPayload {
     }
 
     @java.lang.Override
+    public _FinalStage folderId(Nullable<Integer> folderId) {
+      if (folderId.isNull()) {
+        this.folderId = null;
+      }
+      else if (folderId.isEmpty()) {
+        this.folderId = Optional.empty();
+      }
+      else {
+        this.folderId = Optional.of(folderId.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage folderId(Integer folderId) {
       this.folderId = Optional.ofNullable(folderId);
       return this;
@@ -369,6 +470,20 @@ public final class CreateTranslationRequestPayload {
     )
     public _FinalStage folderId(Optional<Integer> folderId) {
       this.folderId = folderId;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage projectDescription(Nullable<String> projectDescription) {
+      if (projectDescription.isNull()) {
+        this.projectDescription = null;
+      }
+      else if (projectDescription.isEmpty()) {
+        this.projectDescription = Optional.empty();
+      }
+      else {
+        this.projectDescription = Optional.of(projectDescription.get());
+      }
       return this;
     }
 
@@ -389,6 +504,20 @@ public final class CreateTranslationRequestPayload {
     }
 
     @java.lang.Override
+    public _FinalStage projectName(Nullable<String> projectName) {
+      if (projectName.isNull()) {
+        this.projectName = null;
+      }
+      else if (projectName.isEmpty()) {
+        this.projectName = Optional.empty();
+      }
+      else {
+        this.projectName = Optional.of(projectName.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage projectName(String projectName) {
       this.projectName = Optional.ofNullable(projectName);
       return this;
@@ -401,6 +530,20 @@ public final class CreateTranslationRequestPayload {
     )
     public _FinalStage projectName(Optional<String> projectName) {
       this.projectName = projectName;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage runId(Nullable<Integer> runId) {
+      if (runId.isNull()) {
+        this.runId = null;
+      }
+      else if (runId.isEmpty()) {
+        this.runId = Optional.empty();
+      }
+      else {
+        this.runId = Optional.of(runId.get());
+      }
       return this;
     }
 

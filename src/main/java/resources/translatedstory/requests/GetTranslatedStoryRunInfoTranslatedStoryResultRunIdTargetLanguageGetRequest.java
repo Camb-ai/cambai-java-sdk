@@ -6,12 +6,15 @@ package resources.translatedstory.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Boolean;
 import java.lang.Object;
@@ -39,8 +42,20 @@ public final class GetTranslatedStoryRunInfoTranslatedStoryResultRunIdTargetLang
   /**
    * @return Whether to include the transcription in the response for fetching the result of a Stories Translation run.
    */
-  @JsonProperty("include_transcript")
+  @JsonIgnore
   public Optional<Boolean> getIncludeTranscript() {
+    if (includeTranscript == null) {
+      return Optional.empty();
+    }
+    return includeTranscript;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("include_transcript")
+  private Optional<Boolean> _getIncludeTranscript() {
     return includeTranscript;
   }
 
@@ -103,6 +118,19 @@ public final class GetTranslatedStoryRunInfoTranslatedStoryResultRunIdTargetLang
 
     public Builder includeTranscript(Boolean includeTranscript) {
       this.includeTranscript = Optional.ofNullable(includeTranscript);
+      return this;
+    }
+
+    public Builder includeTranscript(Nullable<Boolean> includeTranscript) {
+      if (includeTranscript.isNull()) {
+        this.includeTranscript = null;
+      }
+      else if (includeTranscript.isEmpty()) {
+        this.includeTranscript = Optional.empty();
+      }
+      else {
+        this.includeTranscript = Optional.of(includeTranscript.get());
+      }
       return this;
     }
 

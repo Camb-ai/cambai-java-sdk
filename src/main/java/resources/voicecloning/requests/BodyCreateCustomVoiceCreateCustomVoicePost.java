@@ -6,12 +6,15 @@ package resources.voicecloning.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Boolean;
 import java.lang.Integer;
@@ -61,8 +64,11 @@ public final class BodyCreateCustomVoiceCreateCustomVoicePost {
     this.additionalProperties = additionalProperties;
   }
 
-  @JsonProperty("run_id")
+  @JsonIgnore
   public Optional<Integer> getRunId() {
+    if (runId == null) {
+      return Optional.empty();
+    }
     return runId;
   }
 
@@ -76,16 +82,22 @@ public final class BodyCreateCustomVoiceCreateCustomVoicePost {
     return gender;
   }
 
-  @JsonProperty("description")
+  @JsonIgnore
   public Optional<String> getDescription() {
+    if (description == null) {
+      return Optional.empty();
+    }
     return description;
   }
 
   /**
    * @return By setting true, you consent to making this voice available for other users in the marketplace.
    */
-  @JsonProperty("publish_voice_to_market_place")
+  @JsonIgnore
   public Optional<Boolean> getPublishVoiceToMarketPlace() {
+    if (publishVoiceToMarketPlace == null) {
+      return Optional.empty();
+    }
     return publishVoiceToMarketPlace;
   }
 
@@ -97,16 +109,67 @@ public final class BodyCreateCustomVoiceCreateCustomVoicePost {
   /**
    * @return Language of the voice
    */
-  @JsonProperty("language")
+  @JsonIgnore
   public Optional<Integer> getLanguage() {
+    if (language == null) {
+      return Optional.empty();
+    }
     return language;
   }
 
   /**
    * @return Enables advanced audio processing to enhance the clarity and quality of the cloned voice output. When set to <code>true</code>, additional processing is applied to improve the overall sound experience.
    */
-  @JsonProperty("enhance_audio")
+  @JsonIgnore
   public Optional<Boolean> getEnhanceAudio() {
+    if (enhanceAudio == null) {
+      return Optional.empty();
+    }
+    return enhanceAudio;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("run_id")
+  private Optional<Integer> _getRunId() {
+    return runId;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("description")
+  private Optional<String> _getDescription() {
+    return description;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("publish_voice_to_market_place")
+  private Optional<Boolean> _getPublishVoiceToMarketPlace() {
+    return publishVoiceToMarketPlace;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("language")
+  private Optional<Integer> _getLanguage() {
+    return language;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("enhance_audio")
+  private Optional<Boolean> _getEnhanceAudio() {
     return enhanceAudio;
   }
 
@@ -156,13 +219,19 @@ public final class BodyCreateCustomVoiceCreateCustomVoicePost {
 
     _FinalStage runId(Integer runId);
 
+    _FinalStage runId(Nullable<Integer> runId);
+
     _FinalStage description(Optional<String> description);
 
     _FinalStage description(String description);
 
+    _FinalStage description(Nullable<String> description);
+
     _FinalStage publishVoiceToMarketPlace(Optional<Boolean> publishVoiceToMarketPlace);
 
     _FinalStage publishVoiceToMarketPlace(Boolean publishVoiceToMarketPlace);
+
+    _FinalStage publishVoiceToMarketPlace(Nullable<Boolean> publishVoiceToMarketPlace);
 
     _FinalStage age(Optional<Integer> age);
 
@@ -172,9 +241,13 @@ public final class BodyCreateCustomVoiceCreateCustomVoicePost {
 
     _FinalStage language(Integer language);
 
+    _FinalStage language(Nullable<Integer> language);
+
     _FinalStage enhanceAudio(Optional<Boolean> enhanceAudio);
 
     _FinalStage enhanceAudio(Boolean enhanceAudio);
+
+    _FinalStage enhanceAudio(Nullable<Boolean> enhanceAudio);
   }
 
   @JsonIgnoreProperties(
@@ -235,6 +308,24 @@ public final class BodyCreateCustomVoiceCreateCustomVoicePost {
      * @return Reference to {@code this} so that method calls can be chained together.
      */
     @java.lang.Override
+    public _FinalStage enhanceAudio(Nullable<Boolean> enhanceAudio) {
+      if (enhanceAudio.isNull()) {
+        this.enhanceAudio = null;
+      }
+      else if (enhanceAudio.isEmpty()) {
+        this.enhanceAudio = Optional.empty();
+      }
+      else {
+        this.enhanceAudio = Optional.of(enhanceAudio.get());
+      }
+      return this;
+    }
+
+    /**
+     * <p>Enables advanced audio processing to enhance the clarity and quality of the cloned voice output. When set to <code>true</code>, additional processing is applied to improve the overall sound experience.</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
+    @java.lang.Override
     public _FinalStage enhanceAudio(Boolean enhanceAudio) {
       this.enhanceAudio = Optional.ofNullable(enhanceAudio);
       return this;
@@ -247,6 +338,24 @@ public final class BodyCreateCustomVoiceCreateCustomVoicePost {
     )
     public _FinalStage enhanceAudio(Optional<Boolean> enhanceAudio) {
       this.enhanceAudio = enhanceAudio;
+      return this;
+    }
+
+    /**
+     * <p>Language of the voice</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
+    @java.lang.Override
+    public _FinalStage language(Nullable<Integer> language) {
+      if (language.isNull()) {
+        this.language = null;
+      }
+      else if (language.isEmpty()) {
+        this.language = Optional.empty();
+      }
+      else {
+        this.language = Optional.of(language.get());
+      }
       return this;
     }
 
@@ -291,6 +400,24 @@ public final class BodyCreateCustomVoiceCreateCustomVoicePost {
      * @return Reference to {@code this} so that method calls can be chained together.
      */
     @java.lang.Override
+    public _FinalStage publishVoiceToMarketPlace(Nullable<Boolean> publishVoiceToMarketPlace) {
+      if (publishVoiceToMarketPlace.isNull()) {
+        this.publishVoiceToMarketPlace = null;
+      }
+      else if (publishVoiceToMarketPlace.isEmpty()) {
+        this.publishVoiceToMarketPlace = Optional.empty();
+      }
+      else {
+        this.publishVoiceToMarketPlace = Optional.of(publishVoiceToMarketPlace.get());
+      }
+      return this;
+    }
+
+    /**
+     * <p>By setting true, you consent to making this voice available for other users in the marketplace.</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
+    @java.lang.Override
     public _FinalStage publishVoiceToMarketPlace(Boolean publishVoiceToMarketPlace) {
       this.publishVoiceToMarketPlace = Optional.ofNullable(publishVoiceToMarketPlace);
       return this;
@@ -307,6 +434,20 @@ public final class BodyCreateCustomVoiceCreateCustomVoicePost {
     }
 
     @java.lang.Override
+    public _FinalStage description(Nullable<String> description) {
+      if (description.isNull()) {
+        this.description = null;
+      }
+      else if (description.isEmpty()) {
+        this.description = Optional.empty();
+      }
+      else {
+        this.description = Optional.of(description.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage description(String description) {
       this.description = Optional.ofNullable(description);
       return this;
@@ -319,6 +460,20 @@ public final class BodyCreateCustomVoiceCreateCustomVoicePost {
     )
     public _FinalStage description(Optional<String> description) {
       this.description = description;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage runId(Nullable<Integer> runId) {
+      if (runId.isNull()) {
+        this.runId = null;
+      }
+      else if (runId.isEmpty()) {
+        this.runId = Optional.empty();
+      }
+      else {
+        this.runId = Optional.of(runId.get());
+      }
       return this;
     }
 

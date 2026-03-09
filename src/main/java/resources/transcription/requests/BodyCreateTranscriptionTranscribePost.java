@@ -6,12 +6,15 @@ package resources.transcription.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Integer;
 import java.lang.Object;
@@ -56,8 +59,11 @@ public final class BodyCreateTranscriptionTranscribePost {
     this.additionalProperties = additionalProperties;
   }
 
-  @JsonProperty("run_id")
+  @JsonIgnore
   public Optional<Integer> getRunId() {
+    if (runId == null) {
+      return Optional.empty();
+    }
     return runId;
   }
 
@@ -72,31 +78,100 @@ public final class BodyCreateTranscriptionTranscribePost {
   /**
    * @return Signed URL to media file for transcription
    */
-  @JsonProperty("media_url")
+  @JsonIgnore
   public Optional<String> getMediaUrl() {
+    if (mediaUrl == null) {
+      return Optional.empty();
+    }
     return mediaUrl;
   }
 
   /**
    * @return [DEPRECATED] Use 'audio_url' instead
    */
-  @JsonProperty("audio_url")
+  @JsonIgnore
   public Optional<String> getAudioUrl() {
+    if (audioUrl == null) {
+      return Optional.empty();
+    }
     return audioUrl;
   }
 
-  @JsonProperty("project_name")
+  @JsonIgnore
   public Optional<String> getProjectName() {
+    if (projectName == null) {
+      return Optional.empty();
+    }
     return projectName;
   }
 
-  @JsonProperty("project_description")
+  @JsonIgnore
   public Optional<String> getProjectDescription() {
+    if (projectDescription == null) {
+      return Optional.empty();
+    }
     return projectDescription;
   }
 
-  @JsonProperty("folder_id")
+  @JsonIgnore
   public Optional<Integer> getFolderId() {
+    if (folderId == null) {
+      return Optional.empty();
+    }
+    return folderId;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("run_id")
+  private Optional<Integer> _getRunId() {
+    return runId;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("media_url")
+  private Optional<String> _getMediaUrl() {
+    return mediaUrl;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("audio_url")
+  private Optional<String> _getAudioUrl() {
+    return audioUrl;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("project_name")
+  private Optional<String> _getProjectName() {
+    return projectName;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("project_description")
+  private Optional<String> _getProjectDescription() {
+    return projectDescription;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("folder_id")
+  private Optional<Integer> _getFolderId() {
     return folderId;
   }
 
@@ -142,25 +217,37 @@ public final class BodyCreateTranscriptionTranscribePost {
 
     _FinalStage runId(Integer runId);
 
+    _FinalStage runId(Nullable<Integer> runId);
+
     _FinalStage mediaUrl(Optional<String> mediaUrl);
 
     _FinalStage mediaUrl(String mediaUrl);
+
+    _FinalStage mediaUrl(Nullable<String> mediaUrl);
 
     _FinalStage audioUrl(Optional<String> audioUrl);
 
     _FinalStage audioUrl(String audioUrl);
 
+    _FinalStage audioUrl(Nullable<String> audioUrl);
+
     _FinalStage projectName(Optional<String> projectName);
 
     _FinalStage projectName(String projectName);
+
+    _FinalStage projectName(Nullable<String> projectName);
 
     _FinalStage projectDescription(Optional<String> projectDescription);
 
     _FinalStage projectDescription(String projectDescription);
 
+    _FinalStage projectDescription(Nullable<String> projectDescription);
+
     _FinalStage folderId(Optional<Integer> folderId);
 
     _FinalStage folderId(Integer folderId);
+
+    _FinalStage folderId(Nullable<Integer> folderId);
   }
 
   @JsonIgnoreProperties(
@@ -211,6 +298,20 @@ public final class BodyCreateTranscriptionTranscribePost {
     }
 
     @java.lang.Override
+    public _FinalStage folderId(Nullable<Integer> folderId) {
+      if (folderId.isNull()) {
+        this.folderId = null;
+      }
+      else if (folderId.isEmpty()) {
+        this.folderId = Optional.empty();
+      }
+      else {
+        this.folderId = Optional.of(folderId.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage folderId(Integer folderId) {
       this.folderId = Optional.ofNullable(folderId);
       return this;
@@ -223,6 +324,20 @@ public final class BodyCreateTranscriptionTranscribePost {
     )
     public _FinalStage folderId(Optional<Integer> folderId) {
       this.folderId = folderId;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage projectDescription(Nullable<String> projectDescription) {
+      if (projectDescription.isNull()) {
+        this.projectDescription = null;
+      }
+      else if (projectDescription.isEmpty()) {
+        this.projectDescription = Optional.empty();
+      }
+      else {
+        this.projectDescription = Optional.of(projectDescription.get());
+      }
       return this;
     }
 
@@ -243,6 +358,20 @@ public final class BodyCreateTranscriptionTranscribePost {
     }
 
     @java.lang.Override
+    public _FinalStage projectName(Nullable<String> projectName) {
+      if (projectName.isNull()) {
+        this.projectName = null;
+      }
+      else if (projectName.isEmpty()) {
+        this.projectName = Optional.empty();
+      }
+      else {
+        this.projectName = Optional.of(projectName.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage projectName(String projectName) {
       this.projectName = Optional.ofNullable(projectName);
       return this;
@@ -255,6 +384,24 @@ public final class BodyCreateTranscriptionTranscribePost {
     )
     public _FinalStage projectName(Optional<String> projectName) {
       this.projectName = projectName;
+      return this;
+    }
+
+    /**
+     * <p>[DEPRECATED] Use 'audio_url' instead</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
+    @java.lang.Override
+    public _FinalStage audioUrl(Nullable<String> audioUrl) {
+      if (audioUrl.isNull()) {
+        this.audioUrl = null;
+      }
+      else if (audioUrl.isEmpty()) {
+        this.audioUrl = Optional.empty();
+      }
+      else {
+        this.audioUrl = Optional.of(audioUrl.get());
+      }
       return this;
     }
 
@@ -283,6 +430,24 @@ public final class BodyCreateTranscriptionTranscribePost {
      * @return Reference to {@code this} so that method calls can be chained together.
      */
     @java.lang.Override
+    public _FinalStage mediaUrl(Nullable<String> mediaUrl) {
+      if (mediaUrl.isNull()) {
+        this.mediaUrl = null;
+      }
+      else if (mediaUrl.isEmpty()) {
+        this.mediaUrl = Optional.empty();
+      }
+      else {
+        this.mediaUrl = Optional.of(mediaUrl.get());
+      }
+      return this;
+    }
+
+    /**
+     * <p>Signed URL to media file for transcription</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
+    @java.lang.Override
     public _FinalStage mediaUrl(String mediaUrl) {
       this.mediaUrl = Optional.ofNullable(mediaUrl);
       return this;
@@ -295,6 +460,20 @@ public final class BodyCreateTranscriptionTranscribePost {
     )
     public _FinalStage mediaUrl(Optional<String> mediaUrl) {
       this.mediaUrl = mediaUrl;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage runId(Nullable<Integer> runId) {
+      if (runId.isNull()) {
+        this.runId = null;
+      }
+      else if (runId.isEmpty()) {
+        this.runId = Optional.empty();
+      }
+      else {
+        this.runId = Optional.of(runId.get());
+      }
       return this;
     }
 

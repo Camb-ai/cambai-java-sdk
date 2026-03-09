@@ -11,6 +11,7 @@ import core.CambApiException;
 import core.ClientOptions;
 import core.MediaTypes;
 import core.ObjectMappers;
+import core.QueryStringMapper;
 import core.RequestOptions;
 import errors.UnprocessableEntityError;
 import java.io.File;
@@ -59,7 +60,7 @@ public class TranscriptionClient {
     HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
       .addPathSegments("transcribe");if (request.getRunId().isPresent()) {
-        httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+        QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
       }
       MultipartBody.Builder body = new MultipartBody.Builder().setType(MultipartBody.FORM);
       try {
@@ -70,7 +71,7 @@ public class TranscriptionClient {
           body.addFormDataPart("media_file", mediaFile.get().getName(), RequestBody.create(mediaFileMimeTypeMediaType, mediaFile.get()));
         }
         if (request.getMediaUrl().isPresent()) {
-          body.addFormDataPart("media_url", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getMediaUrl()));
+          body.addFormDataPart("media_url", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getMediaUrl().get()));
         }
         if (file.isPresent()) {
           String fileMimeType = Files.probeContentType(file.get().toPath());
@@ -78,16 +79,16 @@ public class TranscriptionClient {
           body.addFormDataPart("file", file.get().getName(), RequestBody.create(fileMimeTypeMediaType, file.get()));
         }
         if (request.getAudioUrl().isPresent()) {
-          body.addFormDataPart("audio_url", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getAudioUrl()));
+          body.addFormDataPart("audio_url", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getAudioUrl().get()));
         }
         if (request.getProjectName().isPresent()) {
-          body.addFormDataPart("project_name", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getProjectName()));
+          body.addFormDataPart("project_name", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getProjectName().get()));
         }
         if (request.getProjectDescription().isPresent()) {
-          body.addFormDataPart("project_description", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getProjectDescription()));
+          body.addFormDataPart("project_description", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getProjectDescription().get()));
         }
         if (request.getFolderId().isPresent()) {
-          body.addFormDataPart("folder_id", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getFolderId()));
+          body.addFormDataPart("folder_id", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getFolderId().get()));
         }
       }
       catch(Exception e) {
@@ -96,7 +97,8 @@ public class TranscriptionClient {
       Request.Builder _requestBuilder = new Request.Builder()
         .url(httpUrl.build())
         .method("POST", body.build())
-        .headers(Headers.of(clientOptions.headers(requestOptions)));
+        .headers(Headers.of(clientOptions.headers(requestOptions)))
+        .addHeader("Accept", "application/json");
       Request okhttpRequest = _requestBuilder.build();
       OkHttpClient client = clientOptions.httpClient();
       if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -139,13 +141,14 @@ public class TranscriptionClient {
 
         .addPathSegments("transcribe")
         .addPathSegment(taskId);if (request.getRunId().isPresent()) {
-          httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+          QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
           .url(httpUrl.build())
           .method("GET", null)
           .headers(Headers.of(clientOptions.headers(requestOptions)))
-          .addHeader("Content-Type", "application/json");
+          .addHeader("Content-Type", "application/json")
+          .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -203,13 +206,14 @@ public class TranscriptionClient {
             httpUrl.addPathSegment(runId.get().toString());
           }
           if (request.getWordLevelTimestamps().isPresent()) {
-            httpUrl.addQueryParameter("word_level_timestamps", request.getWordLevelTimestamps().get().toString());
+            QueryStringMapper.addQueryParameter(httpUrl, "word_level_timestamps", request.getWordLevelTimestamps().get().toString(), false);
           }
           Request.Builder _requestBuilder = new Request.Builder()
             .url(httpUrl.build())
             .method("GET", null)
             .headers(Headers.of(clientOptions.headers(requestOptions)))
-            .addHeader("Content-Type", "application/json");
+            .addHeader("Content-Type", "application/json")
+            .addHeader("Accept", "application/json");
           Request okhttpRequest = _requestBuilder.build();
           OkHttpClient client = clientOptions.httpClient();
           if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -247,7 +251,7 @@ public class TranscriptionClient {
           HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
             .addPathSegments("transcription-results");if (request.getRunId().isPresent()) {
-              httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+              QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
             }
             RequestBody body;
             try {
@@ -260,7 +264,8 @@ public class TranscriptionClient {
               .url(httpUrl.build())
               .method("POST", body)
               .headers(Headers.of(clientOptions.headers(requestOptions)))
-              .addHeader("Content-Type", "application/json");
+              .addHeader("Content-Type", "application/json")
+              .addHeader("Accept", "application/json");
             if (request.getTraceparent().isPresent()) {
               _requestBuilder.addHeader("traceparent", request.getTraceparent().get());
             }

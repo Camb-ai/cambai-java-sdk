@@ -6,12 +6,15 @@ package resources.dictionaries.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Integer;
 import java.lang.Object;
@@ -46,18 +49,54 @@ public final class GetDictionaryDetailsDictionariesDictionaryIdFullDetailsGetReq
   /**
    * @return Limit how many terms are returned when fetching the dictionary details.
    */
-  @JsonProperty("limit")
+  @JsonIgnore
   public Optional<Integer> getLimit() {
+    if (limit == null) {
+      return Optional.empty();
+    }
     return limit;
   }
 
-  @JsonProperty("search_term")
+  @JsonIgnore
   public Optional<String> getSearchTerm() {
+    if (searchTerm == null) {
+      return Optional.empty();
+    }
     return searchTerm;
   }
 
-  @JsonProperty("run_id")
+  @JsonIgnore
   public Optional<Integer> getRunId() {
+    if (runId == null) {
+      return Optional.empty();
+    }
+    return runId;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("limit")
+  private Optional<Integer> _getLimit() {
+    return limit;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("search_term")
+  private Optional<String> _getSearchTerm() {
+    return searchTerm;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("run_id")
+  private Optional<Integer> _getRunId() {
     return runId;
   }
 
@@ -127,6 +166,19 @@ public final class GetDictionaryDetailsDictionariesDictionaryIdFullDetailsGetReq
       return this;
     }
 
+    public Builder limit(Nullable<Integer> limit) {
+      if (limit.isNull()) {
+        this.limit = null;
+      }
+      else if (limit.isEmpty()) {
+        this.limit = Optional.empty();
+      }
+      else {
+        this.limit = Optional.of(limit.get());
+      }
+      return this;
+    }
+
     @JsonSetter(
         value = "search_term",
         nulls = Nulls.SKIP
@@ -141,6 +193,19 @@ public final class GetDictionaryDetailsDictionariesDictionaryIdFullDetailsGetReq
       return this;
     }
 
+    public Builder searchTerm(Nullable<String> searchTerm) {
+      if (searchTerm.isNull()) {
+        this.searchTerm = null;
+      }
+      else if (searchTerm.isEmpty()) {
+        this.searchTerm = Optional.empty();
+      }
+      else {
+        this.searchTerm = Optional.of(searchTerm.get());
+      }
+      return this;
+    }
+
     @JsonSetter(
         value = "run_id",
         nulls = Nulls.SKIP
@@ -152,6 +217,19 @@ public final class GetDictionaryDetailsDictionariesDictionaryIdFullDetailsGetReq
 
     public Builder runId(Integer runId) {
       this.runId = Optional.ofNullable(runId);
+      return this;
+    }
+
+    public Builder runId(Nullable<Integer> runId) {
+      if (runId.isNull()) {
+        this.runId = null;
+      }
+      else if (runId.isEmpty()) {
+        this.runId = Optional.empty();
+      }
+      else {
+        this.runId = Optional.of(runId.get());
+      }
       return this;
     }
 

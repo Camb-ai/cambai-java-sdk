@@ -11,6 +11,7 @@ import core.CambApiException;
 import core.ClientOptions;
 import core.MediaTypes;
 import core.ObjectMappers;
+import core.QueryStringMapper;
 import core.RequestOptions;
 import errors.UnprocessableEntityError;
 import java.io.IOException;
@@ -61,7 +62,7 @@ public class DubClient {
     HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
       .addPathSegments("dub");if (request.getRunId().isPresent()) {
-        httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+        QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
       }
       Map<String, Object> properties = new HashMap<>();
       if (request.getProjectName().isPresent()) {
@@ -104,7 +105,8 @@ public class DubClient {
         .url(httpUrl.build())
         .method("POST", body)
         .headers(Headers.of(clientOptions.headers(requestOptions)))
-        .addHeader("Content-Type", "application/json");
+        .addHeader("Content-Type", "application/json")
+        .addHeader("Accept", "application/json");
       Request okhttpRequest = _requestBuilder.build();
       OkHttpClient client = clientOptions.httpClient();
       if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -146,13 +148,14 @@ public class DubClient {
 
         .addPathSegments("dub")
         .addPathSegment(taskId);if (request.getRunId().isPresent()) {
-          httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+          QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
           .url(httpUrl.build())
           .method("GET", null)
           .headers(Headers.of(clientOptions.headers(requestOptions)))
-          .addHeader("Content-Type", "application/json");
+          .addHeader("Content-Type", "application/json")
+          .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -202,17 +205,74 @@ public class DubClient {
        */
       public GetDubbedRunInfoDubResultRunIdGetResponse getDubbedRunInfo(Optional<Integer> runId,
           GetDubbedRunInfoDubResultRunIdGetRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
           .addPathSegments("dub-result");
           if (runId.isPresent()) {
             httpUrl.addPathSegment(runId.get().toString());
           }
+
+          .build();
+        Request.Builder _requestBuilder = new Request.Builder()
+          .url(httpUrl)
+          .method("GET", null)
+          .headers(Headers.of(clientOptions.headers(requestOptions)))
+          .addHeader("Content-Type", "application/json")
+          .addHeader("Accept", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+          client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+          ResponseBody responseBody = response.body();
+          if (response.isSuccessful()) {
+            return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), GetDubbedRunInfoDubResultRunIdGetResponse.class);
+          }
+          String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+          try {
+            if (response.code() == 422) {
+              throw new UnprocessableEntityError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, HttpValidationError.class));
+            }
+          }
+          catch (JsonProcessingException ignored) {
+            // unable to map error response, throwing generic error
+          }
+          throw new CambApiApiException("Error with status code " + response.code(), response.code(), ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+        }
+        catch (IOException e) {
+          throw new CambApiException("Network error executing HTTP request", e);
+        }
+      }
+
+      public Map<String, GetDubbingRunsResultsDubbingResultsPostResponseValue> getDubbingRunsResults(
+          GetDubbingRunsResultsDubbingResultsPostRequest request) {
+        return getDubbingRunsResults(request,null);
+      }
+
+      public Map<String, GetDubbingRunsResultsDubbingResultsPostResponseValue> getDubbingRunsResults(
+          GetDubbingRunsResultsDubbingResultsPostRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
+
+          .addPathSegments("dubbing-results");if (request.getRunId().isPresent()) {
+            QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
+          }
+          RequestBody body;
+          try {
+            body = RequestBody.create(ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()), MediaTypes.APPLICATION_JSON);
+          }
+          catch(Exception e) {
+            throw new RuntimeException(e);
+          }
           Request.Builder _requestBuilder = new Request.Builder()
             .url(httpUrl.build())
-            .method("GET", null)
+            .method("POST", body)
             .headers(Headers.of(clientOptions.headers(requestOptions)))
-            .addHeader("Content-Type", "application/json");
+            .addHeader("Content-Type", "application/json")
+            .addHeader("Accept", "application/json");
+          if (request.getTraceparent().isPresent()) {
+            _requestBuilder.addHeader("traceparent", request.getTraceparent().get());
+          }
           Request okhttpRequest = _requestBuilder.build();
           OkHttpClient client = clientOptions.httpClient();
           if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -221,7 +281,7 @@ public class DubClient {
           try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-              return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), GetDubbedRunInfoDubResultRunIdGetResponse.class);
+              return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), new TypeReference<Map<String, GetDubbingRunsResultsDubbingResultsPostResponseValue>>() {});
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
@@ -239,33 +299,37 @@ public class DubClient {
           }
         }
 
-        public Map<String, GetDubbingRunsResultsDubbingResultsPostResponseValue> getDubbingRunsResults(
-            GetDubbingRunsResultsDubbingResultsPostRequest request) {
-          return getDubbingRunsResults(request,null);
+        public Map<String, String> getDubbedRunTranscript(Optional<Integer> runId, int language) {
+          return getDubbedRunTranscript(runId,language,GetDubbedRunTranscriptTranscriptRunIdLanguageGetRequest.builder().build());
         }
 
-        public Map<String, GetDubbingRunsResultsDubbingResultsPostResponseValue> getDubbingRunsResults(
-            GetDubbingRunsResultsDubbingResultsPostRequest request, RequestOptions requestOptions) {
+        public Map<String, String> getDubbedRunTranscript(Optional<Integer> runId, int language,
+            GetDubbedRunTranscriptTranscriptRunIdLanguageGetRequest request) {
+          return getDubbedRunTranscript(runId,language,request,null);
+        }
+
+        public Map<String, String> getDubbedRunTranscript(Optional<Integer> runId, int language,
+            GetDubbedRunTranscriptTranscriptRunIdLanguageGetRequest request,
+            RequestOptions requestOptions) {
           HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
-            .addPathSegments("dubbing-results");if (request.getRunId().isPresent()) {
-              httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+            .addPathSegments("transcript");
+            if (runId.isPresent()) {
+              httpUrl.addPathSegment(runId.get().toString());
             }
-            RequestBody body;
-            try {
-              body = RequestBody.create(ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()), MediaTypes.APPLICATION_JSON);
+
+            .addPathSegment(Integer.toString(language))if (request.getFormatType().isPresent()) {
+              QueryStringMapper.addQueryParameter(httpUrl, "format_type", request.getFormatType().get().toString(), false);
             }
-            catch(Exception e) {
-              throw new RuntimeException(e);
+            if (request.getDataType().isPresent()) {
+              QueryStringMapper.addQueryParameter(httpUrl, "data_type", request.getDataType().get().toString(), false);
             }
             Request.Builder _requestBuilder = new Request.Builder()
               .url(httpUrl.build())
-              .method("POST", body)
+              .method("GET", null)
               .headers(Headers.of(clientOptions.headers(requestOptions)))
-              .addHeader("Content-Type", "application/json");
-            if (request.getTraceparent().isPresent()) {
-              _requestBuilder.addHeader("traceparent", request.getTraceparent().get());
-            }
+              .addHeader("Content-Type", "application/json")
+              .addHeader("Accept", "application/json");
             Request okhttpRequest = _requestBuilder.build();
             OkHttpClient client = clientOptions.httpClient();
             if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -274,7 +338,7 @@ public class DubClient {
             try (Response response = client.newCall(okhttpRequest).execute()) {
               ResponseBody responseBody = response.body();
               if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), new TypeReference<Map<String, GetDubbingRunsResultsDubbingResultsPostResponseValue>>() {});
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), new TypeReference<Map<String, String>>() {});
               }
               String responseBodyString = responseBody != null ? responseBody.string() : "{}";
               try {
@@ -292,37 +356,87 @@ public class DubClient {
             }
           }
 
-          public Map<String, String> getDubbedRunTranscript(Optional<Integer> runId, int language) {
-            return getDubbedRunTranscript(runId,language,GetDubbedRunTranscriptTranscriptRunIdLanguageGetRequest.builder().build());
+          public GetDubbedOutputInAltFormatDubAltFormatRunIdLanguagePostResponse getDubbedOutputInAltFormat(
+              Optional<Integer> runId, int language,
+              DubbedOutputInAltFormatRequestPayload request) {
+            return getDubbedOutputInAltFormat(runId,language,request,null);
           }
 
-          public Map<String, String> getDubbedRunTranscript(Optional<Integer> runId, int language,
-              GetDubbedRunTranscriptTranscriptRunIdLanguageGetRequest request) {
-            return getDubbedRunTranscript(runId,language,request,null);
-          }
-
-          public Map<String, String> getDubbedRunTranscript(Optional<Integer> runId, int language,
-              GetDubbedRunTranscriptTranscriptRunIdLanguageGetRequest request,
+          public GetDubbedOutputInAltFormatDubAltFormatRunIdLanguagePostResponse getDubbedOutputInAltFormat(
+              Optional<Integer> runId, int language, DubbedOutputInAltFormatRequestPayload request,
               RequestOptions requestOptions) {
-            HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
+            HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
-              .addPathSegments("transcript");
+              .addPathSegments("dub-alt-format");
               if (runId.isPresent()) {
                 httpUrl.addPathSegment(runId.get().toString());
               }
 
-              httpUrl.addPathSegment(Integer.toString(language));
-              if (request.getFormatType().isPresent()) {
-                httpUrl.addQueryParameter("format_type", request.getFormatType().get().toString());
+              .addPathSegment(Integer.toString(language))
+              .build();
+            RequestBody body;
+            try {
+              body = RequestBody.create(ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+            }
+            catch(JsonProcessingException e) {
+              throw new CambApiException("Failed to serialize request", e);
+            }
+            Request okhttpRequest = new Request.Builder()
+              .url(httpUrl)
+              .method("POST", body)
+              .headers(Headers.of(clientOptions.headers(requestOptions)))
+              .addHeader("Content-Type", "application/json")
+              .addHeader("Accept", "application/json")
+              .build();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+              client = clientOptions.httpClientWithTimeout(requestOptions);
+            }
+            try (Response response = client.newCall(okhttpRequest).execute()) {
+              ResponseBody responseBody = response.body();
+              if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), GetDubbedOutputInAltFormatDubAltFormatRunIdLanguagePostResponse.class);
               }
-              if (request.getDataType().isPresent()) {
-                httpUrl.addQueryParameter("data_type", request.getDataType().get().toString());
+              String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+              try {
+                if (response.code() == 422) {
+                  throw new UnprocessableEntityError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, HttpValidationError.class));
+                }
+              }
+              catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+              }
+              throw new CambApiApiException("Error with status code " + response.code(), response.code(), ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+            }
+            catch (IOException e) {
+              throw new CambApiException("Network error executing HTTP request", e);
+            }
+          }
+
+          public OrchestratorPipelineResult getDubbedOutputInAltFormatStatus(String taskId) {
+            return getDubbedOutputInAltFormatStatus(taskId,GetDubbedOutputInAltFormatStatusDubAltFormatTaskIdGetRequest.builder().build());
+          }
+
+          public OrchestratorPipelineResult getDubbedOutputInAltFormatStatus(String taskId,
+              GetDubbedOutputInAltFormatStatusDubAltFormatTaskIdGetRequest request) {
+            return getDubbedOutputInAltFormatStatus(taskId,request,null);
+          }
+
+          public OrchestratorPipelineResult getDubbedOutputInAltFormatStatus(String taskId,
+              GetDubbedOutputInAltFormatStatusDubAltFormatTaskIdGetRequest request,
+              RequestOptions requestOptions) {
+            HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
+
+              .addPathSegments("dub-alt-format")
+              .addPathSegment(taskId);if (request.getRunId().isPresent()) {
+                QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
               }
               Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
               Request okhttpRequest = _requestBuilder.build();
               OkHttpClient client = clientOptions.httpClient();
               if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -331,7 +445,7 @@ public class DubClient {
               try (Response response = client.newCall(okhttpRequest).execute()) {
                 ResponseBody responseBody = response.body();
                 if (response.isSuccessful()) {
-                  return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), new TypeReference<Map<String, String>>() {});
+                  return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), OrchestratorPipelineResult.class);
                 }
                 String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                 try {
@@ -349,36 +463,31 @@ public class DubClient {
               }
             }
 
-            public GetDubbedOutputInAltFormatDubAltFormatRunIdLanguagePostResponse getDubbedOutputInAltFormat(
-                Optional<Integer> runId, int language,
-                DubbedOutputInAltFormatRequestPayload request) {
-              return getDubbedOutputInAltFormat(runId,language,request,null);
+            public OrchestratorPipelineResult pollDiscordDubTask(String taskId) {
+              return pollDiscordDubTask(taskId,PollDiscordDubTaskDiscordDubTaskIdGetRequest.builder().build());
             }
 
-            public GetDubbedOutputInAltFormatDubAltFormatRunIdLanguagePostResponse getDubbedOutputInAltFormat(
-                Optional<Integer> runId, int language,
-                DubbedOutputInAltFormatRequestPayload request, RequestOptions requestOptions) {
+            public OrchestratorPipelineResult pollDiscordDubTask(String taskId,
+                PollDiscordDubTaskDiscordDubTaskIdGetRequest request) {
+              return pollDiscordDubTask(taskId,request,null);
+            }
+
+            public OrchestratorPipelineResult pollDiscordDubTask(String taskId,
+                PollDiscordDubTaskDiscordDubTaskIdGetRequest request,
+                RequestOptions requestOptions) {
               HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
-                .addPathSegments("dub-alt-format");
-                if (runId.isPresent()) {
-                  httpUrl.addPathSegment(runId.get().toString());
+                .addPathSegments("discord/dub")
+                .addPathSegment(taskId);if (request.getRunId().isPresent()) {
+                  QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
                 }
-
-                httpUrl.addPathSegment(Integer.toString(language));
-                RequestBody body;
-                try {
-                  body = RequestBody.create(ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-                }
-                catch(JsonProcessingException e) {
-                  throw new CambApiException("Failed to serialize request", e);
-                }
-                Request okhttpRequest = new Request.Builder()
+                Request.Builder _requestBuilder = new Request.Builder()
                   .url(httpUrl.build())
-                  .method("POST", body)
+                  .method("GET", null)
                   .headers(Headers.of(clientOptions.headers(requestOptions)))
                   .addHeader("Content-Type", "application/json")
-                  .build();
+                  .addHeader("Accept", "application/json");
+                Request okhttpRequest = _requestBuilder.build();
                 OkHttpClient client = clientOptions.httpClient();
                 if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
                   client = clientOptions.httpClientWithTimeout(requestOptions);
@@ -386,7 +495,7 @@ public class DubClient {
                 try (Response response = client.newCall(okhttpRequest).execute()) {
                   ResponseBody responseBody = response.body();
                   if (response.isSuccessful()) {
-                    return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), GetDubbedOutputInAltFormatDubAltFormatRunIdLanguagePostResponse.class);
+                    return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), OrchestratorPipelineResult.class);
                   }
                   String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                   try {
@@ -404,29 +513,30 @@ public class DubClient {
                 }
               }
 
-              public OrchestratorPipelineResult getDubbedOutputInAltFormatStatus(String taskId) {
-                return getDubbedOutputInAltFormatStatus(taskId,GetDubbedOutputInAltFormatStatusDubAltFormatTaskIdGetRequest.builder().build());
+              public OrchestratorPipelineResult pollTwitterDubTask(String taskId) {
+                return pollTwitterDubTask(taskId,PollTwitterDubTaskTwitterDubTaskIdGetRequest.builder().build());
               }
 
-              public OrchestratorPipelineResult getDubbedOutputInAltFormatStatus(String taskId,
-                  GetDubbedOutputInAltFormatStatusDubAltFormatTaskIdGetRequest request) {
-                return getDubbedOutputInAltFormatStatus(taskId,request,null);
+              public OrchestratorPipelineResult pollTwitterDubTask(String taskId,
+                  PollTwitterDubTaskTwitterDubTaskIdGetRequest request) {
+                return pollTwitterDubTask(taskId,request,null);
               }
 
-              public OrchestratorPipelineResult getDubbedOutputInAltFormatStatus(String taskId,
-                  GetDubbedOutputInAltFormatStatusDubAltFormatTaskIdGetRequest request,
+              public OrchestratorPipelineResult pollTwitterDubTask(String taskId,
+                  PollTwitterDubTaskTwitterDubTaskIdGetRequest request,
                   RequestOptions requestOptions) {
                 HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
-                  .addPathSegments("dub-alt-format")
+                  .addPathSegments("twitter/dub")
                   .addPathSegment(taskId);if (request.getRunId().isPresent()) {
-                    httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+                    QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
                   }
                   Request.Builder _requestBuilder = new Request.Builder()
                     .url(httpUrl.build())
                     .method("GET", null)
                     .headers(Headers.of(clientOptions.headers(requestOptions)))
-                    .addHeader("Content-Type", "application/json");
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Accept", "application/json");
                   Request okhttpRequest = _requestBuilder.build();
                   OkHttpClient client = clientOptions.httpClient();
                   if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -452,102 +562,4 @@ public class DubClient {
                     throw new CambApiException("Network error executing HTTP request", e);
                   }
                 }
-
-                public OrchestratorPipelineResult pollDiscordDubTask(String taskId) {
-                  return pollDiscordDubTask(taskId,PollDiscordDubTaskDiscordDubTaskIdGetRequest.builder().build());
-                }
-
-                public OrchestratorPipelineResult pollDiscordDubTask(String taskId,
-                    PollDiscordDubTaskDiscordDubTaskIdGetRequest request) {
-                  return pollDiscordDubTask(taskId,request,null);
-                }
-
-                public OrchestratorPipelineResult pollDiscordDubTask(String taskId,
-                    PollDiscordDubTaskDiscordDubTaskIdGetRequest request,
-                    RequestOptions requestOptions) {
-                  HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
-
-                    .addPathSegments("discord/dub")
-                    .addPathSegment(taskId);if (request.getRunId().isPresent()) {
-                      httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
-                    }
-                    Request.Builder _requestBuilder = new Request.Builder()
-                      .url(httpUrl.build())
-                      .method("GET", null)
-                      .headers(Headers.of(clientOptions.headers(requestOptions)))
-                      .addHeader("Content-Type", "application/json");
-                    Request okhttpRequest = _requestBuilder.build();
-                    OkHttpClient client = clientOptions.httpClient();
-                    if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-                      client = clientOptions.httpClientWithTimeout(requestOptions);
-                    }
-                    try (Response response = client.newCall(okhttpRequest).execute()) {
-                      ResponseBody responseBody = response.body();
-                      if (response.isSuccessful()) {
-                        return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), OrchestratorPipelineResult.class);
-                      }
-                      String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                      try {
-                        if (response.code() == 422) {
-                          throw new UnprocessableEntityError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, HttpValidationError.class));
-                        }
-                      }
-                      catch (JsonProcessingException ignored) {
-                        // unable to map error response, throwing generic error
-                      }
-                      throw new CambApiApiException("Error with status code " + response.code(), response.code(), ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-                    }
-                    catch (IOException e) {
-                      throw new CambApiException("Network error executing HTTP request", e);
-                    }
-                  }
-
-                  public OrchestratorPipelineResult pollTwitterDubTask(String taskId) {
-                    return pollTwitterDubTask(taskId,PollTwitterDubTaskTwitterDubTaskIdGetRequest.builder().build());
-                  }
-
-                  public OrchestratorPipelineResult pollTwitterDubTask(String taskId,
-                      PollTwitterDubTaskTwitterDubTaskIdGetRequest request) {
-                    return pollTwitterDubTask(taskId,request,null);
-                  }
-
-                  public OrchestratorPipelineResult pollTwitterDubTask(String taskId,
-                      PollTwitterDubTaskTwitterDubTaskIdGetRequest request,
-                      RequestOptions requestOptions) {
-                    HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
-
-                      .addPathSegments("twitter/dub")
-                      .addPathSegment(taskId);if (request.getRunId().isPresent()) {
-                        httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
-                      }
-                      Request.Builder _requestBuilder = new Request.Builder()
-                        .url(httpUrl.build())
-                        .method("GET", null)
-                        .headers(Headers.of(clientOptions.headers(requestOptions)))
-                        .addHeader("Content-Type", "application/json");
-                      Request okhttpRequest = _requestBuilder.build();
-                      OkHttpClient client = clientOptions.httpClient();
-                      if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-                        client = clientOptions.httpClientWithTimeout(requestOptions);
-                      }
-                      try (Response response = client.newCall(okhttpRequest).execute()) {
-                        ResponseBody responseBody = response.body();
-                        if (response.isSuccessful()) {
-                          return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), OrchestratorPipelineResult.class);
-                        }
-                        String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                        try {
-                          if (response.code() == 422) {
-                            throw new UnprocessableEntityError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, HttpValidationError.class));
-                          }
-                        }
-                        catch (JsonProcessingException ignored) {
-                          // unable to map error response, throwing generic error
-                        }
-                        throw new CambApiApiException("Error with status code " + response.code(), response.code(), ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-                      }
-                      catch (IOException e) {
-                        throw new CambApiException("Network error executing HTTP request", e);
-                      }
-                    }
-                  }
+              }

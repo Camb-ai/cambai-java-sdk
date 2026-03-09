@@ -6,12 +6,15 @@ package types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Object;
 import java.lang.String;
@@ -47,13 +50,37 @@ public final class GetProbeStreamIn {
     return url;
   }
 
-  @JsonProperty("passphrase")
+  @JsonIgnore
   public Optional<String> getPassphrase() {
+    if (passphrase == null) {
+      return Optional.empty();
+    }
     return passphrase;
   }
 
-  @JsonProperty("stream_id")
+  @JsonIgnore
   public Optional<String> getStreamId() {
+    if (streamId == null) {
+      return Optional.empty();
+    }
+    return streamId;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("passphrase")
+  private Optional<String> _getPassphrase() {
+    return passphrase;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("stream_id")
+  private Optional<String> _getStreamId() {
     return streamId;
   }
 
@@ -99,9 +126,13 @@ public final class GetProbeStreamIn {
 
     _FinalStage passphrase(String passphrase);
 
+    _FinalStage passphrase(Nullable<String> passphrase);
+
     _FinalStage streamId(Optional<String> streamId);
 
     _FinalStage streamId(String streamId);
+
+    _FinalStage streamId(Nullable<String> streamId);
   }
 
   @JsonIgnoreProperties(
@@ -136,6 +167,20 @@ public final class GetProbeStreamIn {
     }
 
     @java.lang.Override
+    public _FinalStage streamId(Nullable<String> streamId) {
+      if (streamId.isNull()) {
+        this.streamId = null;
+      }
+      else if (streamId.isEmpty()) {
+        this.streamId = Optional.empty();
+      }
+      else {
+        this.streamId = Optional.of(streamId.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage streamId(String streamId) {
       this.streamId = Optional.ofNullable(streamId);
       return this;
@@ -148,6 +193,20 @@ public final class GetProbeStreamIn {
     )
     public _FinalStage streamId(Optional<String> streamId) {
       this.streamId = streamId;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage passphrase(Nullable<String> passphrase) {
+      if (passphrase.isNull()) {
+        this.passphrase = null;
+      }
+      else if (passphrase.isEmpty()) {
+        this.passphrase = Optional.empty();
+      }
+      else {
+        this.passphrase = Optional.of(passphrase.get());
+      }
       return this;
     }
 

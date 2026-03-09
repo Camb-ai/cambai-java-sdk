@@ -6,12 +6,15 @@ package types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Boolean;
 import java.lang.Integer;
@@ -78,43 +81,139 @@ public final class SourceStream {
     return url;
   }
 
-  @JsonProperty("category")
+  @JsonIgnore
   public Optional<Integer> getCategory() {
+    if (category == null) {
+      return Optional.empty();
+    }
     return category;
   }
 
-  @JsonProperty("passphrase")
+  @JsonIgnore
   public Optional<String> getPassphrase() {
+    if (passphrase == null) {
+      return Optional.empty();
+    }
     return passphrase;
   }
 
-  @JsonProperty("streamid")
+  @JsonIgnore
   public Optional<String> getStreamid() {
+    if (streamid == null) {
+      return Optional.empty();
+    }
     return streamid;
   }
 
-  @JsonProperty("number_of_streams")
+  @JsonIgnore
   public Optional<Integer> getNumberOfStreams() {
+    if (numberOfStreams == null) {
+      return Optional.empty();
+    }
     return numberOfStreams;
   }
 
-  @JsonProperty("audio_stream")
+  @JsonIgnore
   public Optional<Integer> getAudioStream() {
+    if (audioStream == null) {
+      return Optional.empty();
+    }
     return audioStream;
   }
 
-  @JsonProperty("background_audio_stream")
+  @JsonIgnore
   public Optional<Integer> getBackgroundAudioStream() {
+    if (backgroundAudioStream == null) {
+      return Optional.empty();
+    }
     return backgroundAudioStream;
   }
 
-  @JsonProperty("latency")
+  @JsonIgnore
   public Optional<Integer> getLatency() {
+    if (latency == null) {
+      return Optional.empty();
+    }
     return latency;
   }
 
-  @JsonProperty("relay_input")
+  @JsonIgnore
   public Optional<Boolean> getRelayInput() {
+    if (relayInput == null) {
+      return Optional.empty();
+    }
+    return relayInput;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("category")
+  private Optional<Integer> _getCategory() {
+    return category;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("passphrase")
+  private Optional<String> _getPassphrase() {
+    return passphrase;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("streamid")
+  private Optional<String> _getStreamid() {
+    return streamid;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("number_of_streams")
+  private Optional<Integer> _getNumberOfStreams() {
+    return numberOfStreams;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("audio_stream")
+  private Optional<Integer> _getAudioStream() {
+    return audioStream;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("background_audio_stream")
+  private Optional<Integer> _getBackgroundAudioStream() {
+    return backgroundAudioStream;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("latency")
+  private Optional<Integer> _getLatency() {
+    return latency;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("relay_input")
+  private Optional<Boolean> _getRelayInput() {
     return relayInput;
   }
 
@@ -164,33 +263,49 @@ public final class SourceStream {
 
     _FinalStage category(Integer category);
 
+    _FinalStage category(Nullable<Integer> category);
+
     _FinalStage passphrase(Optional<String> passphrase);
 
     _FinalStage passphrase(String passphrase);
+
+    _FinalStage passphrase(Nullable<String> passphrase);
 
     _FinalStage streamid(Optional<String> streamid);
 
     _FinalStage streamid(String streamid);
 
+    _FinalStage streamid(Nullable<String> streamid);
+
     _FinalStage numberOfStreams(Optional<Integer> numberOfStreams);
 
     _FinalStage numberOfStreams(Integer numberOfStreams);
+
+    _FinalStage numberOfStreams(Nullable<Integer> numberOfStreams);
 
     _FinalStage audioStream(Optional<Integer> audioStream);
 
     _FinalStage audioStream(Integer audioStream);
 
+    _FinalStage audioStream(Nullable<Integer> audioStream);
+
     _FinalStage backgroundAudioStream(Optional<Integer> backgroundAudioStream);
 
     _FinalStage backgroundAudioStream(Integer backgroundAudioStream);
+
+    _FinalStage backgroundAudioStream(Nullable<Integer> backgroundAudioStream);
 
     _FinalStage latency(Optional<Integer> latency);
 
     _FinalStage latency(Integer latency);
 
+    _FinalStage latency(Nullable<Integer> latency);
+
     _FinalStage relayInput(Optional<Boolean> relayInput);
 
     _FinalStage relayInput(Boolean relayInput);
+
+    _FinalStage relayInput(Nullable<Boolean> relayInput);
   }
 
   @JsonIgnoreProperties(
@@ -253,6 +368,20 @@ public final class SourceStream {
     }
 
     @java.lang.Override
+    public _FinalStage relayInput(Nullable<Boolean> relayInput) {
+      if (relayInput.isNull()) {
+        this.relayInput = null;
+      }
+      else if (relayInput.isEmpty()) {
+        this.relayInput = Optional.empty();
+      }
+      else {
+        this.relayInput = Optional.of(relayInput.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage relayInput(Boolean relayInput) {
       this.relayInput = Optional.ofNullable(relayInput);
       return this;
@@ -265,6 +394,20 @@ public final class SourceStream {
     )
     public _FinalStage relayInput(Optional<Boolean> relayInput) {
       this.relayInput = relayInput;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage latency(Nullable<Integer> latency) {
+      if (latency.isNull()) {
+        this.latency = null;
+      }
+      else if (latency.isEmpty()) {
+        this.latency = Optional.empty();
+      }
+      else {
+        this.latency = Optional.of(latency.get());
+      }
       return this;
     }
 
@@ -285,6 +428,20 @@ public final class SourceStream {
     }
 
     @java.lang.Override
+    public _FinalStage backgroundAudioStream(Nullable<Integer> backgroundAudioStream) {
+      if (backgroundAudioStream.isNull()) {
+        this.backgroundAudioStream = null;
+      }
+      else if (backgroundAudioStream.isEmpty()) {
+        this.backgroundAudioStream = Optional.empty();
+      }
+      else {
+        this.backgroundAudioStream = Optional.of(backgroundAudioStream.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage backgroundAudioStream(Integer backgroundAudioStream) {
       this.backgroundAudioStream = Optional.ofNullable(backgroundAudioStream);
       return this;
@@ -297,6 +454,20 @@ public final class SourceStream {
     )
     public _FinalStage backgroundAudioStream(Optional<Integer> backgroundAudioStream) {
       this.backgroundAudioStream = backgroundAudioStream;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage audioStream(Nullable<Integer> audioStream) {
+      if (audioStream.isNull()) {
+        this.audioStream = null;
+      }
+      else if (audioStream.isEmpty()) {
+        this.audioStream = Optional.empty();
+      }
+      else {
+        this.audioStream = Optional.of(audioStream.get());
+      }
       return this;
     }
 
@@ -317,6 +488,20 @@ public final class SourceStream {
     }
 
     @java.lang.Override
+    public _FinalStage numberOfStreams(Nullable<Integer> numberOfStreams) {
+      if (numberOfStreams.isNull()) {
+        this.numberOfStreams = null;
+      }
+      else if (numberOfStreams.isEmpty()) {
+        this.numberOfStreams = Optional.empty();
+      }
+      else {
+        this.numberOfStreams = Optional.of(numberOfStreams.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage numberOfStreams(Integer numberOfStreams) {
       this.numberOfStreams = Optional.ofNullable(numberOfStreams);
       return this;
@@ -329,6 +514,20 @@ public final class SourceStream {
     )
     public _FinalStage numberOfStreams(Optional<Integer> numberOfStreams) {
       this.numberOfStreams = numberOfStreams;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage streamid(Nullable<String> streamid) {
+      if (streamid.isNull()) {
+        this.streamid = null;
+      }
+      else if (streamid.isEmpty()) {
+        this.streamid = Optional.empty();
+      }
+      else {
+        this.streamid = Optional.of(streamid.get());
+      }
       return this;
     }
 
@@ -349,6 +548,20 @@ public final class SourceStream {
     }
 
     @java.lang.Override
+    public _FinalStage passphrase(Nullable<String> passphrase) {
+      if (passphrase.isNull()) {
+        this.passphrase = null;
+      }
+      else if (passphrase.isEmpty()) {
+        this.passphrase = Optional.empty();
+      }
+      else {
+        this.passphrase = Optional.of(passphrase.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage passphrase(String passphrase) {
       this.passphrase = Optional.ofNullable(passphrase);
       return this;
@@ -361,6 +574,20 @@ public final class SourceStream {
     )
     public _FinalStage passphrase(Optional<String> passphrase) {
       this.passphrase = passphrase;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage category(Nullable<Integer> category) {
+      if (category.isNull()) {
+        this.category = null;
+      }
+      else if (category.isEmpty()) {
+        this.category = Optional.empty();
+      }
+      else {
+        this.category = Optional.of(category.get());
+      }
       return this;
     }
 

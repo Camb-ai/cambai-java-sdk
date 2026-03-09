@@ -6,12 +6,15 @@ package types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Double;
 import java.lang.Object;
@@ -49,16 +52,22 @@ public final class OverdubConfig {
   /**
    * @return Proportion of the original audio (0.0 to 1.0).
    */
-  @JsonProperty("original_audio_gain")
+  @JsonIgnore
   public Optional<Double> getOriginalAudioGain() {
+    if (originalAudioGain == null) {
+      return Optional.empty();
+    }
     return originalAudioGain;
   }
 
   /**
    * @return Proportion of the background audio (0.0 to 1.0).
    */
-  @JsonProperty("background_audio_gain")
+  @JsonIgnore
   public Optional<Double> getBackgroundAudioGain() {
+    if (backgroundAudioGain == null) {
+      return Optional.empty();
+    }
     return backgroundAudioGain;
   }
 
@@ -73,8 +82,38 @@ public final class OverdubConfig {
   /**
    * @return Proportion of the fallback audio (0.0 to 1.0) (for streaming only).
    */
-  @JsonProperty("fallback_audio_gain")
+  @JsonIgnore
   public Optional<Double> getFallbackAudioGain() {
+    if (fallbackAudioGain == null) {
+      return Optional.empty();
+    }
+    return fallbackAudioGain;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("original_audio_gain")
+  private Optional<Double> _getOriginalAudioGain() {
+    return originalAudioGain;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("background_audio_gain")
+  private Optional<Double> _getBackgroundAudioGain() {
+    return backgroundAudioGain;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("fallback_audio_gain")
+  private Optional<Double> _getFallbackAudioGain() {
     return fallbackAudioGain;
   }
 
@@ -147,6 +186,19 @@ public final class OverdubConfig {
       return this;
     }
 
+    public Builder originalAudioGain(Nullable<Double> originalAudioGain) {
+      if (originalAudioGain.isNull()) {
+        this.originalAudioGain = null;
+      }
+      else if (originalAudioGain.isEmpty()) {
+        this.originalAudioGain = Optional.empty();
+      }
+      else {
+        this.originalAudioGain = Optional.of(originalAudioGain.get());
+      }
+      return this;
+    }
+
     @JsonSetter(
         value = "background_audio_gain",
         nulls = Nulls.SKIP
@@ -158,6 +210,19 @@ public final class OverdubConfig {
 
     public Builder backgroundAudioGain(Double backgroundAudioGain) {
       this.backgroundAudioGain = Optional.ofNullable(backgroundAudioGain);
+      return this;
+    }
+
+    public Builder backgroundAudioGain(Nullable<Double> backgroundAudioGain) {
+      if (backgroundAudioGain.isNull()) {
+        this.backgroundAudioGain = null;
+      }
+      else if (backgroundAudioGain.isEmpty()) {
+        this.backgroundAudioGain = Optional.empty();
+      }
+      else {
+        this.backgroundAudioGain = Optional.of(backgroundAudioGain.get());
+      }
       return this;
     }
 
@@ -186,6 +251,19 @@ public final class OverdubConfig {
 
     public Builder fallbackAudioGain(Double fallbackAudioGain) {
       this.fallbackAudioGain = Optional.ofNullable(fallbackAudioGain);
+      return this;
+    }
+
+    public Builder fallbackAudioGain(Nullable<Double> fallbackAudioGain) {
+      if (fallbackAudioGain.isNull()) {
+        this.fallbackAudioGain = null;
+      }
+      else if (fallbackAudioGain.isEmpty()) {
+        this.fallbackAudioGain = Optional.empty();
+      }
+      else {
+        this.fallbackAudioGain = Optional.of(fallbackAudioGain.get());
+      }
       return this;
     }
 

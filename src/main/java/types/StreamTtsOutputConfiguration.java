@@ -6,12 +6,15 @@ package types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Boolean;
 import java.lang.Double;
@@ -48,14 +51,26 @@ public final class StreamTtsOutputConfiguration {
     return format;
   }
 
-  @JsonProperty("duration")
+  @JsonIgnore
   public Optional<Double> getDuration() {
+    if (duration == null) {
+      return Optional.empty();
+    }
     return duration;
   }
 
   @JsonProperty("apply_enhancement")
   public Optional<Boolean> getApplyEnhancement() {
     return applyEnhancement;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("duration")
+  private Optional<Double> _getDuration() {
+    return duration;
   }
 
   @java.lang.Override
@@ -135,6 +150,19 @@ public final class StreamTtsOutputConfiguration {
 
     public Builder duration(Double duration) {
       this.duration = Optional.ofNullable(duration);
+      return this;
+    }
+
+    public Builder duration(Nullable<Double> duration) {
+      if (duration.isNull()) {
+        this.duration = null;
+      }
+      else if (duration.isEmpty()) {
+        this.duration = Optional.empty();
+      }
+      else {
+        this.duration = Optional.of(duration.get());
+      }
       return this;
     }
 

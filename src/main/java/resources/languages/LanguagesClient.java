@@ -10,6 +10,7 @@ import core.CambApiApiException;
 import core.CambApiException;
 import core.ClientOptions;
 import core.ObjectMappers;
+import core.QueryStringMapper;
 import core.RequestOptions;
 import errors.UnprocessableEntityError;
 import java.io.IOException;
@@ -48,13 +49,14 @@ public class LanguagesClient {
     HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
       .addPathSegments("source-languages");if (request.getRunId().isPresent()) {
-        httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+        QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
       }
       Request.Builder _requestBuilder = new Request.Builder()
         .url(httpUrl.build())
         .method("GET", null)
         .headers(Headers.of(clientOptions.headers(requestOptions)))
-        .addHeader("Content-Type", "application/json");
+        .addHeader("Content-Type", "application/json")
+        .addHeader("Accept", "application/json");
       Request okhttpRequest = _requestBuilder.build();
       OkHttpClient client = clientOptions.httpClient();
       if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -95,13 +97,14 @@ public class LanguagesClient {
       HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
         .addPathSegments("target-languages");if (request.getRunId().isPresent()) {
-          httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+          QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
           .url(httpUrl.build())
           .method("GET", null)
           .headers(Headers.of(clientOptions.headers(requestOptions)))
-          .addHeader("Content-Type", "application/json");
+          .addHeader("Content-Type", "application/json")
+          .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {

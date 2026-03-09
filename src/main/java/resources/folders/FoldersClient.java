@@ -11,6 +11,7 @@ import core.CambApiException;
 import core.ClientOptions;
 import core.MediaTypes;
 import core.ObjectMappers;
+import core.QueryStringMapper;
 import core.RequestOptions;
 import errors.UnprocessableEntityError;
 import java.io.IOException;
@@ -53,19 +54,20 @@ public class FoldersClient {
     HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
       .addPathSegments("folders");if (request.getLimit().isPresent()) {
-        httpUrl.addQueryParameter("limit", request.getLimit().get().toString());
+        QueryStringMapper.addQueryParameter(httpUrl, "limit", request.getLimit().get().toString(), false);
       }
       if (request.getSearchQuery().isPresent()) {
-        httpUrl.addQueryParameter("search_query", request.getSearchQuery().get());
+        QueryStringMapper.addQueryParameter(httpUrl, "search_query", request.getSearchQuery().get(), false);
       }
       if (request.getRunId().isPresent()) {
-        httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+        QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
       }
       Request.Builder _requestBuilder = new Request.Builder()
         .url(httpUrl.build())
         .method("GET", null)
         .headers(Headers.of(clientOptions.headers(requestOptions)))
-        .addHeader("Content-Type", "application/json");
+        .addHeader("Content-Type", "application/json")
+        .addHeader("Accept", "application/json");
       Request okhttpRequest = _requestBuilder.build();
       OkHttpClient client = clientOptions.httpClient();
       if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -100,7 +102,7 @@ public class FoldersClient {
       HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
         .addPathSegments("folders/create");if (request.getRunId().isPresent()) {
-          httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+          QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
         }
         Map<String, Object> properties = new HashMap<>();
         properties.put("folder_name", request.getFolderName());
@@ -115,7 +117,8 @@ public class FoldersClient {
           .url(httpUrl.build())
           .method("POST", body)
           .headers(Headers.of(clientOptions.headers(requestOptions)))
-          .addHeader("Content-Type", "application/json");
+          .addHeader("Content-Type", "application/json")
+          .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {

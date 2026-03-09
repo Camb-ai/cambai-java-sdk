@@ -6,12 +6,15 @@ package resources.translation.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Object;
 import java.lang.String;
@@ -35,8 +38,20 @@ public final class GetTranslationResultTranslationResultRunIdGetRequest {
     this.additionalProperties = additionalProperties;
   }
 
-  @JsonProperty("traceparent")
+  @JsonIgnore
   public Optional<String> getTraceparent() {
+    if (traceparent == null) {
+      return Optional.empty();
+    }
+    return traceparent;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("traceparent")
+  private Optional<String> _getTraceparent() {
     return traceparent;
   }
 
@@ -97,6 +112,19 @@ public final class GetTranslationResultTranslationResultRunIdGetRequest {
 
     public Builder traceparent(String traceparent) {
       this.traceparent = Optional.ofNullable(traceparent);
+      return this;
+    }
+
+    public Builder traceparent(Nullable<String> traceparent) {
+      if (traceparent.isNull()) {
+        this.traceparent = null;
+      }
+      else if (traceparent.isEmpty()) {
+        this.traceparent = Optional.empty();
+      }
+      else {
+        this.traceparent = Optional.of(traceparent.get());
+      }
       return this;
     }
 

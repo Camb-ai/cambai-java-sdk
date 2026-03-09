@@ -6,12 +6,15 @@ package types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Boolean;
 import java.lang.Integer;
@@ -82,38 +85,122 @@ public final class VideoStream {
     return codecLongName;
   }
 
-  @JsonProperty("codec_tag_string")
+  @JsonIgnore
   public Optional<String> getCodecTagString() {
+    if (codecTagString == null) {
+      return Optional.empty();
+    }
     return codecTagString;
   }
 
-  @JsonProperty("codec_tag")
+  @JsonIgnore
   public Optional<String> getCodecTag() {
+    if (codecTag == null) {
+      return Optional.empty();
+    }
     return codecTag;
   }
 
-  @JsonProperty("profile")
+  @JsonIgnore
   public Optional<String> getProfile() {
+    if (profile == null) {
+      return Optional.empty();
+    }
     return profile;
   }
 
-  @JsonProperty("width")
+  @JsonIgnore
   public Optional<Integer> getWidth() {
+    if (width == null) {
+      return Optional.empty();
+    }
     return width;
   }
 
-  @JsonProperty("height")
+  @JsonIgnore
   public Optional<Integer> getHeight() {
+    if (height == null) {
+      return Optional.empty();
+    }
     return height;
   }
 
-  @JsonProperty("is_avc")
+  @JsonIgnore
   public Optional<Boolean> getIsAvc() {
+    if (isAvc == null) {
+      return Optional.empty();
+    }
     return isAvc;
   }
 
-  @JsonProperty("id")
+  @JsonIgnore
   public Optional<String> getId() {
+    if (id == null) {
+      return Optional.empty();
+    }
+    return id;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("codec_tag_string")
+  private Optional<String> _getCodecTagString() {
+    return codecTagString;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("codec_tag")
+  private Optional<String> _getCodecTag() {
+    return codecTag;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("profile")
+  private Optional<String> _getProfile() {
+    return profile;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("width")
+  private Optional<Integer> _getWidth() {
+    return width;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("height")
+  private Optional<Integer> _getHeight() {
+    return height;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("is_avc")
+  private Optional<Boolean> _getIsAvc() {
+    return isAvc;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("id")
+  private Optional<String> _getId() {
     return id;
   }
 
@@ -167,29 +254,43 @@ public final class VideoStream {
 
     _FinalStage codecTagString(String codecTagString);
 
+    _FinalStage codecTagString(Nullable<String> codecTagString);
+
     _FinalStage codecTag(Optional<String> codecTag);
 
     _FinalStage codecTag(String codecTag);
+
+    _FinalStage codecTag(Nullable<String> codecTag);
 
     _FinalStage profile(Optional<String> profile);
 
     _FinalStage profile(String profile);
 
+    _FinalStage profile(Nullable<String> profile);
+
     _FinalStage width(Optional<Integer> width);
 
     _FinalStage width(Integer width);
+
+    _FinalStage width(Nullable<Integer> width);
 
     _FinalStage height(Optional<Integer> height);
 
     _FinalStage height(Integer height);
 
+    _FinalStage height(Nullable<Integer> height);
+
     _FinalStage isAvc(Optional<Boolean> isAvc);
 
     _FinalStage isAvc(Boolean isAvc);
 
+    _FinalStage isAvc(Nullable<Boolean> isAvc);
+
     _FinalStage id(Optional<String> id);
 
     _FinalStage id(String id);
+
+    _FinalStage id(Nullable<String> id);
   }
 
   @JsonIgnoreProperties(
@@ -259,6 +360,20 @@ public final class VideoStream {
     }
 
     @java.lang.Override
+    public _FinalStage id(Nullable<String> id) {
+      if (id.isNull()) {
+        this.id = null;
+      }
+      else if (id.isEmpty()) {
+        this.id = Optional.empty();
+      }
+      else {
+        this.id = Optional.of(id.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage id(String id) {
       this.id = Optional.ofNullable(id);
       return this;
@@ -271,6 +386,20 @@ public final class VideoStream {
     )
     public _FinalStage id(Optional<String> id) {
       this.id = id;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage isAvc(Nullable<Boolean> isAvc) {
+      if (isAvc.isNull()) {
+        this.isAvc = null;
+      }
+      else if (isAvc.isEmpty()) {
+        this.isAvc = Optional.empty();
+      }
+      else {
+        this.isAvc = Optional.of(isAvc.get());
+      }
       return this;
     }
 
@@ -291,6 +420,20 @@ public final class VideoStream {
     }
 
     @java.lang.Override
+    public _FinalStage height(Nullable<Integer> height) {
+      if (height.isNull()) {
+        this.height = null;
+      }
+      else if (height.isEmpty()) {
+        this.height = Optional.empty();
+      }
+      else {
+        this.height = Optional.of(height.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage height(Integer height) {
       this.height = Optional.ofNullable(height);
       return this;
@@ -303,6 +446,20 @@ public final class VideoStream {
     )
     public _FinalStage height(Optional<Integer> height) {
       this.height = height;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage width(Nullable<Integer> width) {
+      if (width.isNull()) {
+        this.width = null;
+      }
+      else if (width.isEmpty()) {
+        this.width = Optional.empty();
+      }
+      else {
+        this.width = Optional.of(width.get());
+      }
       return this;
     }
 
@@ -323,6 +480,20 @@ public final class VideoStream {
     }
 
     @java.lang.Override
+    public _FinalStage profile(Nullable<String> profile) {
+      if (profile.isNull()) {
+        this.profile = null;
+      }
+      else if (profile.isEmpty()) {
+        this.profile = Optional.empty();
+      }
+      else {
+        this.profile = Optional.of(profile.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage profile(String profile) {
       this.profile = Optional.ofNullable(profile);
       return this;
@@ -339,6 +510,20 @@ public final class VideoStream {
     }
 
     @java.lang.Override
+    public _FinalStage codecTag(Nullable<String> codecTag) {
+      if (codecTag.isNull()) {
+        this.codecTag = null;
+      }
+      else if (codecTag.isEmpty()) {
+        this.codecTag = Optional.empty();
+      }
+      else {
+        this.codecTag = Optional.of(codecTag.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage codecTag(String codecTag) {
       this.codecTag = Optional.ofNullable(codecTag);
       return this;
@@ -351,6 +536,20 @@ public final class VideoStream {
     )
     public _FinalStage codecTag(Optional<String> codecTag) {
       this.codecTag = codecTag;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage codecTagString(Nullable<String> codecTagString) {
+      if (codecTagString.isNull()) {
+        this.codecTagString = null;
+      }
+      else if (codecTagString.isEmpty()) {
+        this.codecTagString = Optional.empty();
+      }
+      else {
+        this.codecTagString = Optional.of(codecTagString.get());
+      }
       return this;
     }
 

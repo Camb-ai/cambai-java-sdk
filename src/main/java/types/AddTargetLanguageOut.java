@@ -6,12 +6,15 @@ package types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Object;
 import java.lang.String;
@@ -44,8 +47,20 @@ public final class AddTargetLanguageOut {
     return message;
   }
 
-  @JsonProperty("task_id")
+  @JsonIgnore
   public Optional<String> getTaskId() {
+    if (taskId == null) {
+      return Optional.empty();
+    }
+    return taskId;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("task_id")
+  private Optional<String> _getTaskId() {
     return taskId;
   }
 
@@ -90,6 +105,8 @@ public final class AddTargetLanguageOut {
     _FinalStage taskId(Optional<String> taskId);
 
     _FinalStage taskId(String taskId);
+
+    _FinalStage taskId(Nullable<String> taskId);
   }
 
   @JsonIgnoreProperties(
@@ -117,6 +134,20 @@ public final class AddTargetLanguageOut {
     @JsonSetter("message")
     public _FinalStage message(@NotNull String message) {
       this.message = Objects.requireNonNull(message, "message must not be null");
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage taskId(Nullable<String> taskId) {
+      if (taskId.isNull()) {
+        this.taskId = null;
+      }
+      else if (taskId.isEmpty()) {
+        this.taskId = Optional.empty();
+      }
+      else {
+        this.taskId = Optional.of(taskId.get());
+      }
       return this;
     }
 

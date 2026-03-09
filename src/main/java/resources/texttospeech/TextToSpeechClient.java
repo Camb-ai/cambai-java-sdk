@@ -11,6 +11,7 @@ import core.CambApiException;
 import core.ClientOptions;
 import core.MediaTypes;
 import core.ObjectMappers;
+import core.QueryStringMapper;
 import core.RequestOptions;
 import core.ResponseBodyInputStream;
 import errors.UnprocessableEntityError;
@@ -71,6 +72,7 @@ public class TextToSpeechClient {
       .method("POST", body)
       .headers(Headers.of(clientOptions.headers(requestOptions)))
       .addHeader("Content-Type", "application/json")
+      .addHeader("Accept", "application/json")
       .build();
     OkHttpClient client = clientOptions.httpClient();
     if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -106,7 +108,7 @@ public class TextToSpeechClient {
     HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
       .addPathSegments("tts");if (request.getRunId().isPresent()) {
-        httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+        QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
       }
       Map<String, Object> properties = new HashMap<>();
       if (request.getProjectName().isPresent()) {
@@ -138,7 +140,8 @@ public class TextToSpeechClient {
         .url(httpUrl.build())
         .method("POST", body)
         .headers(Headers.of(clientOptions.headers(requestOptions)))
-        .addHeader("Content-Type", "application/json");
+        .addHeader("Content-Type", "application/json")
+        .addHeader("Accept", "application/json");
       Request okhttpRequest = _requestBuilder.build();
       OkHttpClient client = clientOptions.httpClient();
       if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -180,13 +183,14 @@ public class TextToSpeechClient {
 
         .addPathSegments("tts")
         .addPathSegment(taskId);if (request.getRunId().isPresent()) {
-          httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+          QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
           .url(httpUrl.build())
           .method("GET", null)
           .headers(Headers.of(clientOptions.headers(requestOptions)))
-          .addHeader("Content-Type", "application/json");
+          .addHeader("Content-Type", "application/json")
+          .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -309,13 +313,14 @@ public class TextToSpeechClient {
             httpUrl.addPathSegment(runId.get().toString());
           }
           if (request.getOutputType().isPresent()) {
-            httpUrl.addQueryParameter("output_type", request.getOutputType().get());
+            QueryStringMapper.addQueryParameter(httpUrl, "output_type", request.getOutputType().get(), false);
           }
           Request.Builder _requestBuilder = new Request.Builder()
             .url(httpUrl.build())
             .method("GET", null)
             .headers(Headers.of(clientOptions.headers(requestOptions)))
-            .addHeader("Content-Type", "application/json");
+            .addHeader("Content-Type", "application/json")
+            .addHeader("Accept", "application/json");
           Request okhttpRequest = _requestBuilder.build();
           OkHttpClient client = clientOptions.httpClient();
           if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -352,7 +357,7 @@ public class TextToSpeechClient {
           HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
             .addPathSegments("tts-results");if (request.getRunId().isPresent()) {
-              httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+              QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
             }
             RequestBody body;
             try {
@@ -365,7 +370,8 @@ public class TextToSpeechClient {
               .url(httpUrl.build())
               .method("POST", body)
               .headers(Headers.of(clientOptions.headers(requestOptions)))
-              .addHeader("Content-Type", "application/json");
+              .addHeader("Content-Type", "application/json")
+              .addHeader("Accept", "application/json");
             if (request.getTraceparent().isPresent()) {
               _requestBuilder.addHeader("traceparent", request.getTraceparent().get());
             }
@@ -411,13 +417,14 @@ public class TextToSpeechClient {
 
               .addPathSegments("discord/tts")
               .addPathSegment(taskId);if (request.getRunId().isPresent()) {
-                httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+                QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
               }
               Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
               Request okhttpRequest = _requestBuilder.build();
               OkHttpClient client = clientOptions.httpClient();
               if (requestOptions != null && requestOptions.getTimeout().isPresent()) {

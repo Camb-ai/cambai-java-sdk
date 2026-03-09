@@ -11,6 +11,7 @@ import core.CambApiException;
 import core.ClientOptions;
 import core.MediaTypes;
 import core.ObjectMappers;
+import core.QueryStringMapper;
 import core.RequestOptions;
 import errors.UnprocessableEntityError;
 import java.io.File;
@@ -64,13 +65,14 @@ public class DictionariesClient {
     HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
       .addPathSegments("dictionaries");if (request.getRunId().isPresent()) {
-        httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+        QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
       }
       Request.Builder _requestBuilder = new Request.Builder()
         .url(httpUrl.build())
         .method("GET", null)
         .headers(Headers.of(clientOptions.headers(requestOptions)))
-        .addHeader("Content-Type", "application/json");
+        .addHeader("Content-Type", "application/json")
+        .addHeader("Accept", "application/json");
       Request okhttpRequest = _requestBuilder.build();
       OkHttpClient client = clientOptions.httpClient();
       if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -108,7 +110,7 @@ public class DictionariesClient {
       HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
         .addPathSegments("dictionaries/create-from-file");if (request.getRunId().isPresent()) {
-          httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+          QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
         }
         MultipartBody.Builder body = new MultipartBody.Builder().setType(MultipartBody.FORM);
         try {
@@ -117,7 +119,7 @@ public class DictionariesClient {
           body.addFormDataPart("dictionary_file", dictionaryFile.getName(), RequestBody.create(dictionaryFileMimeTypeMediaType, dictionaryFile));
           body.addFormDataPart("dictionary_name", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getDictionaryName()));
           if (request.getDictionaryDescription().isPresent()) {
-            body.addFormDataPart("dictionary_description", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getDictionaryDescription()));
+            body.addFormDataPart("dictionary_description", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getDictionaryDescription().get()));
           }
         }
         catch(Exception e) {
@@ -126,7 +128,8 @@ public class DictionariesClient {
         Request.Builder _requestBuilder = new Request.Builder()
           .url(httpUrl.build())
           .method("POST", body.build())
-          .headers(Headers.of(clientOptions.headers(requestOptions)));
+          .headers(Headers.of(clientOptions.headers(requestOptions)))
+          .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -169,13 +172,14 @@ public class DictionariesClient {
 
           .addPathSegments("dictionaries")
           .addPathSegment(Integer.toString(dictionaryId));if (request.getRunId().isPresent()) {
-            httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+            QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
           }
           Request.Builder _requestBuilder = new Request.Builder()
             .url(httpUrl.build())
             .method("GET", null)
             .headers(Headers.of(clientOptions.headers(requestOptions)))
-            .addHeader("Content-Type", "application/json");
+            .addHeader("Content-Type", "application/json")
+            .addHeader("Accept", "application/json");
           Request okhttpRequest = _requestBuilder.build();
           OkHttpClient client = clientOptions.httpClient();
           if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -218,13 +222,14 @@ public class DictionariesClient {
 
             .addPathSegments("dictionaries")
             .addPathSegment(Integer.toString(dictionaryId));if (request.getRunId().isPresent()) {
-              httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+              QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
             }
             Request.Builder _requestBuilder = new Request.Builder()
               .url(httpUrl.build())
               .method("DELETE", null)
               .headers(Headers.of(clientOptions.headers(requestOptions)))
-              .addHeader("Content-Type", "application/json");
+              .addHeader("Content-Type", "application/json")
+              .addHeader("Accept", "application/json");
             Request okhttpRequest = _requestBuilder.build();
             OkHttpClient client = clientOptions.httpClient();
             if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -268,19 +273,20 @@ public class DictionariesClient {
               .addPathSegments("dictionaries")
               .addPathSegment(Integer.toString(dictionaryId))
               .addPathSegments("full-details");if (request.getLimit().isPresent()) {
-                httpUrl.addQueryParameter("limit", request.getLimit().get().toString());
+                QueryStringMapper.addQueryParameter(httpUrl, "limit", request.getLimit().get().toString(), false);
               }
               if (request.getSearchTerm().isPresent()) {
-                httpUrl.addQueryParameter("search_term", request.getSearchTerm().get());
+                QueryStringMapper.addQueryParameter(httpUrl, "search_term", request.getSearchTerm().get(), false);
               }
               if (request.getRunId().isPresent()) {
-                httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+                QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
               }
               Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
               Request okhttpRequest = _requestBuilder.build();
               OkHttpClient client = clientOptions.httpClient();
               if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -318,7 +324,7 @@ public class DictionariesClient {
                 .addPathSegments("dictionaries")
                 .addPathSegment(Integer.toString(dictionaryId))
                 .addPathSegments("add-term");if (request.getRunId().isPresent()) {
-                  httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+                  QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
                 }
                 Map<String, Object> properties = new HashMap<>();
                 properties.put("translations", request.getTranslations());
@@ -333,7 +339,8 @@ public class DictionariesClient {
                   .url(httpUrl.build())
                   .method("POST", body)
                   .headers(Headers.of(clientOptions.headers(requestOptions)))
-                  .addHeader("Content-Type", "application/json");
+                  .addHeader("Content-Type", "application/json")
+                  .addHeader("Accept", "application/json");
                 Request okhttpRequest = _requestBuilder.build();
                 OkHttpClient client = clientOptions.httpClient();
                 if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -373,7 +380,7 @@ public class DictionariesClient {
                   .addPathSegments("dictionaries/term")
                   .addPathSegment(Integer.toString(dictionaryId))
                   .addPathSegment(Integer.toString(termId));if (request.getRunId().isPresent()) {
-                    httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+                    QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
                   }
                   Map<String, Object> properties = new HashMap<>();
                   properties.put("translations", request.getTranslations());
@@ -388,7 +395,8 @@ public class DictionariesClient {
                     .url(httpUrl.build())
                     .method("PUT", body)
                     .headers(Headers.of(clientOptions.headers(requestOptions)))
-                    .addHeader("Content-Type", "application/json");
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Accept", "application/json");
                   Request okhttpRequest = _requestBuilder.build();
                   OkHttpClient client = clientOptions.httpClient();
                   if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -432,13 +440,14 @@ public class DictionariesClient {
                     .addPathSegments("dictionaries/term")
                     .addPathSegment(Integer.toString(dictionaryId))
                     .addPathSegment(Integer.toString(termId));if (request.getRunId().isPresent()) {
-                      httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+                      QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
                     }
                     Request.Builder _requestBuilder = new Request.Builder()
                       .url(httpUrl.build())
                       .method("DELETE", null)
                       .headers(Headers.of(clientOptions.headers(requestOptions)))
-                      .addHeader("Content-Type", "application/json");
+                      .addHeader("Content-Type", "application/json")
+                      .addHeader("Accept", "application/json");
                     Request okhttpRequest = _requestBuilder.build();
                     OkHttpClient client = clientOptions.httpClient();
                     if (requestOptions != null && requestOptions.getTimeout().isPresent()) {

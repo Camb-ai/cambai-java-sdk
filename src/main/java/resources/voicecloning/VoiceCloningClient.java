@@ -10,6 +10,7 @@ import core.CambApiApiException;
 import core.CambApiException;
 import core.ClientOptions;
 import core.ObjectMappers;
+import core.QueryStringMapper;
 import core.RequestOptions;
 import errors.UnprocessableEntityError;
 import java.io.File;
@@ -56,13 +57,14 @@ public class VoiceCloningClient {
     HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
       .addPathSegments("list-voices");if (request.getRunId().isPresent()) {
-        httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+        QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
       }
       Request.Builder _requestBuilder = new Request.Builder()
         .url(httpUrl.build())
         .method("GET", null)
         .headers(Headers.of(clientOptions.headers(requestOptions)))
-        .addHeader("Content-Type", "application/json");
+        .addHeader("Content-Type", "application/json")
+        .addHeader("Accept", "application/json");
       Request okhttpRequest = _requestBuilder.build();
       OkHttpClient client = clientOptions.httpClient();
       if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -99,26 +101,26 @@ public class VoiceCloningClient {
       HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
         .addPathSegments("create-custom-voice");if (request.getRunId().isPresent()) {
-          httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+          QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
         }
         MultipartBody.Builder body = new MultipartBody.Builder().setType(MultipartBody.FORM);
         try {
           body.addFormDataPart("voice_name", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getVoiceName()));
           body.addFormDataPart("gender", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getGender()));
           if (request.getDescription().isPresent()) {
-            body.addFormDataPart("description", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getDescription()));
+            body.addFormDataPart("description", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getDescription().get()));
           }
           if (request.getPublishVoiceToMarketPlace().isPresent()) {
-            body.addFormDataPart("publish_voice_to_market_place", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getPublishVoiceToMarketPlace()));
+            body.addFormDataPart("publish_voice_to_market_place", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getPublishVoiceToMarketPlace().get()));
           }
           if (request.getAge().isPresent()) {
-            body.addFormDataPart("age", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getAge()));
+            body.addFormDataPart("age", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getAge().get()));
           }
           if (request.getLanguage().isPresent()) {
-            body.addFormDataPart("language", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getLanguage()));
+            body.addFormDataPart("language", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getLanguage().get()));
           }
           if (request.getEnhanceAudio().isPresent()) {
-            body.addFormDataPart("enhance_audio", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getEnhanceAudio()));
+            body.addFormDataPart("enhance_audio", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getEnhanceAudio().get()));
           }
           String fileMimeType = Files.probeContentType(file.toPath());
           MediaType fileMimeTypeMediaType = fileMimeType != null ? MediaType.parse(fileMimeType) : null;
@@ -130,7 +132,8 @@ public class VoiceCloningClient {
         Request.Builder _requestBuilder = new Request.Builder()
           .url(httpUrl.build())
           .method("POST", body.build())
-          .headers(Headers.of(clientOptions.headers(requestOptions)));
+          .headers(Headers.of(clientOptions.headers(requestOptions)))
+          .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {

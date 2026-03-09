@@ -6,12 +6,15 @@ package resources.dictionaries.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Integer;
 import java.lang.Object;
@@ -44,8 +47,11 @@ public final class BodyCreateDictionaryFromFileDictionariesCreateFromFilePost {
     this.additionalProperties = additionalProperties;
   }
 
-  @JsonProperty("run_id")
+  @JsonIgnore
   public Optional<Integer> getRunId() {
+    if (runId == null) {
+      return Optional.empty();
+    }
     return runId;
   }
 
@@ -60,8 +66,29 @@ public final class BodyCreateDictionaryFromFileDictionariesCreateFromFilePost {
   /**
    * @return The description of the dictionary to be created. This is an optional field that is used to help you provide some info about your dictionaries for better organization.
    */
-  @JsonProperty("dictionary_description")
+  @JsonIgnore
   public Optional<String> getDictionaryDescription() {
+    if (dictionaryDescription == null) {
+      return Optional.empty();
+    }
+    return dictionaryDescription;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("run_id")
+  private Optional<Integer> _getRunId() {
+    return runId;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("dictionary_description")
+  private Optional<String> _getDictionaryDescription() {
     return dictionaryDescription;
   }
 
@@ -107,9 +134,13 @@ public final class BodyCreateDictionaryFromFileDictionariesCreateFromFilePost {
 
     _FinalStage runId(Integer runId);
 
+    _FinalStage runId(Nullable<Integer> runId);
+
     _FinalStage dictionaryDescription(Optional<String> dictionaryDescription);
 
     _FinalStage dictionaryDescription(String dictionaryDescription);
+
+    _FinalStage dictionaryDescription(Nullable<String> dictionaryDescription);
   }
 
   @JsonIgnoreProperties(
@@ -152,6 +183,24 @@ public final class BodyCreateDictionaryFromFileDictionariesCreateFromFilePost {
      * @return Reference to {@code this} so that method calls can be chained together.
      */
     @java.lang.Override
+    public _FinalStage dictionaryDescription(Nullable<String> dictionaryDescription) {
+      if (dictionaryDescription.isNull()) {
+        this.dictionaryDescription = null;
+      }
+      else if (dictionaryDescription.isEmpty()) {
+        this.dictionaryDescription = Optional.empty();
+      }
+      else {
+        this.dictionaryDescription = Optional.of(dictionaryDescription.get());
+      }
+      return this;
+    }
+
+    /**
+     * <p>The description of the dictionary to be created. This is an optional field that is used to help you provide some info about your dictionaries for better organization.</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
+    @java.lang.Override
     public _FinalStage dictionaryDescription(String dictionaryDescription) {
       this.dictionaryDescription = Optional.ofNullable(dictionaryDescription);
       return this;
@@ -164,6 +213,20 @@ public final class BodyCreateDictionaryFromFileDictionariesCreateFromFilePost {
     )
     public _FinalStage dictionaryDescription(Optional<String> dictionaryDescription) {
       this.dictionaryDescription = dictionaryDescription;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage runId(Nullable<Integer> runId) {
+      if (runId.isNull()) {
+        this.runId = null;
+      }
+      else if (runId.isEmpty()) {
+        this.runId = Optional.empty();
+      }
+      else {
+        this.runId = Optional.of(runId.get());
+      }
       return this;
     }
 

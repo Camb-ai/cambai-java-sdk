@@ -11,6 +11,7 @@ import core.CambApiException;
 import core.ClientOptions;
 import core.MediaTypes;
 import core.ObjectMappers;
+import core.QueryStringMapper;
 import core.RequestOptions;
 import errors.UnprocessableEntityError;
 import java.io.File;
@@ -62,7 +63,7 @@ public class AudioSeparationClient {
     HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
       .addPathSegments("audio-separation");if (request.getRunId().isPresent()) {
-        httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+        QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
       }
       MultipartBody.Builder body = new MultipartBody.Builder().setType(MultipartBody.FORM);
       try {
@@ -72,13 +73,13 @@ public class AudioSeparationClient {
           body.addFormDataPart("media_file", mediaFile.get().getName(), RequestBody.create(mediaFileMimeTypeMediaType, mediaFile.get()));
         }
         if (request.getProjectName().isPresent()) {
-          body.addFormDataPart("project_name", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getProjectName()));
+          body.addFormDataPart("project_name", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getProjectName().get()));
         }
         if (request.getProjectDescription().isPresent()) {
-          body.addFormDataPart("project_description", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getProjectDescription()));
+          body.addFormDataPart("project_description", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getProjectDescription().get()));
         }
         if (request.getFolderId().isPresent()) {
-          body.addFormDataPart("folder_id", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getFolderId()));
+          body.addFormDataPart("folder_id", ObjectMappers.JSON_MAPPER.writeValueAsString(request.getFolderId().get()));
         }
       }
       catch(Exception e) {
@@ -87,7 +88,8 @@ public class AudioSeparationClient {
       Request.Builder _requestBuilder = new Request.Builder()
         .url(httpUrl.build())
         .method("POST", body.build())
-        .headers(Headers.of(clientOptions.headers(requestOptions)));
+        .headers(Headers.of(clientOptions.headers(requestOptions)))
+        .addHeader("Accept", "application/json");
       if (request.getTraceparent().isPresent()) {
         _requestBuilder.addHeader("traceparent", request.getTraceparent().get());
       }
@@ -133,13 +135,14 @@ public class AudioSeparationClient {
 
         .addPathSegments("audio-separation")
         .addPathSegment(taskId);if (request.getRunId().isPresent()) {
-          httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
+          QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
           .url(httpUrl.build())
           .method("GET", null)
           .headers(Headers.of(clientOptions.headers(requestOptions)))
-          .addHeader("Content-Type", "application/json");
+          .addHeader("Content-Type", "application/json")
+          .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -178,17 +181,75 @@ public class AudioSeparationClient {
       public GetAudioSeparationResultOut getAudioSeparationRunInfo(Optional<Integer> runId,
           GetAudioSeparationRunInfoAudioSeparationResultRunIdGetRequest request,
           RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
 
           .addPathSegments("audio-separation-result");
           if (runId.isPresent()) {
             httpUrl.addPathSegment(runId.get().toString());
           }
+
+          .build();
+        Request.Builder _requestBuilder = new Request.Builder()
+          .url(httpUrl)
+          .method("GET", null)
+          .headers(Headers.of(clientOptions.headers(requestOptions)))
+          .addHeader("Content-Type", "application/json")
+          .addHeader("Accept", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+          client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+          ResponseBody responseBody = response.body();
+          if (response.isSuccessful()) {
+            return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), GetAudioSeparationResultOut.class);
+          }
+          String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+          try {
+            if (response.code() == 422) {
+              throw new UnprocessableEntityError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, HttpValidationError.class));
+            }
+          }
+          catch (JsonProcessingException ignored) {
+            // unable to map error response, throwing generic error
+          }
+          throw new CambApiApiException("Error with status code " + response.code(), response.code(), ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+        }
+        catch (IOException e) {
+          throw new CambApiException("Network error executing HTTP request", e);
+        }
+      }
+
+      public Map<String, GetAudioSeparationResultOut> getAudioSeparationRunsResults(
+          GetAudioSeparationRunsResultsAudioSeparationResultsPostRequest request) {
+        return getAudioSeparationRunsResults(request,null);
+      }
+
+      public Map<String, GetAudioSeparationResultOut> getAudioSeparationRunsResults(
+          GetAudioSeparationRunsResultsAudioSeparationResultsPostRequest request,
+          RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
+
+          .addPathSegments("audio-separation-results");if (request.getRunId().isPresent()) {
+            QueryStringMapper.addQueryParameter(httpUrl, "run_id", request.getRunId().get().toString(), false);
+          }
+          RequestBody body;
+          try {
+            body = RequestBody.create(ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()), MediaTypes.APPLICATION_JSON);
+          }
+          catch(Exception e) {
+            throw new RuntimeException(e);
+          }
           Request.Builder _requestBuilder = new Request.Builder()
             .url(httpUrl.build())
-            .method("GET", null)
+            .method("POST", body)
             .headers(Headers.of(clientOptions.headers(requestOptions)))
-            .addHeader("Content-Type", "application/json");
+            .addHeader("Content-Type", "application/json")
+            .addHeader("Accept", "application/json");
+          if (request.getTraceparent().isPresent()) {
+            _requestBuilder.addHeader("traceparent", request.getTraceparent().get());
+          }
           Request okhttpRequest = _requestBuilder.build();
           OkHttpClient client = clientOptions.httpClient();
           if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -197,7 +258,7 @@ public class AudioSeparationClient {
           try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-              return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), GetAudioSeparationResultOut.class);
+              return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), new TypeReference<Map<String, GetAudioSeparationResultOut>>() {});
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
@@ -214,58 +275,4 @@ public class AudioSeparationClient {
             throw new CambApiException("Network error executing HTTP request", e);
           }
         }
-
-        public Map<String, GetAudioSeparationResultOut> getAudioSeparationRunsResults(
-            GetAudioSeparationRunsResultsAudioSeparationResultsPostRequest request) {
-          return getAudioSeparationRunsResults(request,null);
-        }
-
-        public Map<String, GetAudioSeparationResultOut> getAudioSeparationRunsResults(
-            GetAudioSeparationRunsResultsAudioSeparationResultsPostRequest request,
-            RequestOptions requestOptions) {
-          HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl()).newBuilder()
-
-            .addPathSegments("audio-separation-results");if (request.getRunId().isPresent()) {
-              httpUrl.addQueryParameter("run_id", request.getRunId().get().toString());
-            }
-            RequestBody body;
-            try {
-              body = RequestBody.create(ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()), MediaTypes.APPLICATION_JSON);
-            }
-            catch(Exception e) {
-              throw new RuntimeException(e);
-            }
-            Request.Builder _requestBuilder = new Request.Builder()
-              .url(httpUrl.build())
-              .method("POST", body)
-              .headers(Headers.of(clientOptions.headers(requestOptions)))
-              .addHeader("Content-Type", "application/json");
-            if (request.getTraceparent().isPresent()) {
-              _requestBuilder.addHeader("traceparent", request.getTraceparent().get());
-            }
-            Request okhttpRequest = _requestBuilder.build();
-            OkHttpClient client = clientOptions.httpClient();
-            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-              client = clientOptions.httpClientWithTimeout(requestOptions);
-            }
-            try (Response response = client.newCall(okhttpRequest).execute()) {
-              ResponseBody responseBody = response.body();
-              if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), new TypeReference<Map<String, GetAudioSeparationResultOut>>() {});
-              }
-              String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-              try {
-                if (response.code() == 422) {
-                  throw new UnprocessableEntityError(ObjectMappers.JSON_MAPPER.readValue(responseBodyString, HttpValidationError.class));
-                }
-              }
-              catch (JsonProcessingException ignored) {
-                // unable to map error response, throwing generic error
-              }
-              throw new CambApiApiException("Error with status code " + response.code(), response.code(), ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-            }
-            catch (IOException e) {
-              throw new CambApiException("Network error executing HTTP request", e);
-            }
-          }
-        }
+      }

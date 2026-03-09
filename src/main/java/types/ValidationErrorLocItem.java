@@ -86,7 +86,7 @@ public final class ValidationErrorLocItem {
     }
 
     @java.lang.Override
-    public ValidationErrorLocItem deserialize(JsonParser p, DeserializationContext ctxt) throws
+    public ValidationErrorLocItem deserialize(JsonParser p, DeserializationContext context) throws
         IOException {
       Object value = p.readValueAs(Object.class);
       try {

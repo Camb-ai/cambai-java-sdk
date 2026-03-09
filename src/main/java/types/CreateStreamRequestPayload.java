@@ -6,12 +6,15 @@ package types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Integer;
 import java.lang.Object;
@@ -80,16 +83,22 @@ public final class CreateStreamRequestPayload {
   /**
    * @return The name of the stream.
    */
-  @JsonProperty("name")
+  @JsonIgnore
   public Optional<String> getName() {
+    if (name == null) {
+      return Optional.empty();
+    }
     return name;
   }
 
   /**
    * @return The description of the stream.
    */
-  @JsonProperty("description")
+  @JsonIgnore
   public Optional<String> getDescription() {
+    if (description == null) {
+      return Optional.empty();
+    }
     return description;
   }
 
@@ -104,8 +113,11 @@ public final class CreateStreamRequestPayload {
   /**
    * @return The maximum duration in minutes for the stream creation process before timing out.
    */
-  @JsonProperty("timeout_in_mins")
+  @JsonIgnore
   public Optional<Integer> getTimeoutInMins() {
+    if (timeoutInMins == null) {
+      return Optional.empty();
+    }
     return timeoutInMins;
   }
 
@@ -149,18 +161,81 @@ public final class CreateStreamRequestPayload {
     return targetStreams;
   }
 
-  @JsonProperty("start_time")
+  @JsonIgnore
   public Optional<OffsetDateTime> getStartTime() {
+    if (startTime == null) {
+      return Optional.empty();
+    }
     return startTime;
   }
 
-  @JsonProperty("end_time")
+  @JsonIgnore
   public Optional<OffsetDateTime> getEndTime() {
+    if (endTime == null) {
+      return Optional.empty();
+    }
     return endTime;
   }
 
-  @JsonProperty("timezone")
+  @JsonIgnore
   public Optional<String> getTimezone() {
+    if (timezone == null) {
+      return Optional.empty();
+    }
+    return timezone;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("name")
+  private Optional<String> _getName() {
+    return name;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("description")
+  private Optional<String> _getDescription() {
+    return description;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("timeout_in_mins")
+  private Optional<Integer> _getTimeoutInMins() {
+    return timeoutInMins;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("start_time")
+  private Optional<OffsetDateTime> _getStartTime() {
+    return startTime;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("end_time")
+  private Optional<OffsetDateTime> _getEndTime() {
+    return endTime;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("timezone")
+  private Optional<String> _getTimezone() {
     return timezone;
   }
 
@@ -210,9 +285,13 @@ public final class CreateStreamRequestPayload {
 
     _FinalStage name(String name);
 
+    _FinalStage name(Nullable<String> name);
+
     _FinalStage description(Optional<String> description);
 
     _FinalStage description(String description);
+
+    _FinalStage description(Nullable<String> description);
 
     _FinalStage initialDelay(Optional<Integer> initialDelay);
 
@@ -221,6 +300,8 @@ public final class CreateStreamRequestPayload {
     _FinalStage timeoutInMins(Optional<Integer> timeoutInMins);
 
     _FinalStage timeoutInMins(Integer timeoutInMins);
+
+    _FinalStage timeoutInMins(Nullable<Integer> timeoutInMins);
 
     _FinalStage voices(List<Integer> voices);
 
@@ -244,13 +325,19 @@ public final class CreateStreamRequestPayload {
 
     _FinalStage startTime(OffsetDateTime startTime);
 
+    _FinalStage startTime(Nullable<OffsetDateTime> startTime);
+
     _FinalStage endTime(Optional<OffsetDateTime> endTime);
 
     _FinalStage endTime(OffsetDateTime endTime);
 
+    _FinalStage endTime(Nullable<OffsetDateTime> endTime);
+
     _FinalStage timezone(Optional<String> timezone);
 
     _FinalStage timezone(String timezone);
+
+    _FinalStage timezone(Nullable<String> timezone);
   }
 
   @JsonIgnoreProperties(
@@ -327,6 +414,20 @@ public final class CreateStreamRequestPayload {
     }
 
     @java.lang.Override
+    public _FinalStage timezone(Nullable<String> timezone) {
+      if (timezone.isNull()) {
+        this.timezone = null;
+      }
+      else if (timezone.isEmpty()) {
+        this.timezone = Optional.empty();
+      }
+      else {
+        this.timezone = Optional.of(timezone.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage timezone(String timezone) {
       this.timezone = Optional.ofNullable(timezone);
       return this;
@@ -343,6 +444,20 @@ public final class CreateStreamRequestPayload {
     }
 
     @java.lang.Override
+    public _FinalStage endTime(Nullable<OffsetDateTime> endTime) {
+      if (endTime.isNull()) {
+        this.endTime = null;
+      }
+      else if (endTime.isEmpty()) {
+        this.endTime = Optional.empty();
+      }
+      else {
+        this.endTime = Optional.of(endTime.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage endTime(OffsetDateTime endTime) {
       this.endTime = Optional.ofNullable(endTime);
       return this;
@@ -355,6 +470,20 @@ public final class CreateStreamRequestPayload {
     )
     public _FinalStage endTime(Optional<OffsetDateTime> endTime) {
       this.endTime = endTime;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage startTime(Nullable<OffsetDateTime> startTime) {
+      if (startTime.isNull()) {
+        this.startTime = null;
+      }
+      else if (startTime.isEmpty()) {
+        this.startTime = Optional.empty();
+      }
+      else {
+        this.startTime = Optional.of(startTime.get());
+      }
       return this;
     }
 
@@ -472,6 +601,24 @@ public final class CreateStreamRequestPayload {
      * @return Reference to {@code this} so that method calls can be chained together.
      */
     @java.lang.Override
+    public _FinalStage timeoutInMins(Nullable<Integer> timeoutInMins) {
+      if (timeoutInMins.isNull()) {
+        this.timeoutInMins = null;
+      }
+      else if (timeoutInMins.isEmpty()) {
+        this.timeoutInMins = Optional.empty();
+      }
+      else {
+        this.timeoutInMins = Optional.of(timeoutInMins.get());
+      }
+      return this;
+    }
+
+    /**
+     * <p>The maximum duration in minutes for the stream creation process before timing out.</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
+    @java.lang.Override
     public _FinalStage timeoutInMins(Integer timeoutInMins) {
       this.timeoutInMins = Optional.ofNullable(timeoutInMins);
       return this;
@@ -512,6 +659,24 @@ public final class CreateStreamRequestPayload {
      * @return Reference to {@code this} so that method calls can be chained together.
      */
     @java.lang.Override
+    public _FinalStage description(Nullable<String> description) {
+      if (description.isNull()) {
+        this.description = null;
+      }
+      else if (description.isEmpty()) {
+        this.description = Optional.empty();
+      }
+      else {
+        this.description = Optional.of(description.get());
+      }
+      return this;
+    }
+
+    /**
+     * <p>The description of the stream.</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
+    @java.lang.Override
     public _FinalStage description(String description) {
       this.description = Optional.ofNullable(description);
       return this;
@@ -524,6 +689,24 @@ public final class CreateStreamRequestPayload {
     )
     public _FinalStage description(Optional<String> description) {
       this.description = description;
+      return this;
+    }
+
+    /**
+     * <p>The name of the stream.</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
+    @java.lang.Override
+    public _FinalStage name(Nullable<String> name) {
+      if (name.isNull()) {
+        this.name = null;
+      }
+      else if (name.isEmpty()) {
+        this.name = Optional.empty();
+      }
+      else {
+        this.name = Optional.of(name.get());
+      }
       return this;
     }
 

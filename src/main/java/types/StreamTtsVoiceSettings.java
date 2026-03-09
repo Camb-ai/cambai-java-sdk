@@ -6,12 +6,15 @@ package types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Boolean;
 import java.lang.Object;
@@ -30,32 +33,47 @@ public final class StreamTtsVoiceSettings {
 
   private final Optional<Boolean> maintainSourceAccent;
 
-  private final Optional<Boolean> applyRefLoudnessNorm;
-
   private final Map<String, Object> additionalProperties;
 
   private StreamTtsVoiceSettings(Optional<Boolean> enhanceReferenceAudioQuality,
-      Optional<Boolean> maintainSourceAccent, Optional<Boolean> applyRefLoudnessNorm,
-      Map<String, Object> additionalProperties) {
+      Optional<Boolean> maintainSourceAccent, Map<String, Object> additionalProperties) {
     this.enhanceReferenceAudioQuality = enhanceReferenceAudioQuality;
     this.maintainSourceAccent = maintainSourceAccent;
-    this.applyRefLoudnessNorm = applyRefLoudnessNorm;
     this.additionalProperties = additionalProperties;
   }
 
-  @JsonProperty("enhance_reference_audio_quality")
+  @JsonIgnore
   public Optional<Boolean> getEnhanceReferenceAudioQuality() {
+    if (enhanceReferenceAudioQuality == null) {
+      return Optional.empty();
+    }
     return enhanceReferenceAudioQuality;
   }
 
-  @JsonProperty("maintain_source_accent")
+  @JsonIgnore
   public Optional<Boolean> getMaintainSourceAccent() {
+    if (maintainSourceAccent == null) {
+      return Optional.empty();
+    }
     return maintainSourceAccent;
   }
 
-  @JsonProperty("apply_ref_loudness_norm")
-  public Optional<Boolean> getApplyRefLoudnessNorm() {
-    return applyRefLoudnessNorm;
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("enhance_reference_audio_quality")
+  private Optional<Boolean> _getEnhanceReferenceAudioQuality() {
+    return enhanceReferenceAudioQuality;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("maintain_source_accent")
+  private Optional<Boolean> _getMaintainSourceAccent() {
+    return maintainSourceAccent;
   }
 
   @java.lang.Override
@@ -70,12 +88,12 @@ public final class StreamTtsVoiceSettings {
   }
 
   private boolean equalTo(StreamTtsVoiceSettings other) {
-    return enhanceReferenceAudioQuality.equals(other.enhanceReferenceAudioQuality) && maintainSourceAccent.equals(other.maintainSourceAccent) && applyRefLoudnessNorm.equals(other.applyRefLoudnessNorm);
+    return enhanceReferenceAudioQuality.equals(other.enhanceReferenceAudioQuality) && maintainSourceAccent.equals(other.maintainSourceAccent);
   }
 
   @java.lang.Override
   public int hashCode() {
-    return Objects.hash(this.enhanceReferenceAudioQuality, this.maintainSourceAccent, this.applyRefLoudnessNorm);
+    return Objects.hash(this.enhanceReferenceAudioQuality, this.maintainSourceAccent);
   }
 
   @java.lang.Override
@@ -95,8 +113,6 @@ public final class StreamTtsVoiceSettings {
 
     private Optional<Boolean> maintainSourceAccent = Optional.empty();
 
-    private Optional<Boolean> applyRefLoudnessNorm = Optional.empty();
-
     @JsonAnySetter
     private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -106,7 +122,6 @@ public final class StreamTtsVoiceSettings {
     public Builder from(StreamTtsVoiceSettings other) {
       enhanceReferenceAudioQuality(other.getEnhanceReferenceAudioQuality());
       maintainSourceAccent(other.getMaintainSourceAccent());
-      applyRefLoudnessNorm(other.getApplyRefLoudnessNorm());
       return this;
     }
 
@@ -124,6 +139,19 @@ public final class StreamTtsVoiceSettings {
       return this;
     }
 
+    public Builder enhanceReferenceAudioQuality(Nullable<Boolean> enhanceReferenceAudioQuality) {
+      if (enhanceReferenceAudioQuality.isNull()) {
+        this.enhanceReferenceAudioQuality = null;
+      }
+      else if (enhanceReferenceAudioQuality.isEmpty()) {
+        this.enhanceReferenceAudioQuality = Optional.empty();
+      }
+      else {
+        this.enhanceReferenceAudioQuality = Optional.of(enhanceReferenceAudioQuality.get());
+      }
+      return this;
+    }
+
     @JsonSetter(
         value = "maintain_source_accent",
         nulls = Nulls.SKIP
@@ -138,22 +166,21 @@ public final class StreamTtsVoiceSettings {
       return this;
     }
 
-    @JsonSetter(
-        value = "apply_ref_loudness_norm",
-        nulls = Nulls.SKIP
-    )
-    public Builder applyRefLoudnessNorm(Optional<Boolean> applyRefLoudnessNorm) {
-      this.applyRefLoudnessNorm = applyRefLoudnessNorm;
-      return this;
-    }
-
-    public Builder applyRefLoudnessNorm(Boolean applyRefLoudnessNorm) {
-      this.applyRefLoudnessNorm = Optional.ofNullable(applyRefLoudnessNorm);
+    public Builder maintainSourceAccent(Nullable<Boolean> maintainSourceAccent) {
+      if (maintainSourceAccent.isNull()) {
+        this.maintainSourceAccent = null;
+      }
+      else if (maintainSourceAccent.isEmpty()) {
+        this.maintainSourceAccent = Optional.empty();
+      }
+      else {
+        this.maintainSourceAccent = Optional.of(maintainSourceAccent.get());
+      }
       return this;
     }
 
     public StreamTtsVoiceSettings build() {
-      return new StreamTtsVoiceSettings(enhanceReferenceAudioQuality, maintainSourceAccent, applyRefLoudnessNorm, additionalProperties);
+      return new StreamTtsVoiceSettings(enhanceReferenceAudioQuality, maintainSourceAccent, additionalProperties);
     }
   }
 }

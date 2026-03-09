@@ -6,12 +6,15 @@ package types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Boolean;
 import java.lang.Integer;
@@ -99,58 +102,190 @@ public final class TargetStream {
     return type;
   }
 
-  @JsonProperty("passphrase")
+  @JsonIgnore
   public Optional<String> getPassphrase() {
+    if (passphrase == null) {
+      return Optional.empty();
+    }
     return passphrase;
   }
 
-  @JsonProperty("streamid")
+  @JsonIgnore
   public Optional<String> getStreamid() {
+    if (streamid == null) {
+      return Optional.empty();
+    }
     return streamid;
   }
 
-  @JsonProperty("pids")
+  @JsonIgnore
   public Optional<List<Optional<Integer>>> getPids() {
+    if (pids == null) {
+      return Optional.empty();
+    }
     return pids;
   }
 
-  @JsonProperty("transcode_video")
+  @JsonIgnore
   public Optional<Boolean> getTranscodeVideo() {
+    if (transcodeVideo == null) {
+      return Optional.empty();
+    }
     return transcodeVideo;
   }
 
-  @JsonProperty("embed_subtitles")
+  @JsonIgnore
   public Optional<Boolean> getEmbedSubtitles() {
+    if (embedSubtitles == null) {
+      return Optional.empty();
+    }
     return embedSubtitles;
   }
 
-  @JsonProperty("audio_codec")
+  @JsonIgnore
   public Optional<String> getAudioCodec() {
+    if (audioCodec == null) {
+      return Optional.empty();
+    }
     return audioCodec;
   }
 
-  @JsonProperty("audio_bitrate")
+  @JsonIgnore
   public Optional<String> getAudioBitrate() {
+    if (audioBitrate == null) {
+      return Optional.empty();
+    }
     return audioBitrate;
   }
 
-  @JsonProperty("audio_channel_layout")
+  @JsonIgnore
   public Optional<String> getAudioChannelLayout() {
+    if (audioChannelLayout == null) {
+      return Optional.empty();
+    }
     return audioChannelLayout;
   }
 
-  @JsonProperty("latency")
+  @JsonIgnore
   public Optional<Integer> getLatency() {
+    if (latency == null) {
+      return Optional.empty();
+    }
     return latency;
   }
 
-  @JsonProperty("constant_bitrate")
+  @JsonIgnore
   public Optional<Boolean> getConstantBitrate() {
+    if (constantBitrate == null) {
+      return Optional.empty();
+    }
     return constantBitrate;
   }
 
-  @JsonProperty("relay_output")
+  @JsonIgnore
   public Optional<Boolean> getRelayOutput() {
+    if (relayOutput == null) {
+      return Optional.empty();
+    }
+    return relayOutput;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("passphrase")
+  private Optional<String> _getPassphrase() {
+    return passphrase;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("streamid")
+  private Optional<String> _getStreamid() {
+    return streamid;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("pids")
+  private Optional<List<Optional<Integer>>> _getPids() {
+    return pids;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("transcode_video")
+  private Optional<Boolean> _getTranscodeVideo() {
+    return transcodeVideo;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("embed_subtitles")
+  private Optional<Boolean> _getEmbedSubtitles() {
+    return embedSubtitles;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("audio_codec")
+  private Optional<String> _getAudioCodec() {
+    return audioCodec;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("audio_bitrate")
+  private Optional<String> _getAudioBitrate() {
+    return audioBitrate;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("audio_channel_layout")
+  private Optional<String> _getAudioChannelLayout() {
+    return audioChannelLayout;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("latency")
+  private Optional<Integer> _getLatency() {
+    return latency;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("constant_bitrate")
+  private Optional<Boolean> _getConstantBitrate() {
+    return constantBitrate;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("relay_output")
+  private Optional<Boolean> _getRelayOutput() {
     return relayOutput;
   }
 
@@ -206,45 +341,67 @@ public final class TargetStream {
 
     _FinalStage passphrase(String passphrase);
 
+    _FinalStage passphrase(Nullable<String> passphrase);
+
     _FinalStage streamid(Optional<String> streamid);
 
     _FinalStage streamid(String streamid);
+
+    _FinalStage streamid(Nullable<String> streamid);
 
     _FinalStage pids(Optional<List<Optional<Integer>>> pids);
 
     _FinalStage pids(List<Optional<Integer>> pids);
 
+    _FinalStage pids(Nullable<List<Optional<Integer>>> pids);
+
     _FinalStage transcodeVideo(Optional<Boolean> transcodeVideo);
 
     _FinalStage transcodeVideo(Boolean transcodeVideo);
+
+    _FinalStage transcodeVideo(Nullable<Boolean> transcodeVideo);
 
     _FinalStage embedSubtitles(Optional<Boolean> embedSubtitles);
 
     _FinalStage embedSubtitles(Boolean embedSubtitles);
 
+    _FinalStage embedSubtitles(Nullable<Boolean> embedSubtitles);
+
     _FinalStage audioCodec(Optional<String> audioCodec);
 
     _FinalStage audioCodec(String audioCodec);
+
+    _FinalStage audioCodec(Nullable<String> audioCodec);
 
     _FinalStage audioBitrate(Optional<String> audioBitrate);
 
     _FinalStage audioBitrate(String audioBitrate);
 
+    _FinalStage audioBitrate(Nullable<String> audioBitrate);
+
     _FinalStage audioChannelLayout(Optional<String> audioChannelLayout);
 
     _FinalStage audioChannelLayout(String audioChannelLayout);
+
+    _FinalStage audioChannelLayout(Nullable<String> audioChannelLayout);
 
     _FinalStage latency(Optional<Integer> latency);
 
     _FinalStage latency(Integer latency);
 
+    _FinalStage latency(Nullable<Integer> latency);
+
     _FinalStage constantBitrate(Optional<Boolean> constantBitrate);
 
     _FinalStage constantBitrate(Boolean constantBitrate);
 
+    _FinalStage constantBitrate(Nullable<Boolean> constantBitrate);
+
     _FinalStage relayOutput(Optional<Boolean> relayOutput);
 
     _FinalStage relayOutput(Boolean relayOutput);
+
+    _FinalStage relayOutput(Nullable<Boolean> relayOutput);
   }
 
   @JsonIgnoreProperties(
@@ -319,6 +476,20 @@ public final class TargetStream {
     }
 
     @java.lang.Override
+    public _FinalStage relayOutput(Nullable<Boolean> relayOutput) {
+      if (relayOutput.isNull()) {
+        this.relayOutput = null;
+      }
+      else if (relayOutput.isEmpty()) {
+        this.relayOutput = Optional.empty();
+      }
+      else {
+        this.relayOutput = Optional.of(relayOutput.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage relayOutput(Boolean relayOutput) {
       this.relayOutput = Optional.ofNullable(relayOutput);
       return this;
@@ -331,6 +502,20 @@ public final class TargetStream {
     )
     public _FinalStage relayOutput(Optional<Boolean> relayOutput) {
       this.relayOutput = relayOutput;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage constantBitrate(Nullable<Boolean> constantBitrate) {
+      if (constantBitrate.isNull()) {
+        this.constantBitrate = null;
+      }
+      else if (constantBitrate.isEmpty()) {
+        this.constantBitrate = Optional.empty();
+      }
+      else {
+        this.constantBitrate = Optional.of(constantBitrate.get());
+      }
       return this;
     }
 
@@ -351,6 +536,20 @@ public final class TargetStream {
     }
 
     @java.lang.Override
+    public _FinalStage latency(Nullable<Integer> latency) {
+      if (latency.isNull()) {
+        this.latency = null;
+      }
+      else if (latency.isEmpty()) {
+        this.latency = Optional.empty();
+      }
+      else {
+        this.latency = Optional.of(latency.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage latency(Integer latency) {
       this.latency = Optional.ofNullable(latency);
       return this;
@@ -363,6 +562,20 @@ public final class TargetStream {
     )
     public _FinalStage latency(Optional<Integer> latency) {
       this.latency = latency;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage audioChannelLayout(Nullable<String> audioChannelLayout) {
+      if (audioChannelLayout.isNull()) {
+        this.audioChannelLayout = null;
+      }
+      else if (audioChannelLayout.isEmpty()) {
+        this.audioChannelLayout = Optional.empty();
+      }
+      else {
+        this.audioChannelLayout = Optional.of(audioChannelLayout.get());
+      }
       return this;
     }
 
@@ -383,6 +596,20 @@ public final class TargetStream {
     }
 
     @java.lang.Override
+    public _FinalStage audioBitrate(Nullable<String> audioBitrate) {
+      if (audioBitrate.isNull()) {
+        this.audioBitrate = null;
+      }
+      else if (audioBitrate.isEmpty()) {
+        this.audioBitrate = Optional.empty();
+      }
+      else {
+        this.audioBitrate = Optional.of(audioBitrate.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage audioBitrate(String audioBitrate) {
       this.audioBitrate = Optional.ofNullable(audioBitrate);
       return this;
@@ -395,6 +622,20 @@ public final class TargetStream {
     )
     public _FinalStage audioBitrate(Optional<String> audioBitrate) {
       this.audioBitrate = audioBitrate;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage audioCodec(Nullable<String> audioCodec) {
+      if (audioCodec.isNull()) {
+        this.audioCodec = null;
+      }
+      else if (audioCodec.isEmpty()) {
+        this.audioCodec = Optional.empty();
+      }
+      else {
+        this.audioCodec = Optional.of(audioCodec.get());
+      }
       return this;
     }
 
@@ -415,6 +656,20 @@ public final class TargetStream {
     }
 
     @java.lang.Override
+    public _FinalStage embedSubtitles(Nullable<Boolean> embedSubtitles) {
+      if (embedSubtitles.isNull()) {
+        this.embedSubtitles = null;
+      }
+      else if (embedSubtitles.isEmpty()) {
+        this.embedSubtitles = Optional.empty();
+      }
+      else {
+        this.embedSubtitles = Optional.of(embedSubtitles.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage embedSubtitles(Boolean embedSubtitles) {
       this.embedSubtitles = Optional.ofNullable(embedSubtitles);
       return this;
@@ -427,6 +682,20 @@ public final class TargetStream {
     )
     public _FinalStage embedSubtitles(Optional<Boolean> embedSubtitles) {
       this.embedSubtitles = embedSubtitles;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage transcodeVideo(Nullable<Boolean> transcodeVideo) {
+      if (transcodeVideo.isNull()) {
+        this.transcodeVideo = null;
+      }
+      else if (transcodeVideo.isEmpty()) {
+        this.transcodeVideo = Optional.empty();
+      }
+      else {
+        this.transcodeVideo = Optional.of(transcodeVideo.get());
+      }
       return this;
     }
 
@@ -447,6 +716,20 @@ public final class TargetStream {
     }
 
     @java.lang.Override
+    public _FinalStage pids(Nullable<List<Optional<Integer>>> pids) {
+      if (pids.isNull()) {
+        this.pids = null;
+      }
+      else if (pids.isEmpty()) {
+        this.pids = Optional.empty();
+      }
+      else {
+        this.pids = Optional.of(pids.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage pids(List<Optional<Integer>> pids) {
       this.pids = Optional.ofNullable(pids);
       return this;
@@ -463,6 +746,20 @@ public final class TargetStream {
     }
 
     @java.lang.Override
+    public _FinalStage streamid(Nullable<String> streamid) {
+      if (streamid.isNull()) {
+        this.streamid = null;
+      }
+      else if (streamid.isEmpty()) {
+        this.streamid = Optional.empty();
+      }
+      else {
+        this.streamid = Optional.of(streamid.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage streamid(String streamid) {
       this.streamid = Optional.ofNullable(streamid);
       return this;
@@ -475,6 +772,20 @@ public final class TargetStream {
     )
     public _FinalStage streamid(Optional<String> streamid) {
       this.streamid = streamid;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage passphrase(Nullable<String> passphrase) {
+      if (passphrase.isNull()) {
+        this.passphrase = null;
+      }
+      else if (passphrase.isEmpty()) {
+        this.passphrase = Optional.empty();
+      }
+      else {
+        this.passphrase = Optional.of(passphrase.get());
+      }
       return this;
     }
 

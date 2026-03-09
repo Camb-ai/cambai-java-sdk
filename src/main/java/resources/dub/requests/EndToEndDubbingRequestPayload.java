@@ -6,12 +6,15 @@ package resources.dub.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Boolean;
 import java.lang.Integer;
@@ -76,23 +79,35 @@ public final class EndToEndDubbingRequestPayload {
     this.additionalProperties = additionalProperties;
   }
 
-  @JsonProperty("run_id")
+  @JsonIgnore
   public Optional<Integer> getRunId() {
+    if (runId == null) {
+      return Optional.empty();
+    }
     return runId;
   }
 
-  @JsonProperty("project_name")
+  @JsonIgnore
   public Optional<String> getProjectName() {
+    if (projectName == null) {
+      return Optional.empty();
+    }
     return projectName;
   }
 
-  @JsonProperty("project_description")
+  @JsonIgnore
   public Optional<String> getProjectDescription() {
+    if (projectDescription == null) {
+      return Optional.empty();
+    }
     return projectDescription;
   }
 
-  @JsonProperty("folder_id")
+  @JsonIgnore
   public Optional<Integer> getFolderId() {
+    if (folderId == null) {
+      return Optional.empty();
+    }
     return folderId;
   }
 
@@ -106,33 +121,141 @@ public final class EndToEndDubbingRequestPayload {
     return sourceLanguage;
   }
 
-  @JsonProperty("target_language")
+  @JsonIgnore
   public Optional<Integer> getTargetLanguage() {
+    if (targetLanguage == null) {
+      return Optional.empty();
+    }
     return targetLanguage;
   }
 
-  @JsonProperty("target_languages")
+  @JsonIgnore
   public Optional<List<Integer>> getTargetLanguages() {
+    if (targetLanguages == null) {
+      return Optional.empty();
+    }
     return targetLanguages;
   }
 
-  @JsonProperty("selected_audio_tracks")
+  @JsonIgnore
   public Optional<List<Integer>> getSelectedAudioTracks() {
+    if (selectedAudioTracks == null) {
+      return Optional.empty();
+    }
     return selectedAudioTracks;
   }
 
-  @JsonProperty("add_output_as_an_audio_track")
+  @JsonIgnore
   public Optional<Boolean> getAddOutputAsAnAudioTrack() {
+    if (addOutputAsAnAudioTrack == null) {
+      return Optional.empty();
+    }
     return addOutputAsAnAudioTrack;
   }
 
-  @JsonProperty("chosen_dictionaries")
+  @JsonIgnore
   public Optional<List<Integer>> getChosenDictionaries() {
+    if (chosenDictionaries == null) {
+      return Optional.empty();
+    }
     return chosenDictionaries;
   }
 
-  @JsonProperty("ai_optimization")
+  @JsonIgnore
   public Optional<Boolean> getAiOptimization() {
+    if (aiOptimization == null) {
+      return Optional.empty();
+    }
+    return aiOptimization;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("run_id")
+  private Optional<Integer> _getRunId() {
+    return runId;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("project_name")
+  private Optional<String> _getProjectName() {
+    return projectName;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("project_description")
+  private Optional<String> _getProjectDescription() {
+    return projectDescription;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("folder_id")
+  private Optional<Integer> _getFolderId() {
+    return folderId;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("target_language")
+  private Optional<Integer> _getTargetLanguage() {
+    return targetLanguage;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("target_languages")
+  private Optional<List<Integer>> _getTargetLanguages() {
+    return targetLanguages;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("selected_audio_tracks")
+  private Optional<List<Integer>> _getSelectedAudioTracks() {
+    return selectedAudioTracks;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("add_output_as_an_audio_track")
+  private Optional<Boolean> _getAddOutputAsAnAudioTrack() {
+    return addOutputAsAnAudioTrack;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("chosen_dictionaries")
+  private Optional<List<Integer>> _getChosenDictionaries() {
+    return chosenDictionaries;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("ai_optimization")
+  private Optional<Boolean> _getAiOptimization() {
     return aiOptimization;
   }
 
@@ -182,41 +305,61 @@ public final class EndToEndDubbingRequestPayload {
 
     _FinalStage runId(Integer runId);
 
+    _FinalStage runId(Nullable<Integer> runId);
+
     _FinalStage projectName(Optional<String> projectName);
 
     _FinalStage projectName(String projectName);
+
+    _FinalStage projectName(Nullable<String> projectName);
 
     _FinalStage projectDescription(Optional<String> projectDescription);
 
     _FinalStage projectDescription(String projectDescription);
 
+    _FinalStage projectDescription(Nullable<String> projectDescription);
+
     _FinalStage folderId(Optional<Integer> folderId);
 
     _FinalStage folderId(Integer folderId);
+
+    _FinalStage folderId(Nullable<Integer> folderId);
 
     _FinalStage targetLanguage(Optional<Integer> targetLanguage);
 
     _FinalStage targetLanguage(Integer targetLanguage);
 
+    _FinalStage targetLanguage(Nullable<Integer> targetLanguage);
+
     _FinalStage targetLanguages(Optional<List<Integer>> targetLanguages);
 
     _FinalStage targetLanguages(List<Integer> targetLanguages);
+
+    _FinalStage targetLanguages(Nullable<List<Integer>> targetLanguages);
 
     _FinalStage selectedAudioTracks(Optional<List<Integer>> selectedAudioTracks);
 
     _FinalStage selectedAudioTracks(List<Integer> selectedAudioTracks);
 
+    _FinalStage selectedAudioTracks(Nullable<List<Integer>> selectedAudioTracks);
+
     _FinalStage addOutputAsAnAudioTrack(Optional<Boolean> addOutputAsAnAudioTrack);
 
     _FinalStage addOutputAsAnAudioTrack(Boolean addOutputAsAnAudioTrack);
+
+    _FinalStage addOutputAsAnAudioTrack(Nullable<Boolean> addOutputAsAnAudioTrack);
 
     _FinalStage chosenDictionaries(Optional<List<Integer>> chosenDictionaries);
 
     _FinalStage chosenDictionaries(List<Integer> chosenDictionaries);
 
+    _FinalStage chosenDictionaries(Nullable<List<Integer>> chosenDictionaries);
+
     _FinalStage aiOptimization(Optional<Boolean> aiOptimization);
 
     _FinalStage aiOptimization(Boolean aiOptimization);
+
+    _FinalStage aiOptimization(Nullable<Boolean> aiOptimization);
   }
 
   @JsonIgnoreProperties(
@@ -285,6 +428,20 @@ public final class EndToEndDubbingRequestPayload {
     }
 
     @java.lang.Override
+    public _FinalStage aiOptimization(Nullable<Boolean> aiOptimization) {
+      if (aiOptimization.isNull()) {
+        this.aiOptimization = null;
+      }
+      else if (aiOptimization.isEmpty()) {
+        this.aiOptimization = Optional.empty();
+      }
+      else {
+        this.aiOptimization = Optional.of(aiOptimization.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage aiOptimization(Boolean aiOptimization) {
       this.aiOptimization = Optional.ofNullable(aiOptimization);
       return this;
@@ -297,6 +454,20 @@ public final class EndToEndDubbingRequestPayload {
     )
     public _FinalStage aiOptimization(Optional<Boolean> aiOptimization) {
       this.aiOptimization = aiOptimization;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage chosenDictionaries(Nullable<List<Integer>> chosenDictionaries) {
+      if (chosenDictionaries.isNull()) {
+        this.chosenDictionaries = null;
+      }
+      else if (chosenDictionaries.isEmpty()) {
+        this.chosenDictionaries = Optional.empty();
+      }
+      else {
+        this.chosenDictionaries = Optional.of(chosenDictionaries.get());
+      }
       return this;
     }
 
@@ -317,6 +488,20 @@ public final class EndToEndDubbingRequestPayload {
     }
 
     @java.lang.Override
+    public _FinalStage addOutputAsAnAudioTrack(Nullable<Boolean> addOutputAsAnAudioTrack) {
+      if (addOutputAsAnAudioTrack.isNull()) {
+        this.addOutputAsAnAudioTrack = null;
+      }
+      else if (addOutputAsAnAudioTrack.isEmpty()) {
+        this.addOutputAsAnAudioTrack = Optional.empty();
+      }
+      else {
+        this.addOutputAsAnAudioTrack = Optional.of(addOutputAsAnAudioTrack.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage addOutputAsAnAudioTrack(Boolean addOutputAsAnAudioTrack) {
       this.addOutputAsAnAudioTrack = Optional.ofNullable(addOutputAsAnAudioTrack);
       return this;
@@ -329,6 +514,20 @@ public final class EndToEndDubbingRequestPayload {
     )
     public _FinalStage addOutputAsAnAudioTrack(Optional<Boolean> addOutputAsAnAudioTrack) {
       this.addOutputAsAnAudioTrack = addOutputAsAnAudioTrack;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage selectedAudioTracks(Nullable<List<Integer>> selectedAudioTracks) {
+      if (selectedAudioTracks.isNull()) {
+        this.selectedAudioTracks = null;
+      }
+      else if (selectedAudioTracks.isEmpty()) {
+        this.selectedAudioTracks = Optional.empty();
+      }
+      else {
+        this.selectedAudioTracks = Optional.of(selectedAudioTracks.get());
+      }
       return this;
     }
 
@@ -349,6 +548,20 @@ public final class EndToEndDubbingRequestPayload {
     }
 
     @java.lang.Override
+    public _FinalStage targetLanguages(Nullable<List<Integer>> targetLanguages) {
+      if (targetLanguages.isNull()) {
+        this.targetLanguages = null;
+      }
+      else if (targetLanguages.isEmpty()) {
+        this.targetLanguages = Optional.empty();
+      }
+      else {
+        this.targetLanguages = Optional.of(targetLanguages.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage targetLanguages(List<Integer> targetLanguages) {
       this.targetLanguages = Optional.ofNullable(targetLanguages);
       return this;
@@ -361,6 +574,20 @@ public final class EndToEndDubbingRequestPayload {
     )
     public _FinalStage targetLanguages(Optional<List<Integer>> targetLanguages) {
       this.targetLanguages = targetLanguages;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage targetLanguage(Nullable<Integer> targetLanguage) {
+      if (targetLanguage.isNull()) {
+        this.targetLanguage = null;
+      }
+      else if (targetLanguage.isEmpty()) {
+        this.targetLanguage = Optional.empty();
+      }
+      else {
+        this.targetLanguage = Optional.of(targetLanguage.get());
+      }
       return this;
     }
 
@@ -381,6 +608,20 @@ public final class EndToEndDubbingRequestPayload {
     }
 
     @java.lang.Override
+    public _FinalStage folderId(Nullable<Integer> folderId) {
+      if (folderId.isNull()) {
+        this.folderId = null;
+      }
+      else if (folderId.isEmpty()) {
+        this.folderId = Optional.empty();
+      }
+      else {
+        this.folderId = Optional.of(folderId.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage folderId(Integer folderId) {
       this.folderId = Optional.ofNullable(folderId);
       return this;
@@ -393,6 +634,20 @@ public final class EndToEndDubbingRequestPayload {
     )
     public _FinalStage folderId(Optional<Integer> folderId) {
       this.folderId = folderId;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage projectDescription(Nullable<String> projectDescription) {
+      if (projectDescription.isNull()) {
+        this.projectDescription = null;
+      }
+      else if (projectDescription.isEmpty()) {
+        this.projectDescription = Optional.empty();
+      }
+      else {
+        this.projectDescription = Optional.of(projectDescription.get());
+      }
       return this;
     }
 
@@ -413,6 +668,20 @@ public final class EndToEndDubbingRequestPayload {
     }
 
     @java.lang.Override
+    public _FinalStage projectName(Nullable<String> projectName) {
+      if (projectName.isNull()) {
+        this.projectName = null;
+      }
+      else if (projectName.isEmpty()) {
+        this.projectName = Optional.empty();
+      }
+      else {
+        this.projectName = Optional.of(projectName.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage projectName(String projectName) {
       this.projectName = Optional.ofNullable(projectName);
       return this;
@@ -425,6 +694,20 @@ public final class EndToEndDubbingRequestPayload {
     )
     public _FinalStage projectName(Optional<String> projectName) {
       this.projectName = projectName;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage runId(Nullable<Integer> runId) {
+      if (runId.isNull()) {
+        this.runId = null;
+      }
+      else if (runId.isEmpty()) {
+        this.runId = Optional.empty();
+      }
+      else {
+        this.runId = Optional.of(runId.get());
+      }
       return this;
     }
 

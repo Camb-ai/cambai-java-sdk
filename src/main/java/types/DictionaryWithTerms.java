@@ -6,12 +6,15 @@ package types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Integer;
 import java.lang.Object;
@@ -69,28 +72,88 @@ public final class DictionaryWithTerms {
     return name;
   }
 
-  @JsonProperty("description")
+  @JsonIgnore
   public Optional<String> getDescription() {
+    if (description == null) {
+      return Optional.empty();
+    }
     return description;
   }
 
-  @JsonProperty("created_at")
+  @JsonIgnore
   public Optional<OffsetDateTime> getCreatedAt() {
+    if (createdAt == null) {
+      return Optional.empty();
+    }
     return createdAt;
   }
 
-  @JsonProperty("last_edited_at")
+  @JsonIgnore
   public Optional<OffsetDateTime> getLastEditedAt() {
+    if (lastEditedAt == null) {
+      return Optional.empty();
+    }
     return lastEditedAt;
   }
 
-  @JsonProperty("dictionary_terms")
+  @JsonIgnore
   public Optional<List<DictionaryTerm>> getDictionaryTerms() {
+    if (dictionaryTerms == null) {
+      return Optional.empty();
+    }
     return dictionaryTerms;
   }
 
-  @JsonProperty("languages")
+  @JsonIgnore
   public Optional<List<Integer>> getLanguages() {
+    if (languages == null) {
+      return Optional.empty();
+    }
+    return languages;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("description")
+  private Optional<String> _getDescription() {
+    return description;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("created_at")
+  private Optional<OffsetDateTime> _getCreatedAt() {
+    return createdAt;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("last_edited_at")
+  private Optional<OffsetDateTime> _getLastEditedAt() {
+    return lastEditedAt;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("dictionary_terms")
+  private Optional<List<DictionaryTerm>> _getDictionaryTerms() {
+    return dictionaryTerms;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("languages")
+  private Optional<List<Integer>> _getLanguages() {
     return languages;
   }
 
@@ -140,21 +203,31 @@ public final class DictionaryWithTerms {
 
     _FinalStage description(String description);
 
+    _FinalStage description(Nullable<String> description);
+
     _FinalStage createdAt(Optional<OffsetDateTime> createdAt);
 
     _FinalStage createdAt(OffsetDateTime createdAt);
+
+    _FinalStage createdAt(Nullable<OffsetDateTime> createdAt);
 
     _FinalStage lastEditedAt(Optional<OffsetDateTime> lastEditedAt);
 
     _FinalStage lastEditedAt(OffsetDateTime lastEditedAt);
 
+    _FinalStage lastEditedAt(Nullable<OffsetDateTime> lastEditedAt);
+
     _FinalStage dictionaryTerms(Optional<List<DictionaryTerm>> dictionaryTerms);
 
     _FinalStage dictionaryTerms(List<DictionaryTerm> dictionaryTerms);
 
+    _FinalStage dictionaryTerms(Nullable<List<DictionaryTerm>> dictionaryTerms);
+
     _FinalStage languages(Optional<List<Integer>> languages);
 
     _FinalStage languages(List<Integer> languages);
+
+    _FinalStage languages(Nullable<List<Integer>> languages);
   }
 
   @JsonIgnoreProperties(
@@ -208,6 +281,20 @@ public final class DictionaryWithTerms {
     }
 
     @java.lang.Override
+    public _FinalStage languages(Nullable<List<Integer>> languages) {
+      if (languages.isNull()) {
+        this.languages = null;
+      }
+      else if (languages.isEmpty()) {
+        this.languages = Optional.empty();
+      }
+      else {
+        this.languages = Optional.of(languages.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage languages(List<Integer> languages) {
       this.languages = Optional.ofNullable(languages);
       return this;
@@ -220,6 +307,20 @@ public final class DictionaryWithTerms {
     )
     public _FinalStage languages(Optional<List<Integer>> languages) {
       this.languages = languages;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage dictionaryTerms(Nullable<List<DictionaryTerm>> dictionaryTerms) {
+      if (dictionaryTerms.isNull()) {
+        this.dictionaryTerms = null;
+      }
+      else if (dictionaryTerms.isEmpty()) {
+        this.dictionaryTerms = Optional.empty();
+      }
+      else {
+        this.dictionaryTerms = Optional.of(dictionaryTerms.get());
+      }
       return this;
     }
 
@@ -240,6 +341,20 @@ public final class DictionaryWithTerms {
     }
 
     @java.lang.Override
+    public _FinalStage lastEditedAt(Nullable<OffsetDateTime> lastEditedAt) {
+      if (lastEditedAt.isNull()) {
+        this.lastEditedAt = null;
+      }
+      else if (lastEditedAt.isEmpty()) {
+        this.lastEditedAt = Optional.empty();
+      }
+      else {
+        this.lastEditedAt = Optional.of(lastEditedAt.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage lastEditedAt(OffsetDateTime lastEditedAt) {
       this.lastEditedAt = Optional.ofNullable(lastEditedAt);
       return this;
@@ -256,6 +371,20 @@ public final class DictionaryWithTerms {
     }
 
     @java.lang.Override
+    public _FinalStage createdAt(Nullable<OffsetDateTime> createdAt) {
+      if (createdAt.isNull()) {
+        this.createdAt = null;
+      }
+      else if (createdAt.isEmpty()) {
+        this.createdAt = Optional.empty();
+      }
+      else {
+        this.createdAt = Optional.of(createdAt.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage createdAt(OffsetDateTime createdAt) {
       this.createdAt = Optional.ofNullable(createdAt);
       return this;
@@ -268,6 +397,20 @@ public final class DictionaryWithTerms {
     )
     public _FinalStage createdAt(Optional<OffsetDateTime> createdAt) {
       this.createdAt = createdAt;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage description(Nullable<String> description) {
+      if (description.isNull()) {
+        this.description = null;
+      }
+      else if (description.isEmpty()) {
+        this.description = Optional.empty();
+      }
+      else {
+        this.description = Optional.of(description.get());
+      }
       return this;
     }
 

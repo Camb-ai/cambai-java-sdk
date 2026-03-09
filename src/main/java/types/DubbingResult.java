@@ -6,12 +6,15 @@ package types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Object;
 import java.lang.String;
@@ -54,8 +57,20 @@ public final class DubbingResult {
     return transcript;
   }
 
-  @JsonProperty("video_url")
+  @JsonIgnore
   public Optional<String> getVideoUrl() {
+    if (videoUrl == null) {
+      return Optional.empty();
+    }
+    return videoUrl;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("video_url")
+  private Optional<String> _getVideoUrl() {
     return videoUrl;
   }
 
@@ -106,6 +121,8 @@ public final class DubbingResult {
     _FinalStage videoUrl(Optional<String> videoUrl);
 
     _FinalStage videoUrl(String videoUrl);
+
+    _FinalStage videoUrl(Nullable<String> videoUrl);
   }
 
   @JsonIgnoreProperties(
@@ -136,6 +153,20 @@ public final class DubbingResult {
     @JsonSetter("audio_url")
     public _FinalStage audioUrl(@NotNull String audioUrl) {
       this.audioUrl = Objects.requireNonNull(audioUrl, "audioUrl must not be null");
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage videoUrl(Nullable<String> videoUrl) {
+      if (videoUrl.isNull()) {
+        this.videoUrl = null;
+      }
+      else if (videoUrl.isEmpty()) {
+        this.videoUrl = Optional.empty();
+      }
+      else {
+        this.videoUrl = Optional.of(videoUrl.get());
+      }
       return this;
     }
 

@@ -6,12 +6,15 @@ package resources.audioseparation.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Integer;
 import java.lang.Object;
@@ -49,28 +52,88 @@ public final class BodyCreateAudioSeparationAudioSeparationPost {
     this.additionalProperties = additionalProperties;
   }
 
-  @JsonProperty("traceparent")
+  @JsonIgnore
   public Optional<String> getTraceparent() {
+    if (traceparent == null) {
+      return Optional.empty();
+    }
     return traceparent;
   }
 
-  @JsonProperty("run_id")
+  @JsonIgnore
   public Optional<Integer> getRunId() {
+    if (runId == null) {
+      return Optional.empty();
+    }
     return runId;
   }
 
-  @JsonProperty("project_name")
+  @JsonIgnore
   public Optional<String> getProjectName() {
+    if (projectName == null) {
+      return Optional.empty();
+    }
     return projectName;
   }
 
-  @JsonProperty("project_description")
+  @JsonIgnore
   public Optional<String> getProjectDescription() {
+    if (projectDescription == null) {
+      return Optional.empty();
+    }
     return projectDescription;
   }
 
-  @JsonProperty("folder_id")
+  @JsonIgnore
   public Optional<Integer> getFolderId() {
+    if (folderId == null) {
+      return Optional.empty();
+    }
+    return folderId;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("traceparent")
+  private Optional<String> _getTraceparent() {
+    return traceparent;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("run_id")
+  private Optional<Integer> _getRunId() {
+    return runId;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("project_name")
+  private Optional<String> _getProjectName() {
+    return projectName;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("project_description")
+  private Optional<String> _getProjectDescription() {
+    return projectDescription;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("folder_id")
+  private Optional<Integer> _getFolderId() {
     return folderId;
   }
 
@@ -146,6 +209,19 @@ public final class BodyCreateAudioSeparationAudioSeparationPost {
       return this;
     }
 
+    public Builder traceparent(Nullable<String> traceparent) {
+      if (traceparent.isNull()) {
+        this.traceparent = null;
+      }
+      else if (traceparent.isEmpty()) {
+        this.traceparent = Optional.empty();
+      }
+      else {
+        this.traceparent = Optional.of(traceparent.get());
+      }
+      return this;
+    }
+
     @JsonSetter(
         value = "run_id",
         nulls = Nulls.SKIP
@@ -157,6 +233,19 @@ public final class BodyCreateAudioSeparationAudioSeparationPost {
 
     public Builder runId(Integer runId) {
       this.runId = Optional.ofNullable(runId);
+      return this;
+    }
+
+    public Builder runId(Nullable<Integer> runId) {
+      if (runId.isNull()) {
+        this.runId = null;
+      }
+      else if (runId.isEmpty()) {
+        this.runId = Optional.empty();
+      }
+      else {
+        this.runId = Optional.of(runId.get());
+      }
       return this;
     }
 
@@ -174,6 +263,19 @@ public final class BodyCreateAudioSeparationAudioSeparationPost {
       return this;
     }
 
+    public Builder projectName(Nullable<String> projectName) {
+      if (projectName.isNull()) {
+        this.projectName = null;
+      }
+      else if (projectName.isEmpty()) {
+        this.projectName = Optional.empty();
+      }
+      else {
+        this.projectName = Optional.of(projectName.get());
+      }
+      return this;
+    }
+
     @JsonSetter(
         value = "project_description",
         nulls = Nulls.SKIP
@@ -188,6 +290,19 @@ public final class BodyCreateAudioSeparationAudioSeparationPost {
       return this;
     }
 
+    public Builder projectDescription(Nullable<String> projectDescription) {
+      if (projectDescription.isNull()) {
+        this.projectDescription = null;
+      }
+      else if (projectDescription.isEmpty()) {
+        this.projectDescription = Optional.empty();
+      }
+      else {
+        this.projectDescription = Optional.of(projectDescription.get());
+      }
+      return this;
+    }
+
     @JsonSetter(
         value = "folder_id",
         nulls = Nulls.SKIP
@@ -199,6 +314,19 @@ public final class BodyCreateAudioSeparationAudioSeparationPost {
 
     public Builder folderId(Integer folderId) {
       this.folderId = Optional.ofNullable(folderId);
+      return this;
+    }
+
+    public Builder folderId(Nullable<Integer> folderId) {
+      if (folderId.isNull()) {
+        this.folderId = null;
+      }
+      else if (folderId.isEmpty()) {
+        this.folderId = Optional.empty();
+      }
+      else {
+        this.folderId = Optional.of(folderId.get());
+      }
       return this;
     }
 

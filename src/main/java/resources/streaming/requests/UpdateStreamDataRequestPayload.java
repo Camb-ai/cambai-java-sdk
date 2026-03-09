@@ -6,12 +6,15 @@ package resources.streaming.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Integer;
 import java.lang.Object;
@@ -55,33 +58,105 @@ public final class UpdateStreamDataRequestPayload {
     this.additionalProperties = additionalProperties;
   }
 
-  @JsonProperty("run_id")
+  @JsonIgnore
   public Optional<Integer> getRunId() {
+    if (runId == null) {
+      return Optional.empty();
+    }
     return runId;
   }
 
-  @JsonProperty("start_time")
+  @JsonIgnore
   public Optional<OffsetDateTime> getStartTime() {
+    if (startTime == null) {
+      return Optional.empty();
+    }
     return startTime;
   }
 
-  @JsonProperty("end_time")
+  @JsonIgnore
   public Optional<OffsetDateTime> getEndTime() {
+    if (endTime == null) {
+      return Optional.empty();
+    }
     return endTime;
   }
 
-  @JsonProperty("payload")
+  @JsonIgnore
   public Optional<Map<String, Object>> getPayload() {
+    if (payload == null) {
+      return Optional.empty();
+    }
     return payload;
   }
 
-  @JsonProperty("target_languages")
+  @JsonIgnore
   public Optional<List<Integer>> getTargetLanguages() {
+    if (targetLanguages == null) {
+      return Optional.empty();
+    }
     return targetLanguages;
   }
 
-  @JsonProperty("timezone")
+  @JsonIgnore
   public Optional<String> getTimezone() {
+    if (timezone == null) {
+      return Optional.empty();
+    }
+    return timezone;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("run_id")
+  private Optional<Integer> _getRunId() {
+    return runId;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("start_time")
+  private Optional<OffsetDateTime> _getStartTime() {
+    return startTime;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("end_time")
+  private Optional<OffsetDateTime> _getEndTime() {
+    return endTime;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("payload")
+  private Optional<Map<String, Object>> _getPayload() {
+    return payload;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("target_languages")
+  private Optional<List<Integer>> _getTargetLanguages() {
+    return targetLanguages;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("timezone")
+  private Optional<String> _getTimezone() {
     return timezone;
   }
 
@@ -160,6 +235,19 @@ public final class UpdateStreamDataRequestPayload {
       return this;
     }
 
+    public Builder runId(Nullable<Integer> runId) {
+      if (runId.isNull()) {
+        this.runId = null;
+      }
+      else if (runId.isEmpty()) {
+        this.runId = Optional.empty();
+      }
+      else {
+        this.runId = Optional.of(runId.get());
+      }
+      return this;
+    }
+
     @JsonSetter(
         value = "start_time",
         nulls = Nulls.SKIP
@@ -171,6 +259,19 @@ public final class UpdateStreamDataRequestPayload {
 
     public Builder startTime(OffsetDateTime startTime) {
       this.startTime = Optional.ofNullable(startTime);
+      return this;
+    }
+
+    public Builder startTime(Nullable<OffsetDateTime> startTime) {
+      if (startTime.isNull()) {
+        this.startTime = null;
+      }
+      else if (startTime.isEmpty()) {
+        this.startTime = Optional.empty();
+      }
+      else {
+        this.startTime = Optional.of(startTime.get());
+      }
       return this;
     }
 
@@ -188,6 +289,19 @@ public final class UpdateStreamDataRequestPayload {
       return this;
     }
 
+    public Builder endTime(Nullable<OffsetDateTime> endTime) {
+      if (endTime.isNull()) {
+        this.endTime = null;
+      }
+      else if (endTime.isEmpty()) {
+        this.endTime = Optional.empty();
+      }
+      else {
+        this.endTime = Optional.of(endTime.get());
+      }
+      return this;
+    }
+
     @JsonSetter(
         value = "payload",
         nulls = Nulls.SKIP
@@ -199,6 +313,19 @@ public final class UpdateStreamDataRequestPayload {
 
     public Builder payload(Map<String, Object> payload) {
       this.payload = Optional.ofNullable(payload);
+      return this;
+    }
+
+    public Builder payload(Nullable<Map<String, Object>> payload) {
+      if (payload.isNull()) {
+        this.payload = null;
+      }
+      else if (payload.isEmpty()) {
+        this.payload = Optional.empty();
+      }
+      else {
+        this.payload = Optional.of(payload.get());
+      }
       return this;
     }
 
@@ -216,6 +343,19 @@ public final class UpdateStreamDataRequestPayload {
       return this;
     }
 
+    public Builder targetLanguages(Nullable<List<Integer>> targetLanguages) {
+      if (targetLanguages.isNull()) {
+        this.targetLanguages = null;
+      }
+      else if (targetLanguages.isEmpty()) {
+        this.targetLanguages = Optional.empty();
+      }
+      else {
+        this.targetLanguages = Optional.of(targetLanguages.get());
+      }
+      return this;
+    }
+
     @JsonSetter(
         value = "timezone",
         nulls = Nulls.SKIP
@@ -227,6 +367,19 @@ public final class UpdateStreamDataRequestPayload {
 
     public Builder timezone(String timezone) {
       this.timezone = Optional.ofNullable(timezone);
+      return this;
+    }
+
+    public Builder timezone(Nullable<String> timezone) {
+      if (timezone.isNull()) {
+        this.timezone = null;
+      }
+      else if (timezone.isEmpty()) {
+        this.timezone = Optional.empty();
+      }
+      else {
+        this.timezone = Optional.of(timezone.get());
+      }
       return this;
     }
 

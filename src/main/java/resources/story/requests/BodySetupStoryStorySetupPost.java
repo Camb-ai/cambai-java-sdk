@@ -6,12 +6,15 @@ package resources.story.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Integer;
 import java.lang.Object;
@@ -57,8 +60,11 @@ public final class BodySetupStoryStorySetupPost {
     this.additionalProperties = additionalProperties;
   }
 
-  @JsonProperty("run_id")
+  @JsonIgnore
   public Optional<Integer> getRunId() {
+    if (runId == null) {
+      return Optional.empty();
+    }
     return runId;
   }
 
@@ -67,28 +73,97 @@ public final class BodySetupStoryStorySetupPost {
     return sourceLanguage;
   }
 
-  @JsonProperty("title")
+  @JsonIgnore
   public Optional<String> getTitle() {
+    if (title == null) {
+      return Optional.empty();
+    }
     return title;
   }
 
-  @JsonProperty("description")
+  @JsonIgnore
   public Optional<String> getDescription() {
+    if (description == null) {
+      return Optional.empty();
+    }
     return description;
   }
 
-  @JsonProperty("narrator_voice_id")
+  @JsonIgnore
   public Optional<Integer> getNarratorVoiceId() {
+    if (narratorVoiceId == null) {
+      return Optional.empty();
+    }
     return narratorVoiceId;
   }
 
-  @JsonProperty("folder_id")
+  @JsonIgnore
   public Optional<Integer> getFolderId() {
+    if (folderId == null) {
+      return Optional.empty();
+    }
     return folderId;
   }
 
-  @JsonProperty("chosen_dictionaries")
+  @JsonIgnore
   public Optional<List<Integer>> getChosenDictionaries() {
+    if (chosenDictionaries == null) {
+      return Optional.empty();
+    }
+    return chosenDictionaries;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("run_id")
+  private Optional<Integer> _getRunId() {
+    return runId;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("title")
+  private Optional<String> _getTitle() {
+    return title;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("description")
+  private Optional<String> _getDescription() {
+    return description;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("narrator_voice_id")
+  private Optional<Integer> _getNarratorVoiceId() {
+    return narratorVoiceId;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("folder_id")
+  private Optional<Integer> _getFolderId() {
+    return folderId;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("chosen_dictionaries")
+  private Optional<List<Integer>> _getChosenDictionaries() {
     return chosenDictionaries;
   }
 
@@ -134,25 +209,37 @@ public final class BodySetupStoryStorySetupPost {
 
     _FinalStage runId(Integer runId);
 
+    _FinalStage runId(Nullable<Integer> runId);
+
     _FinalStage title(Optional<String> title);
 
     _FinalStage title(String title);
+
+    _FinalStage title(Nullable<String> title);
 
     _FinalStage description(Optional<String> description);
 
     _FinalStage description(String description);
 
+    _FinalStage description(Nullable<String> description);
+
     _FinalStage narratorVoiceId(Optional<Integer> narratorVoiceId);
 
     _FinalStage narratorVoiceId(Integer narratorVoiceId);
+
+    _FinalStage narratorVoiceId(Nullable<Integer> narratorVoiceId);
 
     _FinalStage folderId(Optional<Integer> folderId);
 
     _FinalStage folderId(Integer folderId);
 
+    _FinalStage folderId(Nullable<Integer> folderId);
+
     _FinalStage chosenDictionaries(Optional<List<Integer>> chosenDictionaries);
 
     _FinalStage chosenDictionaries(List<Integer> chosenDictionaries);
+
+    _FinalStage chosenDictionaries(Nullable<List<Integer>> chosenDictionaries);
   }
 
   @JsonIgnoreProperties(
@@ -199,6 +286,20 @@ public final class BodySetupStoryStorySetupPost {
     }
 
     @java.lang.Override
+    public _FinalStage chosenDictionaries(Nullable<List<Integer>> chosenDictionaries) {
+      if (chosenDictionaries.isNull()) {
+        this.chosenDictionaries = null;
+      }
+      else if (chosenDictionaries.isEmpty()) {
+        this.chosenDictionaries = Optional.empty();
+      }
+      else {
+        this.chosenDictionaries = Optional.of(chosenDictionaries.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage chosenDictionaries(List<Integer> chosenDictionaries) {
       this.chosenDictionaries = Optional.ofNullable(chosenDictionaries);
       return this;
@@ -211,6 +312,20 @@ public final class BodySetupStoryStorySetupPost {
     )
     public _FinalStage chosenDictionaries(Optional<List<Integer>> chosenDictionaries) {
       this.chosenDictionaries = chosenDictionaries;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage folderId(Nullable<Integer> folderId) {
+      if (folderId.isNull()) {
+        this.folderId = null;
+      }
+      else if (folderId.isEmpty()) {
+        this.folderId = Optional.empty();
+      }
+      else {
+        this.folderId = Optional.of(folderId.get());
+      }
       return this;
     }
 
@@ -231,6 +346,20 @@ public final class BodySetupStoryStorySetupPost {
     }
 
     @java.lang.Override
+    public _FinalStage narratorVoiceId(Nullable<Integer> narratorVoiceId) {
+      if (narratorVoiceId.isNull()) {
+        this.narratorVoiceId = null;
+      }
+      else if (narratorVoiceId.isEmpty()) {
+        this.narratorVoiceId = Optional.empty();
+      }
+      else {
+        this.narratorVoiceId = Optional.of(narratorVoiceId.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage narratorVoiceId(Integer narratorVoiceId) {
       this.narratorVoiceId = Optional.ofNullable(narratorVoiceId);
       return this;
@@ -243,6 +372,20 @@ public final class BodySetupStoryStorySetupPost {
     )
     public _FinalStage narratorVoiceId(Optional<Integer> narratorVoiceId) {
       this.narratorVoiceId = narratorVoiceId;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage description(Nullable<String> description) {
+      if (description.isNull()) {
+        this.description = null;
+      }
+      else if (description.isEmpty()) {
+        this.description = Optional.empty();
+      }
+      else {
+        this.description = Optional.of(description.get());
+      }
       return this;
     }
 
@@ -263,6 +406,20 @@ public final class BodySetupStoryStorySetupPost {
     }
 
     @java.lang.Override
+    public _FinalStage title(Nullable<String> title) {
+      if (title.isNull()) {
+        this.title = null;
+      }
+      else if (title.isEmpty()) {
+        this.title = Optional.empty();
+      }
+      else {
+        this.title = Optional.of(title.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage title(String title) {
       this.title = Optional.ofNullable(title);
       return this;
@@ -275,6 +432,20 @@ public final class BodySetupStoryStorySetupPost {
     )
     public _FinalStage title(Optional<String> title) {
       this.title = title;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage runId(Nullable<Integer> runId) {
+      if (runId.isNull()) {
+        this.runId = null;
+      }
+      else if (runId.isEmpty()) {
+        this.runId = Optional.empty();
+      }
+      else {
+        this.runId = Optional.of(runId.get());
+      }
       return this;
     }
 

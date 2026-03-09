@@ -6,12 +6,15 @@ package types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Double;
 import java.lang.Integer;
@@ -69,8 +72,11 @@ public final class ProjectDetails {
     return projectName;
   }
 
-  @JsonProperty("project_description")
+  @JsonIgnore
   public Optional<String> getProjectDescription() {
+    if (projectDescription == null) {
+      return Optional.empty();
+    }
     return projectDescription;
   }
 
@@ -89,19 +95,52 @@ public final class ProjectDetails {
     return targetLanguages;
   }
 
-  @JsonProperty("duration")
+  @JsonIgnore
   public Optional<Double> getDuration() {
+    if (duration == null) {
+      return Optional.empty();
+    }
     return duration;
   }
 
-  @JsonProperty("folder_id")
+  @JsonIgnore
   public Optional<Integer> getFolderId() {
+    if (folderId == null) {
+      return Optional.empty();
+    }
     return folderId;
   }
 
   @JsonProperty("studio_url")
   public String getStudioUrl() {
     return studioUrl;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("project_description")
+  private Optional<String> _getProjectDescription() {
+    return projectDescription;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("duration")
+  private Optional<Double> _getDuration() {
+    return duration;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("folder_id")
+  private Optional<Integer> _getFolderId() {
+    return folderId;
   }
 
   @java.lang.Override
@@ -158,6 +197,8 @@ public final class ProjectDetails {
 
     _FinalStage projectDescription(String projectDescription);
 
+    _FinalStage projectDescription(Nullable<String> projectDescription);
+
     _FinalStage targetLanguages(List<Integer> targetLanguages);
 
     _FinalStage addTargetLanguages(Integer targetLanguages);
@@ -168,9 +209,13 @@ public final class ProjectDetails {
 
     _FinalStage duration(Double duration);
 
+    _FinalStage duration(Nullable<Double> duration);
+
     _FinalStage folderId(Optional<Integer> folderId);
 
     _FinalStage folderId(Integer folderId);
+
+    _FinalStage folderId(Nullable<Integer> folderId);
   }
 
   @JsonIgnoreProperties(
@@ -241,6 +286,20 @@ public final class ProjectDetails {
     }
 
     @java.lang.Override
+    public _FinalStage folderId(Nullable<Integer> folderId) {
+      if (folderId.isNull()) {
+        this.folderId = null;
+      }
+      else if (folderId.isEmpty()) {
+        this.folderId = Optional.empty();
+      }
+      else {
+        this.folderId = Optional.of(folderId.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage folderId(Integer folderId) {
       this.folderId = Optional.ofNullable(folderId);
       return this;
@@ -253,6 +312,20 @@ public final class ProjectDetails {
     )
     public _FinalStage folderId(Optional<Integer> folderId) {
       this.folderId = folderId;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage duration(Nullable<Double> duration) {
+      if (duration.isNull()) {
+        this.duration = null;
+      }
+      else if (duration.isEmpty()) {
+        this.duration = Optional.empty();
+      }
+      else {
+        this.duration = Optional.of(duration.get());
+      }
       return this;
     }
 
@@ -292,6 +365,20 @@ public final class ProjectDetails {
     public _FinalStage targetLanguages(List<Integer> targetLanguages) {
       this.targetLanguages.clear();
       this.targetLanguages.addAll(targetLanguages);
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage projectDescription(Nullable<String> projectDescription) {
+      if (projectDescription.isNull()) {
+        this.projectDescription = null;
+      }
+      else if (projectDescription.isEmpty()) {
+        this.projectDescription = Optional.empty();
+      }
+      else {
+        this.projectDescription = Optional.of(projectDescription.get());
+      }
       return this;
     }
 

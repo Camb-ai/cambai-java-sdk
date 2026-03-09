@@ -6,12 +6,15 @@ package types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Object;
 import java.lang.String;
@@ -56,28 +59,88 @@ public final class DataStream {
     return index;
   }
 
-  @JsonProperty("codec_name")
+  @JsonIgnore
   public Optional<String> getCodecName() {
+    if (codecName == null) {
+      return Optional.empty();
+    }
     return codecName;
   }
 
-  @JsonProperty("codec_long_name")
+  @JsonIgnore
   public Optional<String> getCodecLongName() {
+    if (codecLongName == null) {
+      return Optional.empty();
+    }
     return codecLongName;
   }
 
-  @JsonProperty("codec_tag_string")
+  @JsonIgnore
   public Optional<String> getCodecTagString() {
+    if (codecTagString == null) {
+      return Optional.empty();
+    }
     return codecTagString;
   }
 
-  @JsonProperty("codec_tag")
+  @JsonIgnore
   public Optional<String> getCodecTag() {
+    if (codecTag == null) {
+      return Optional.empty();
+    }
     return codecTag;
   }
 
-  @JsonProperty("id")
+  @JsonIgnore
   public Optional<String> getId() {
+    if (id == null) {
+      return Optional.empty();
+    }
+    return id;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("codec_name")
+  private Optional<String> _getCodecName() {
+    return codecName;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("codec_long_name")
+  private Optional<String> _getCodecLongName() {
+    return codecLongName;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("codec_tag_string")
+  private Optional<String> _getCodecTagString() {
+    return codecTagString;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("codec_tag")
+  private Optional<String> _getCodecTag() {
+    return codecTag;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("id")
+  private Optional<String> _getId() {
     return id;
   }
 
@@ -123,21 +186,31 @@ public final class DataStream {
 
     _FinalStage codecName(String codecName);
 
+    _FinalStage codecName(Nullable<String> codecName);
+
     _FinalStage codecLongName(Optional<String> codecLongName);
 
     _FinalStage codecLongName(String codecLongName);
+
+    _FinalStage codecLongName(Nullable<String> codecLongName);
 
     _FinalStage codecTagString(Optional<String> codecTagString);
 
     _FinalStage codecTagString(String codecTagString);
 
+    _FinalStage codecTagString(Nullable<String> codecTagString);
+
     _FinalStage codecTag(Optional<String> codecTag);
 
     _FinalStage codecTag(String codecTag);
 
+    _FinalStage codecTag(Nullable<String> codecTag);
+
     _FinalStage id(Optional<String> id);
 
     _FinalStage id(String id);
+
+    _FinalStage id(Nullable<String> id);
   }
 
   @JsonIgnoreProperties(
@@ -181,6 +254,20 @@ public final class DataStream {
     }
 
     @java.lang.Override
+    public _FinalStage id(Nullable<String> id) {
+      if (id.isNull()) {
+        this.id = null;
+      }
+      else if (id.isEmpty()) {
+        this.id = Optional.empty();
+      }
+      else {
+        this.id = Optional.of(id.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage id(String id) {
       this.id = Optional.ofNullable(id);
       return this;
@@ -193,6 +280,20 @@ public final class DataStream {
     )
     public _FinalStage id(Optional<String> id) {
       this.id = id;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage codecTag(Nullable<String> codecTag) {
+      if (codecTag.isNull()) {
+        this.codecTag = null;
+      }
+      else if (codecTag.isEmpty()) {
+        this.codecTag = Optional.empty();
+      }
+      else {
+        this.codecTag = Optional.of(codecTag.get());
+      }
       return this;
     }
 
@@ -213,6 +314,20 @@ public final class DataStream {
     }
 
     @java.lang.Override
+    public _FinalStage codecTagString(Nullable<String> codecTagString) {
+      if (codecTagString.isNull()) {
+        this.codecTagString = null;
+      }
+      else if (codecTagString.isEmpty()) {
+        this.codecTagString = Optional.empty();
+      }
+      else {
+        this.codecTagString = Optional.of(codecTagString.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage codecTagString(String codecTagString) {
       this.codecTagString = Optional.ofNullable(codecTagString);
       return this;
@@ -229,6 +344,20 @@ public final class DataStream {
     }
 
     @java.lang.Override
+    public _FinalStage codecLongName(Nullable<String> codecLongName) {
+      if (codecLongName.isNull()) {
+        this.codecLongName = null;
+      }
+      else if (codecLongName.isEmpty()) {
+        this.codecLongName = Optional.empty();
+      }
+      else {
+        this.codecLongName = Optional.of(codecLongName.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage codecLongName(String codecLongName) {
       this.codecLongName = Optional.ofNullable(codecLongName);
       return this;
@@ -241,6 +370,20 @@ public final class DataStream {
     )
     public _FinalStage codecLongName(Optional<String> codecLongName) {
       this.codecLongName = codecLongName;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage codecName(Nullable<String> codecName) {
+      if (codecName.isNull()) {
+        this.codecName = null;
+      }
+      else if (codecName.isEmpty()) {
+        this.codecName = Optional.empty();
+      }
+      else {
+        this.codecName = Optional.of(codecName.get());
+      }
       return this;
     }
 

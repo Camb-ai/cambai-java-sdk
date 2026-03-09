@@ -6,12 +6,15 @@ package resources.translation.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Integer;
 import java.lang.Object;
@@ -45,19 +48,43 @@ public final class GetTranslationResultsTranslationResultsPostRequest {
     this.additionalProperties = additionalProperties;
   }
 
-  @JsonProperty("traceparent")
+  @JsonIgnore
   public Optional<String> getTraceparent() {
+    if (traceparent == null) {
+      return Optional.empty();
+    }
     return traceparent;
   }
 
-  @JsonProperty("run_id")
+  @JsonIgnore
   public Optional<Integer> getRunId() {
+    if (runId == null) {
+      return Optional.empty();
+    }
     return runId;
   }
 
   @JsonProperty("body")
   public RunIDsRequestPayload getBody() {
     return body;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("traceparent")
+  private Optional<String> _getTraceparent() {
+    return traceparent;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("run_id")
+  private Optional<Integer> _getRunId() {
+    return runId;
   }
 
   @java.lang.Override
@@ -102,9 +129,13 @@ public final class GetTranslationResultsTranslationResultsPostRequest {
 
     _FinalStage traceparent(String traceparent);
 
+    _FinalStage traceparent(Nullable<String> traceparent);
+
     _FinalStage runId(Optional<Integer> runId);
 
     _FinalStage runId(Integer runId);
+
+    _FinalStage runId(Nullable<Integer> runId);
   }
 
   @JsonIgnoreProperties(
@@ -139,6 +170,20 @@ public final class GetTranslationResultsTranslationResultsPostRequest {
     }
 
     @java.lang.Override
+    public _FinalStage runId(Nullable<Integer> runId) {
+      if (runId.isNull()) {
+        this.runId = null;
+      }
+      else if (runId.isEmpty()) {
+        this.runId = Optional.empty();
+      }
+      else {
+        this.runId = Optional.of(runId.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage runId(Integer runId) {
       this.runId = Optional.ofNullable(runId);
       return this;
@@ -151,6 +196,20 @@ public final class GetTranslationResultsTranslationResultsPostRequest {
     )
     public _FinalStage runId(Optional<Integer> runId) {
       this.runId = runId;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage traceparent(Nullable<String> traceparent) {
+      if (traceparent.isNull()) {
+        this.traceparent = null;
+      }
+      else if (traceparent.isEmpty()) {
+        this.traceparent = Optional.empty();
+      }
+      else {
+        this.traceparent = Optional.of(traceparent.get());
+      }
       return this;
     }
 

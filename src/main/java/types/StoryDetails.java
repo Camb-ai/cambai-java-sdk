@@ -6,12 +6,15 @@ package types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Integer;
 import java.lang.Object;
@@ -63,8 +66,11 @@ public final class StoryDetails {
     return storyTitle;
   }
 
-  @JsonProperty("story_description")
+  @JsonIgnore
   public Optional<String> getStoryDescription() {
+    if (storyDescription == null) {
+      return Optional.empty();
+    }
     return storyDescription;
   }
 
@@ -78,19 +84,52 @@ public final class StoryDetails {
     return sourceLanguage;
   }
 
-  @JsonProperty("target_languages")
+  @JsonIgnore
   public Optional<List<Integer>> getTargetLanguages() {
+    if (targetLanguages == null) {
+      return Optional.empty();
+    }
     return targetLanguages;
   }
 
-  @JsonProperty("folder_id")
+  @JsonIgnore
   public Optional<Integer> getFolderId() {
+    if (folderId == null) {
+      return Optional.empty();
+    }
     return folderId;
   }
 
   @JsonProperty("studio_url")
   public String getStudioUrl() {
     return studioUrl;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("story_description")
+  private Optional<String> _getStoryDescription() {
+    return storyDescription;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("target_languages")
+  private Optional<List<Integer>> _getTargetLanguages() {
+    return targetLanguages;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("folder_id")
+  private Optional<Integer> _getFolderId() {
+    return folderId;
   }
 
   @java.lang.Override
@@ -147,13 +186,19 @@ public final class StoryDetails {
 
     _FinalStage storyDescription(String storyDescription);
 
+    _FinalStage storyDescription(Nullable<String> storyDescription);
+
     _FinalStage targetLanguages(Optional<List<Integer>> targetLanguages);
 
     _FinalStage targetLanguages(List<Integer> targetLanguages);
 
+    _FinalStage targetLanguages(Nullable<List<Integer>> targetLanguages);
+
     _FinalStage folderId(Optional<Integer> folderId);
 
     _FinalStage folderId(Integer folderId);
+
+    _FinalStage folderId(Nullable<Integer> folderId);
   }
 
   @JsonIgnoreProperties(
@@ -221,6 +266,20 @@ public final class StoryDetails {
     }
 
     @java.lang.Override
+    public _FinalStage folderId(Nullable<Integer> folderId) {
+      if (folderId.isNull()) {
+        this.folderId = null;
+      }
+      else if (folderId.isEmpty()) {
+        this.folderId = Optional.empty();
+      }
+      else {
+        this.folderId = Optional.of(folderId.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage folderId(Integer folderId) {
       this.folderId = Optional.ofNullable(folderId);
       return this;
@@ -237,6 +296,20 @@ public final class StoryDetails {
     }
 
     @java.lang.Override
+    public _FinalStage targetLanguages(Nullable<List<Integer>> targetLanguages) {
+      if (targetLanguages.isNull()) {
+        this.targetLanguages = null;
+      }
+      else if (targetLanguages.isEmpty()) {
+        this.targetLanguages = Optional.empty();
+      }
+      else {
+        this.targetLanguages = Optional.of(targetLanguages.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
     public _FinalStage targetLanguages(List<Integer> targetLanguages) {
       this.targetLanguages = Optional.ofNullable(targetLanguages);
       return this;
@@ -249,6 +322,20 @@ public final class StoryDetails {
     )
     public _FinalStage targetLanguages(Optional<List<Integer>> targetLanguages) {
       this.targetLanguages = targetLanguages;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage storyDescription(Nullable<String> storyDescription) {
+      if (storyDescription.isNull()) {
+        this.storyDescription = null;
+      }
+      else if (storyDescription.isEmpty()) {
+        this.storyDescription = Optional.empty();
+      }
+      else {
+        this.storyDescription = Optional.of(storyDescription.get());
+      }
       return this;
     }
 

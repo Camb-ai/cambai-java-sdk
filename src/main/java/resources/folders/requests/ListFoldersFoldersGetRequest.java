@@ -6,12 +6,15 @@ package resources.folders.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Integer;
 import java.lang.Object;
@@ -42,18 +45,54 @@ public final class ListFoldersFoldersGetRequest {
     this.additionalProperties = additionalProperties;
   }
 
-  @JsonProperty("limit")
+  @JsonIgnore
   public Optional<Integer> getLimit() {
+    if (limit == null) {
+      return Optional.empty();
+    }
     return limit;
   }
 
-  @JsonProperty("search_query")
+  @JsonIgnore
   public Optional<String> getSearchQuery() {
+    if (searchQuery == null) {
+      return Optional.empty();
+    }
     return searchQuery;
   }
 
-  @JsonProperty("run_id")
+  @JsonIgnore
   public Optional<Integer> getRunId() {
+    if (runId == null) {
+      return Optional.empty();
+    }
+    return runId;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("limit")
+  private Optional<Integer> _getLimit() {
+    return limit;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("search_query")
+  private Optional<String> _getSearchQuery() {
+    return searchQuery;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("run_id")
+  private Optional<Integer> _getRunId() {
     return runId;
   }
 
@@ -123,6 +162,19 @@ public final class ListFoldersFoldersGetRequest {
       return this;
     }
 
+    public Builder limit(Nullable<Integer> limit) {
+      if (limit.isNull()) {
+        this.limit = null;
+      }
+      else if (limit.isEmpty()) {
+        this.limit = Optional.empty();
+      }
+      else {
+        this.limit = Optional.of(limit.get());
+      }
+      return this;
+    }
+
     @JsonSetter(
         value = "search_query",
         nulls = Nulls.SKIP
@@ -137,6 +189,19 @@ public final class ListFoldersFoldersGetRequest {
       return this;
     }
 
+    public Builder searchQuery(Nullable<String> searchQuery) {
+      if (searchQuery.isNull()) {
+        this.searchQuery = null;
+      }
+      else if (searchQuery.isEmpty()) {
+        this.searchQuery = Optional.empty();
+      }
+      else {
+        this.searchQuery = Optional.of(searchQuery.get());
+      }
+      return this;
+    }
+
     @JsonSetter(
         value = "run_id",
         nulls = Nulls.SKIP
@@ -148,6 +213,19 @@ public final class ListFoldersFoldersGetRequest {
 
     public Builder runId(Integer runId) {
       this.runId = Optional.ofNullable(runId);
+      return this;
+    }
+
+    public Builder runId(Nullable<Integer> runId) {
+      if (runId.isNull()) {
+        this.runId = null;
+      }
+      else if (runId.isEmpty()) {
+        this.runId = Optional.empty();
+      }
+      else {
+        this.runId = Optional.of(runId.get());
+      }
       return this;
     }
 

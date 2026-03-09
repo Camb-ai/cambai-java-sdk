@@ -6,12 +6,15 @@ package resources.folders.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import core.Nullable;
+import core.NullableNonemptyFilter;
 import core.ObjectMappers;
 import java.lang.Integer;
 import java.lang.Object;
@@ -40,14 +43,26 @@ public final class CreateFolderPayload {
     this.additionalProperties = additionalProperties;
   }
 
-  @JsonProperty("run_id")
+  @JsonIgnore
   public Optional<Integer> getRunId() {
+    if (runId == null) {
+      return Optional.empty();
+    }
     return runId;
   }
 
   @JsonProperty("folder_name")
   public String getFolderName() {
     return folderName;
+  }
+
+  @JsonInclude(
+      value = JsonInclude.Include.CUSTOM,
+      valueFilter = NullableNonemptyFilter.class
+  )
+  @JsonProperty("run_id")
+  private Optional<Integer> _getRunId() {
+    return runId;
   }
 
   @java.lang.Override
@@ -91,6 +106,8 @@ public final class CreateFolderPayload {
     _FinalStage runId(Optional<Integer> runId);
 
     _FinalStage runId(Integer runId);
+
+    _FinalStage runId(Nullable<Integer> runId);
   }
 
   @JsonIgnoreProperties(
@@ -118,6 +135,20 @@ public final class CreateFolderPayload {
     @JsonSetter("folder_name")
     public _FinalStage folderName(@NotNull String folderName) {
       this.folderName = Objects.requireNonNull(folderName, "folderName must not be null");
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage runId(Nullable<Integer> runId) {
+      if (runId.isNull()) {
+        this.runId = null;
+      }
+      else if (runId.isEmpty()) {
+        this.runId = Optional.empty();
+      }
+      else {
+        this.runId = Optional.of(runId.get());
+      }
       return this;
     }
 
