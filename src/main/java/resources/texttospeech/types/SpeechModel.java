@@ -24,7 +24,13 @@ public enum SpeechModel {
 
   MARSFLASH("mars-flash"),
 
-  MARSINSTRUCT("mars-instruct");
+  MARSINSTRUCT("mars-instruct"),
+
+  MARS_PRO("mars-pro"),
+
+  MARS_FLASH("mars-flash"),
+
+  MARS_INSTRUCT("mars-instruct");
 
   private final String value;
 
