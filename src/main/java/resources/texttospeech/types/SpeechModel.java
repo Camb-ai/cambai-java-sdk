@@ -7,7 +7,7 @@ package resources.texttospeech.types;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.lang.String;
 
-public enum CreateStreamTtsRequestPayloadSpeechModel {
+public enum SpeechModel {
   AUTO("auto"),
 
   MARS8("mars-8"),
@@ -28,7 +28,7 @@ public enum CreateStreamTtsRequestPayloadSpeechModel {
 
   private final String value;
 
-  CreateStreamTtsRequestPayloadSpeechModel(String value) {
+  SpeechModel(String value) {
     this.value = value;
   }
 

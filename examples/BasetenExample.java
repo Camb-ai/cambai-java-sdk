@@ -1,5 +1,5 @@
 import resources.texttospeech.requests.CreateStreamTtsRequestPayload;
-import resources.texttospeech.types.CreateStreamTtsRequestPayloadLanguage;
+import resources.texttospeech.types.TtsLanguage;
 import java.io.InputStream;
 import java.io.FileOutputStream;
 import java.io.File;
@@ -60,7 +60,7 @@ public class BasetenExample {
             // when routing through a custom hosting provider.
             CreateStreamTtsRequestPayload request = CreateStreamTtsRequestPayload.builder()
                 .text("Hello. This is speech generated via a Baseten Mars8-Flash custom hosting provider.")
-                .language(CreateStreamTtsRequestPayloadLanguage.EN_US)
+                .language(TtsLanguage.EN_US)
                 .voiceId(1) // Required by the SDK's staged builder; ignored by the Baseten provider
                 .build();
 

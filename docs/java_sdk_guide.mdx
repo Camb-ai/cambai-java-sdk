@@ -52,8 +52,8 @@ Generate and stream speech in real-time. The SDK returns an `InputStream` for th
 ```java
 import core.ClientOptions;
 import resources.texttospeech.requests.CreateStreamTtsRequestPayload;
-import resources.texttospeech.types.CreateStreamTtsRequestPayloadLanguage;
-import resources.texttospeech.types.CreateStreamTtsRequestPayloadSpeechModel;
+import resources.texttospeech.types.TtsLanguage;
+import resources.texttospeech.types.SpeechModel;
 import types.Languages;
 import java.io.InputStream;
 import java.io.FileOutputStream;
@@ -78,9 +78,9 @@ public class BasicTts {
         try {
             InputStream audioStream = client.textToSpeech().tts(CreateStreamTtsRequestPayload.builder()
                 .text("Hello from Camb AI! This is a demonstration of our advanced text-to-speech technology using the MARS Pro model.")
-                .language(CreateStreamTtsRequestPayloadLanguage.EN_US) 
+                .language(TtsLanguage.EN_US) 
                 .voiceId(20303)
-                .speechModel(CreateStreamTtsRequestPayloadSpeechModel.MARSPRO)
+                .speechModel(SpeechModel.MARSPRO)
                 .outputConfiguration(StreamTtsOutputConfiguration.builder().format(OutputFormat.WAV).build())
                 .build());
 
@@ -128,17 +128,17 @@ Camb.ai offers three MARS models optimized for different use cases:
 
 <CodeGroup>
 ```java MARS Flash
-.speechModel(CreateStreamTtsRequestPayloadSpeechModel.MARSFLASH)
+.speechModel(SpeechModel.MARSFLASH)
 // Best for: Real-time voice agents, low-latency applications
 // Sample rate: 22.05kHz
 ```
 ```java MARS Pro
-.speechModel(CreateStreamTtsRequestPayloadSpeechModel.MARSPRO)
+.speechModel(SpeechModel.MARSPRO)
 // Best for: Audio production, high-quality content
 // Sample rate: 48kHz
 ```
 ```java MARS Instruct
-.speechModel(CreateStreamTtsRequestPayloadSpeechModel.MARSINSTRUCT)
+.speechModel(SpeechModel.MARSINSTRUCT)
 .userInstructions("Speak in a warm, friendly tone")
 // Best for: Fine-grained control over tone and style
 // Sample rate: 22.05kHz
@@ -163,18 +163,18 @@ for (var voice : voices) {
 
 ## Language Support
 
-Camb.ai supports 140+ languages. Specify the language using the `CreateStreamTtsRequestPayloadLanguage` enum:
+Camb.ai supports 140+ languages. Specify the language using the `TtsLanguage` enum:
 Languages supported by each model mentioned at [MARS Models](https://docs.camb.ai/models).
 
 ```java
 // English (US)
-.language(CreateStreamTtsRequestPayloadLanguage.EN_US)
+.language(TtsLanguage.EN_US)
 
 // Spanish
-.language(CreateStreamTtsRequestPayloadLanguage.ES_ES)
+.language(TtsLanguage.ES_ES)
 
 // French
-.language(CreateStreamTtsRequestPayloadLanguage.FR_FR)
+.language(TtsLanguage.FR_FR)
 ```
 
 ---

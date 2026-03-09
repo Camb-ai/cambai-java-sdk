@@ -21,8 +21,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
-import resources.texttospeech.types.CreateStreamTtsRequestPayloadLanguage;
-import resources.texttospeech.types.CreateStreamTtsRequestPayloadSpeechModel;
+import resources.texttospeech.types.TtsLanguage;
+import resources.texttospeech.types.SpeechModel;
 import types.StreamTtsInferenceOptions;
 import types.StreamTtsOutputConfiguration;
 import types.StreamTtsVoiceSettings;
@@ -34,11 +34,11 @@ import types.StreamTtsVoiceSettings;
 public final class CreateStreamTtsRequestPayload {
   private final String text;
 
-  private final CreateStreamTtsRequestPayloadLanguage language;
+  private final TtsLanguage language;
 
   private final int voiceId;
 
-  private final Optional<CreateStreamTtsRequestPayloadSpeechModel> speechModel;
+  private final Optional<SpeechModel> speechModel;
 
   private final Optional<String> userInstructions;
 
@@ -52,8 +52,8 @@ public final class CreateStreamTtsRequestPayload {
 
   private final Map<String, Object> additionalProperties;
 
-  private CreateStreamTtsRequestPayload(String text, CreateStreamTtsRequestPayloadLanguage language,
-      int voiceId, Optional<CreateStreamTtsRequestPayloadSpeechModel> speechModel,
+  private CreateStreamTtsRequestPayload(String text, TtsLanguage language,
+      int voiceId, Optional<SpeechModel> speechModel,
       Optional<String> userInstructions, Optional<Boolean> enhanceNamedEntitiesPronunciation,
       Optional<StreamTtsOutputConfiguration> outputConfiguration,
       Optional<StreamTtsVoiceSettings> voiceSettings,
@@ -77,7 +77,7 @@ public final class CreateStreamTtsRequestPayload {
   }
 
   @JsonProperty("language")
-  public CreateStreamTtsRequestPayloadLanguage getLanguage() {
+  public TtsLanguage getLanguage() {
     return language;
   }
 
@@ -87,7 +87,7 @@ public final class CreateStreamTtsRequestPayload {
   }
 
   @JsonProperty("speech_model")
-  public Optional<CreateStreamTtsRequestPayloadSpeechModel> getSpeechModel() {
+  public Optional<SpeechModel> getSpeechModel() {
     return speechModel;
   }
 
@@ -152,7 +152,7 @@ public final class CreateStreamTtsRequestPayload {
   }
 
   public interface LanguageStage {
-    VoiceIdStage language(@NotNull CreateStreamTtsRequestPayloadLanguage language);
+    VoiceIdStage language(@NotNull TtsLanguage language);
   }
 
   public interface VoiceIdStage {
@@ -162,9 +162,9 @@ public final class CreateStreamTtsRequestPayload {
   public interface _FinalStage {
     CreateStreamTtsRequestPayload build();
 
-    _FinalStage speechModel(Optional<CreateStreamTtsRequestPayloadSpeechModel> speechModel);
+    _FinalStage speechModel(Optional<SpeechModel> speechModel);
 
-    _FinalStage speechModel(CreateStreamTtsRequestPayloadSpeechModel speechModel);
+    _FinalStage speechModel(SpeechModel speechModel);
 
     _FinalStage userInstructions(Optional<String> userInstructions);
 
@@ -194,7 +194,7 @@ public final class CreateStreamTtsRequestPayload {
   public static final class Builder implements TextStage, LanguageStage, VoiceIdStage, _FinalStage {
     private String text;
 
-    private CreateStreamTtsRequestPayloadLanguage language;
+    private TtsLanguage language;
 
     private int voiceId;
 
@@ -208,7 +208,7 @@ public final class CreateStreamTtsRequestPayload {
 
     private Optional<String> userInstructions = Optional.empty();
 
-    private Optional<CreateStreamTtsRequestPayloadSpeechModel> speechModel = Optional.empty();
+    private Optional<SpeechModel> speechModel = Optional.empty();
 
     @JsonAnySetter
     private Map<String, Object> additionalProperties = new HashMap<>();
@@ -239,7 +239,7 @@ public final class CreateStreamTtsRequestPayload {
 
     @java.lang.Override
     @JsonSetter("language")
-    public VoiceIdStage language(@NotNull CreateStreamTtsRequestPayloadLanguage language) {
+    public VoiceIdStage language(@NotNull TtsLanguage language) {
       this.language = Objects.requireNonNull(language, "language must not be null");
       return this;
     }
@@ -335,7 +335,7 @@ public final class CreateStreamTtsRequestPayload {
     }
 
     @java.lang.Override
-    public _FinalStage speechModel(CreateStreamTtsRequestPayloadSpeechModel speechModel) {
+    public _FinalStage speechModel(SpeechModel speechModel) {
       this.speechModel = Optional.ofNullable(speechModel);
       return this;
     }
@@ -345,7 +345,7 @@ public final class CreateStreamTtsRequestPayload {
         value = "speech_model",
         nulls = Nulls.SKIP
     )
-    public _FinalStage speechModel(Optional<CreateStreamTtsRequestPayloadSpeechModel> speechModel) {
+    public _FinalStage speechModel(Optional<SpeechModel> speechModel) {
       this.speechModel = speechModel;
       return this;
     }

@@ -61,7 +61,7 @@ You can route TTS through a custom hosting provider like Baseten while keeping t
 
 ```java
 import resources.texttospeech.requests.CreateStreamTtsRequestPayload;
-import resources.texttospeech.types.CreateStreamTtsRequestPayloadLanguage;
+import resources.texttospeech.types.TtsLanguage;
 import java.io.InputStream;
 
 // Initialize the Baseten Mars8-Flash custom hosting provider.
@@ -76,7 +76,7 @@ ITtsProvider ttsProvider = new BasetenProvider(
 // Use the provider to generate speech
 InputStream audioStream = ttsProvider.tts(CreateStreamTtsRequestPayload.builder()
     .text("Hello from Java via Baseten Mars8-Flash!")
-    .language(CreateStreamTtsRequestPayloadLanguage.EN_US)
+    .language(TtsLanguage.EN_US)
     .voiceId(1) // Required by the SDK's staged builder; ignored by the Baseten provider
     .build(), null);
 ```
@@ -99,8 +99,8 @@ Convert text into spoken audio using one of Camb AI's high-quality voices.
 
 ```java
 import resources.texttospeech.requests.CreateStreamTtsRequestPayload;
-import resources.texttospeech.types.CreateStreamTtsRequestPayloadLanguage;
-import resources.texttospeech.types.CreateStreamTtsRequestPayloadSpeechModel;
+import resources.texttospeech.types.TtsLanguage;
+import resources.texttospeech.types.SpeechModel;
 import types.OutputFormat;
 import types.StreamTtsOutputConfiguration;
 import java.io.InputStream;
@@ -112,8 +112,8 @@ import java.io.File;
 InputStream audioStream = client.textToSpeech().tts(CreateStreamTtsRequestPayload.builder()
     .text("Hello from Camb AI! This is a test.")
     .voiceId(20303)
-    .language(CreateStreamTtsRequestPayloadLanguage.EN_US) 
-    .speechModel(CreateStreamTtsRequestPayloadSpeechModel.MARSPRO)
+    .language(TtsLanguage.EN_US) 
+    .speechModel(SpeechModel.MARSPRO)
     .outputConfiguration(StreamTtsOutputConfiguration.builder().format(OutputFormat.WAV).build())
     .build());
 

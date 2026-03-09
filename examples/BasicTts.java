@@ -1,7 +1,7 @@
 import core.ClientOptions;
 import resources.texttospeech.requests.CreateStreamTtsRequestPayload;
-import resources.texttospeech.types.CreateStreamTtsRequestPayloadLanguage;
-import resources.texttospeech.types.CreateStreamTtsRequestPayloadSpeechModel;
+import resources.texttospeech.types.TtsLanguage;
+import resources.texttospeech.types.SpeechModel;
 import types.Languages;
 import java.io.InputStream;
 import java.io.FileOutputStream;
@@ -28,9 +28,9 @@ public class BasicTts {
             // Model: MARSPRO, Format: WAV
             InputStream audioStream = client.textToSpeech().tts(CreateStreamTtsRequestPayload.builder()
                 .text("Hello from Camb AI! This is a demonstration of our advanced text-to-speech technology using the MARS Pro model.")
-                .language(CreateStreamTtsRequestPayloadLanguage.EN_US) 
+                .language(TtsLanguage.EN_US) 
                 .voiceId(20303)
-                .speechModel(CreateStreamTtsRequestPayloadSpeechModel.MARSPRO)
+                .speechModel(SpeechModel.MARSPRO)
                 .outputConfiguration(StreamTtsOutputConfiguration.builder().format(OutputFormat.WAV).build())
                 .build());
 

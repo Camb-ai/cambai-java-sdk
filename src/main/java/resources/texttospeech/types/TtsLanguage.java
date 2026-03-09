@@ -7,7 +7,7 @@ package resources.texttospeech.types;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.lang.String;
 
-public enum CreateStreamTtsRequestPayloadLanguage {
+public enum TtsLanguage {
   AR_KW("ar-kw"),
 
   DE_CH("de-ch"),
@@ -134,7 +134,7 @@ public enum CreateStreamTtsRequestPayloadLanguage {
 
   private final String value;
 
-  CreateStreamTtsRequestPayloadLanguage(String value) {
+  TtsLanguage(String value) {
     this.value = value;
   }
 
