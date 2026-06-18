@@ -93,6 +93,33 @@ NOTE: For more examples and full runnable files refer to the `examples/` directo
 | **mars-instruct** | **22.05kHz** | Optimized for instruction-following and nuance control. |
 | **mars-flash** | **22.05kHz** | Low-latency model optimized for real-time applications and conversational AI. |
 
+#### TTS request options
+
+`client.textToSpeech().tts(...)` accepts the core request fields plus optional controls for model behavior and output format:
+
+| Field | Description |
+| :--- | :--- |
+| `text(...)` | Text to synthesize. For MARS Instruct, you can include inline emotion or pacing tags. |
+| `language(...)` | Locale such as `CreateStreamTtsRequestPayloadLanguage.EN_US`. |
+| `voiceId(...)` | Voice profile ID from the voice list APIs. |
+| `speechModel(...)` | Model to use, such as `MARSPRO`, `MARSINSTRUCT`, or `MARSFLASH`. |
+| `userInstructions(...)` | Adds style, tone, pronunciation, or delivery guidance for the request. Available only with MARS Instruct. |
+| `outputConfiguration(...)` | Output settings such as audio format, duration, and enhancement. |
+| `voiceSettings(...)` | Voice behavior controls such as reference enhancement or accent preservation. |
+| `inferenceOptions(...)` | Advanced generation controls for supported models. |
+| `enhanceNamedEntitiesPronunciation(...)` | Improves pronunciation for names and other named entities when supported. |
+
+```java
+InputStream audioStream = client.textToSpeech().tts(CreateStreamTtsRequestPayload.builder()
+    .text("[warm, friendly] Great to meet you!")
+    .language(CreateStreamTtsRequestPayloadLanguage.EN_US)
+    .voiceId(20303)
+    .speechModel(CreateStreamTtsRequestPayloadSpeechModel.MARSINSTRUCT)
+    .userInstructions("Speak warmly and with enthusiasm.")
+    .outputConfiguration(StreamTtsOutputConfiguration.builder().format(OutputFormat.WAV).build())
+    .build());
+```
+
 ### 1. Text-to-Speech (TTS)
 
 Convert text into spoken audio using one of Camb AI's high-quality voices.
@@ -111,8 +138,8 @@ import java.io.File;
 
 InputStream audioStream = client.textToSpeech().tts(CreateStreamTtsRequestPayload.builder()
     .text("Hello from Camb AI! This is a test.")
-    .voiceId(20303)
     .language(CreateStreamTtsRequestPayloadLanguage.EN_US) 
+    .voiceId(20303)
     .speechModel(CreateStreamTtsRequestPayloadSpeechModel.MARSPRO)
     .outputConfiguration(StreamTtsOutputConfiguration.builder().format(OutputFormat.WAV).build())
     .build());
