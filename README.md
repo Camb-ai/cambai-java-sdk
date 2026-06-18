@@ -113,9 +113,9 @@ NOTE: For more examples and full runnable files refer to the `examples/` directo
 InputStream audioStream = client.textToSpeech().tts(CreateStreamTtsRequestPayload.builder()
     .text("[warm, friendly] Great to meet you!")
     .language(CreateStreamTtsRequestPayloadLanguage.EN_US)
-    .voiceId(20303)
+    .voiceId(147320)
     .speechModel(CreateStreamTtsRequestPayloadSpeechModel.MARSINSTRUCT)
-    .userInstructions("Speak warmly and with enthusiasm.")
+    .userInstructions("Speak in a warm, friendly tone")
     .outputConfiguration(StreamTtsOutputConfiguration.builder().format(OutputFormat.WAV).build())
     .build());
 ```
